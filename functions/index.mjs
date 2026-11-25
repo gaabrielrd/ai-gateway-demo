@@ -5,18 +5,28 @@ import { getAuth } from 'firebase-admin/auth';
 
 import { ownAccess, adminAccess, isAdministrator } from './access.mjs';
 
+import { quoteBudget } from './quote.mjs';
+
 const auth = getAuth(initializeApp());
 
 export const aiGatewayApi = onRequest(async (request, response) => {
   response.set('Cache-Control', 'no-store');
   const accessRoute = ['/api/access', '/api/admin/access'].includes(request.path);
-  if (!['/api/health', '/api/session', '/api/access', '/api/admin/access'].includes(request.path)) {
+  const quoteRoute = request.path === '/api/budget/quote';
+  if (
+    !quoteRoute &&
+    !['/api/health', '/api/session', '/api/access', '/api/admin/access'].includes(request.path)
+  ) {
     response.status(404).json({ error: 'Rota desconhecida' });
     return;
   }
-  if (request.method !== 'GET' && !(accessRoute && request.method === 'POST')) {
+  if (
+    quoteRoute
+      ? request.method !== 'POST'
+      : request.method !== 'GET' && !(accessRoute && request.method === 'POST')
+  ) {
     response
-      .set('Allow', accessRoute ? 'GET, POST' : 'GET')
+      .set('Allow', quoteRoute ? 'POST' : accessRoute ? 'GET, POST' : 'GET')
       .status(405)
       .end();
     return;
@@ -32,12 +42,18 @@ export const aiGatewayApi = onRequest(async (request, response) => {
       response.status(401).json({ error: 'Entre com Google para continuar' });
       return;
     }
-    if (accessRoute) {
+    if (accessRoute || quoteRoute) {
       try {
-        const handler = request.path === '/api/access' ? ownAccess : adminAccess;
+        const handler = quoteRoute
+          ? quoteBudget
+          : request.path === '/api/access'
+            ? ownAccess
+            : adminAccess;
         await handler(request, response, identity);
       } catch {
-        response.status(503).json({ error: 'Solicitações de acesso indisponíveis' });
+        response.status(503).json({
+          error: quoteRoute ? 'Orçamento indisponível' : 'Solicitações de acesso indisponíveis',
+        });
       }
     } else response.json({ subject: identity.uid, administrator: isAdministrator(identity) });
     return;

@@ -8,7 +8,7 @@ Dar ao usuário uma seleção válida e um limite de custo antes da primeira exe
 
 - [x] **T07 — Montar o catálogo habilitado.** Inventariar os destinos realmente habilitados no gateway, provedor, versão, modalidades, unidade e origem do preço. Validar como obter uso, origem do cache e identidade do destino efetivo com exemplos das respostas.
 - [x] **T08 — Entregar o seletor público.** Filtrar versões pela tarefa. Testar zero, uma, duas e três ou mais opções compatíveis. Mostrar por que uma tarefa está indisponível ou permite menos de três modelos.
-- [ ] **T09 — Calcular o teto de execução.** Limitar entradas e saídas de cada tentativa para estimar o máximo em USD, incluindo juízes, mídia e tentativas previstas. Preparar orçamento para comparação, repetição e demos. Mostrar saldo e teto antes de confirmar.
+- [x] **T09 — Calcular o teto de execução.** Limitar entradas e saídas de cada tentativa para estimar o máximo em USD, incluindo juízes, mídia e tentativas previstas. Preparar orçamento para comparação, repetição e demos. Mostrar saldo e teto antes de confirmar.
 - [ ] **T10 — Reservar e contabilizar no servidor.** Usar valores monetários com precisão definida, mês de Brasília e operação atômica por usuário. Vincular reserva e liquidação à execução. Testar concorrência, virada do mês, reenvio, falha parcial e recuperação de reserva após interrupção.
 
 ## Critério de conclusão

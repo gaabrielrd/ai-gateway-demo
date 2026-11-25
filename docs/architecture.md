@@ -206,3 +206,7 @@ O router usa essa base como `basename` e a marca do layout usa a mesma base
 para o favicon. `build:pages` fornece a base ao Vite e gera entradas estáticas
 para as rotas públicas; o build local padrão continua na raiz. O contrato e o
 workflow estão descritos em [deployment.md](deployment.md).
+
+### Previsão de custo
+
+`POST /api/budget/quote` consulta o painel em `judgePanels/{task}` e o orçamento em `users/{uid}/budgets/{AAAA-MM}` no banco dedicado. O documento mensal mantém `spentMicroUsd` e `reservedMicroUsd`. Cada unidade equivale a um milionésimo de USD. O servidor escolhe as tarifas e os limites de cada tentativa. A consulta informa saldo, teto e eventual bloqueio. Os critérios e as fontes dos limites usados na homologação estão na [entrega T09](entregas/2026-11-25-t09-orcamento.md).

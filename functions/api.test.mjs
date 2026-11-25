@@ -13,6 +13,11 @@ test('a API responde à verificação local e identifica rota ou método inváli
   await once(server, 'listening');
   const base = 'http://127.0.0.1:' + server.address().port;
   assert.equal((await fetch(base + '/api/session')).status, 401);
+  const quote = base + '/api/budget/quote';
+  assert.equal((await fetch(quote, { method: 'POST' })).status, 401);
+  const wrongMethod = await fetch(quote);
+  assert.equal(wrongMethod.status, 405);
+  assert.equal(wrongMethod.headers.get('Allow'), 'POST');
   const health = await fetch(base + '/api/health');
   assert.equal(health.status, 200);
   assert.deepEqual(await health.json(), { status: 'ok' });

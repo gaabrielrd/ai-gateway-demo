@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { loadCatalog, type Catalog } from '../services/catalog';
 import { PageHeader } from '@/shared/ui';
+import { QuotePreview } from './QuotePreview';
 import styles from './CatalogPage.module.css';
 
 const tasks = [
-  { label: 'Resumo de texto', output: 'text' },
-  { label: 'Extração de campos', output: 'text' },
-  { label: 'Geração de imagem', output: 'image' },
+  { id: 'summary', label: 'Resumo de texto', output: 'text' },
+  { id: 'extraction', label: 'Extração de campos', output: 'text' },
+  { id: 'image', label: 'Geração de imagem', output: 'image' },
 ];
 const usd = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -85,6 +86,9 @@ export function ModelSelector({ catalog }: { catalog: Catalog }) {
         <output aria-live="polite">
           {selected.length} de {required} selecionadas
         </output>
+      )}
+      {required > 0 && selected.length === required && (
+        <QuotePreview key={[task.id, ...selected].join('|')} task={task.id} modelIds={selected} />
       )}
       <a href={catalog.priceSource}>Consultar tarifas da Cloudflare</a>
     </section>
