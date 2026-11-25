@@ -55,3 +55,54 @@
 .card h3 {
   font-family: var(--font-display);
 }
+
+.entries {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.entries li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-4) 0;
+  border-bottom: var(--border-width) solid var(--line);
+}
+.entries li > a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1 1 18rem;
+  font: 500 var(--text-lg)/var(--leading-tight) var(--font-display);
+  color: var(--ink);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.entries li > a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.entries li > a svg {
+  color: var(--accent);
+}
+.entries p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+}
+.form .consent {
+  display: flex;
+  align-items: start;
+}
+.metrics {
+  border-top: var(--border-width) solid var(--line);
+  padding-top: var(--space-3);
+  font-variant-numeric: tabular-nums;
+}
+.metrics dt {
+  color: var(--ink-soft);
+}
+.metrics dd {
+  text-align: right;
+}

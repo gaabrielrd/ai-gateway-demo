@@ -1,7 +1,8 @@
+import styles from './PanelsPage.module.css';
 import { RefreshCw, Save } from 'lucide-react';
-import { Spinner, Button, Checkbox, ErrorMessage, Label, PageHeader } from '@/shared/ui';
+import { Spinner, Button, Checkbox, ErrorMessage, Label, WorkPage } from '@/shared/ui';
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/features/auth';
+import { SignInPrompt, useAuth } from '@/features/auth';
 import { type Panel, readPanels, savePanel } from '../services/panels';
 
 const names: Record<string, string> = {
@@ -29,9 +30,10 @@ function Editor({ panel }: { panel: Panel }) {
     }
   }
   return (
-    <fieldset disabled={busy}>
+    <fieldset className={styles.editor} disabled={busy}>
       <legend>{names[panel.task]}</legend>
-      <p>{panel.criteria.map((c) => c.label).join(' · ')}</p>
+      <p>Critérios · {panel.criteria.map((c) => c.label).join(' · ')}</p>
+      <p className={styles.count}>{ids.length} de 3 selecionadas</p>
       {panel.options.map((id) => (
         <div key={id}>
           <Label>
@@ -98,26 +100,26 @@ function Panels() {
       </p>
     );
   return (
-    <>
+    <div className={styles.panels}>
+      {panels.length === 0 && <p>Nenhum painel disponível para configurar.</p>}
       {panels.map((panel) => (
         <Editor key={panel.task} panel={panel} />
       ))}
-    </>
+    </div>
   );
 }
 export function PanelsPage() {
   const { state } = useAuth();
   return (
-    <section>
-      <PageHeader
-        title="Painéis de juízes"
-        description="Escolha três versões por tarefa. Para imagens, a lista inclui as versões verificadas com entradas visuais."
-      />
+    <WorkPage
+      title="Painéis de juízes"
+      description="Escolha três versões por tarefa. O painel de imagens aceita juízes com visão."
+    >
       {state.status === 'autenticada' ? (
         <Panels key={state.session.subject} />
       ) : (
-        <p>Entre com a conta administradora para configurar os juízes.</p>
+        <SignInPrompt>Entre com a conta administradora para configurar os juízes.</SignInPrompt>
       )}
-    </section>
+    </WorkPage>
   );
 }

@@ -101,3 +101,11 @@
     right: 0;
   }
 }
+
+.current [data-slot='collapsible-trigger'] {
+  color: var(--accent);
+  box-shadow: inset 0 -3px var(--accent);
+}
+.header [data-slot='collapsible-content'] {
+  z-index: 5;
+}

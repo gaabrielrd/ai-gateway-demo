@@ -1,4 +1,5 @@
-import { Archive, RefreshCw, Upload, X } from 'lucide-react';
+import styles from './Comparison.module.css';
+import { ArrowUpRight, Archive, RefreshCw, Upload, X } from 'lucide-react';
 import {
   Empty,
   Spinner,
@@ -7,11 +8,11 @@ import {
   ErrorMessage,
   Input,
   Label,
-  PageHeader,
+  WorkPage,
 } from '@/shared/ui';
 import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router';
-import { useAuth } from '@/features/auth';
+import { SignInPrompt, useAuth } from '@/features/auth';
 import { listBenchmarks, publishBenchmark, withdrawBenchmark } from '../services/gallery';
 
 export function PublishBenchmark({ id, revision }: { id: string; revision: number }) {
@@ -37,6 +38,7 @@ export function PublishBenchmark({ id, revision }: { id: string; revision: numbe
   if (published) return <Link to={'/galeria/' + published}>Ver benchmark publicado</Link>;
   return (
     <form
+      className={styles.form}
       onSubmit={(e) => {
         e.preventDefault();
         void publish();
@@ -47,7 +49,7 @@ export function PublishBenchmark({ id, revision }: { id: string; revision: numbe
         Título do benchmark{' '}
         <Input required maxLength={120} value={title} onChange={(e) => setTitle(e.target.value)} />
       </Label>
-      <Label>
+      <Label className={styles.consent}>
         <Checkbox
           required
           checked={checked}
@@ -64,13 +66,7 @@ export function PublishBenchmark({ id, revision }: { id: string; revision: numbe
   );
 }
 
-export function GalleryPage({
-  manage = false,
-  featured = false,
-}: {
-  manage?: boolean;
-  featured?: boolean;
-}) {
+function Gallery({ manage = false, featured = false }: { manage?: boolean; featured?: boolean }) {
   const { ensureSession } = useAuth();
   const [items, setItems] = useState<{ id: string; title: string }[]>(),
     [error, setError] = useState(''),
@@ -114,8 +110,14 @@ export function GalleryPage({
     return <Navigate replace to={'/galeria/' + first.id} />;
   }
   return (
-    <section>
-      <PageHeader title={manage ? 'Gerenciar benchmarks' : 'Galeria de benchmarks'} />
+    <WorkPage
+      title={manage ? 'Gerenciar benchmarks' : 'Galeria de benchmarks'}
+      description={
+        manage
+          ? 'Revise os benchmarks publicados e retire os que devem sair da galeria.'
+          : 'Abra uma comparação para explorar as respostas, as notas dos juízes e o custo por modelo.'
+      }
+    >
       {error && (
         <ErrorMessage>
           {error}{' '}
@@ -134,11 +136,18 @@ export function GalleryPage({
           <Spinner /> Carregando benchmarks…
         </p>
       )}
-      {items?.length === 0 && <Empty>A galeria ainda está vazia.</Empty>}
-      <ul>
+      {items?.length === 0 && (
+        <Empty>
+          A galeria ainda está vazia. <Link to="/comparar">Abrir comparador</Link>
+        </Empty>
+      )}
+      <ul className={styles.entries}>
         {items?.map((item) => (
           <li key={item.id}>
-            <Link to={'/galeria/' + item.id}>{item.title}</Link>
+            <Link to={'/galeria/' + item.id}>
+              {item.title}
+              <ArrowUpRight className="icon icon-sm" aria-hidden="true" />
+            </Link>
             {manage &&
               (confirm === item.id ? (
                 <>
@@ -158,6 +167,32 @@ export function GalleryPage({
           </li>
         ))}
       </ul>
-    </section>
+    </WorkPage>
+  );
+}
+
+export function GalleryPage({
+  manage = false,
+  featured = false,
+}: {
+  manage?: boolean;
+  featured?: boolean;
+}) {
+  const { state } = useAuth();
+  if (manage && state.status !== 'autenticada') {
+    return (
+      <WorkPage title="Gerenciar benchmarks">
+        <SignInPrompt>
+          Entre com a conta administradora para gerenciar suas publicações.
+        </SignInPrompt>
+      </WorkPage>
+    );
+  }
+  return (
+    <Gallery
+      key={manage && state.status === 'autenticada' ? state.session.subject : 'public'}
+      manage={manage}
+      featured={featured}
+    />
   );
 }

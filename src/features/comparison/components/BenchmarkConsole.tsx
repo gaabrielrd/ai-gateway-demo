@@ -76,12 +76,18 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
   const received = jsonObject(output),
     expected = jsonObject(record.reference);
   const perfect = rows.filter((r) => r.result && r.matches === r.fields?.length).length;
-  const conclusion =
-    rows.length === 3 && perfect === 2 && rows.every((r) => r.fields?.length === 6)
-      ? 'Dois modelos acertaram os seis campos.'
-      : round?.ranking?.reasons.length
-        ? 'Classificação parcial'
-        : 'Resultados da comparação';
+  const hasFields = rows.some((row) => row.fields?.length);
+  const leaders = round?.ranking?.rows.filter((row) => row.position === 1) ?? [];
+  const leader = leaders[0];
+  let conclusion = 'Compare as respostas e os indicadores por modelo.';
+  if (round?.ranking?.reasons.length) conclusion = 'Classificação parcial';
+  else if (rows.length === 3 && perfect === 2 && rows.every((row) => row.fields?.length === 6))
+    conclusion = 'Dois modelos acertaram os seis campos.';
+  else if (leaders.length > 1)
+    conclusion = `${leaders.length} modelos empataram em primeiro lugar.`;
+  else if (leader?.score != null) {
+    conclusion = `${names[leader.modelId] ?? leader.modelId} obteve ${number.format(leader.score)}/4 na avaliação.`;
+  }
   return (
     <section className={styles.console}>
       <header className={styles.hero}>
@@ -112,7 +118,14 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
               <TableCaption className={styles.sr}>Resultados por modelo</TableCaption>
               <TableHeader>
                 <TableRow>
-                  {['Modelo', 'Campos', 'Nota', 'Tempo', 'Tokens¹', 'US$'].map((h) => (
+                  {[
+                    'Modelo',
+                    ...(hasFields ? ['Campos'] : []),
+                    'Nota',
+                    'Tempo',
+                    'Tokens¹',
+                    'US$',
+                  ].map((h) => (
                     <TableHead key={h}>{h}</TableHead>
                   ))}
                 </TableRow>
@@ -133,7 +146,7 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
                         {r.name}
                       </Button>
                     </TableHead>
-                    <TableCell>{r.result ?? '—'}</TableCell>
+                    {hasFields && <TableCell>{r.result ?? '—'}</TableCell>}
                     <TableCell>{r.score}</TableCell>
                     <TableCell>
                       {r.a.durationMs == null ? '—' : seconds.format(r.a.durationMs / 1000) + ' s'}
@@ -141,7 +154,7 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
                     <TableCell>
                       {r.a.inputTokens == null || r.a.outputTokens == null
                         ? '—'
-                        : r.a.inputTokens + r.a.outputTokens}
+                        : number.format(r.a.inputTokens + r.a.outputTokens)}
                     </TableCell>
                     <TableCell>
                       {r.a.costMicroUsd == null ? '—' : cost.format(r.a.costMicroUsd / 1e6)}
@@ -216,6 +229,7 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
                   alt={'Imagem gerada por ' + active.name}
                 />
               )}
+              {!a.output && !a.error && <p>Resposta indisponível para esta tentativa.</p>}
               {a.error && <p role="status">{a.error}</p>}
               <Disclosure title="Detalhes da geração">
                 <p>

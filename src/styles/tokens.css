@@ -112,7 +112,7 @@ h4 {
   font-family: var(--font-display);
   line-height: 1.12;
 }
-a {
+:where(a:not([data-slot='button'])) {
   color: var(--accent);
 }
 summary,

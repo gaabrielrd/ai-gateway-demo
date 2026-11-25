@@ -56,3 +56,40 @@ it('liga a divergência ao modelo e mantém campos ausentes distintos de zero', 
   expect(inspector.getByRole('heading', { name: 'Modelo A' })).toBeVisible();
   expect(inspector.queryByText('Diferença na emissão')).toBeNull();
 });
+
+it('apresenta o empate sem coluna de campos quando a tarefa é resumo', () => {
+  const attempts: Execution['attempts'] = ['Alpha', 'Beta'].map((modelId, index) => ({
+    modelId,
+    index,
+    status: 'completed',
+  }));
+  const record: Execution = {
+    executionId: 'resumo',
+    task: 'summary',
+    prompt: 'Resuma.',
+    attempts,
+    evaluation: {
+      status: 'finished',
+      reviews: [],
+      ranking: {
+        rows: attempts.map(({ index, modelId }) => ({
+          index,
+          modelId,
+          position: 1,
+          score: 4,
+          marks: [],
+        })),
+        reasons: [],
+        elapsedMs: null,
+        totalCostMicroUsd: null,
+      },
+    },
+  };
+  render(
+    <MemoryRouter>
+      <BenchmarkConsole record={record} />
+    </MemoryRouter>,
+  );
+  expect(screen.getByText('2 modelos empataram em primeiro lugar.')).toBeVisible();
+  expect(screen.queryByRole('columnheader', { name: 'Campos' })).toBeNull();
+});

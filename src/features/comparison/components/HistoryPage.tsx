@@ -1,8 +1,9 @@
+import styles from './Comparison.module.css';
 import { RefreshCw, Trash2, X } from 'lucide-react';
-import { Empty, Spinner, Button, ErrorMessage, PageHeader } from '@/shared/ui';
+import { Empty, Spinner, Button, ErrorMessage, WorkPage } from '@/shared/ui';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { useAuth } from '@/features/auth';
+import { SignInPrompt, useAuth } from '@/features/auth';
 import { deleteExecution, loadHistory, type HistoryEntry } from '../services/executions';
 
 function PrivateHistory() {
@@ -60,8 +61,15 @@ function PrivateHistory() {
           <Spinner /> Carregando histórico…
         </p>
       )}
-      {entries?.length === 0 && <Empty>Seu histórico está vazio.</Empty>}
-      <ul>
+      {entries?.length === 0 && (
+        <>
+          <Empty>Seu histórico está vazio.</Empty>
+          <Button asChild>
+            <Link to="/comparar">Criar uma comparação</Link>
+          </Button>
+        </>
+      )}
+      <ul className={styles.entries}>
         {entries?.map((entry) => (
           <li key={entry.executionId}>
             <Link to={'/execucoes/' + entry.executionId}>{entry.prompt}</Link>
@@ -94,13 +102,15 @@ function PrivateHistory() {
 export function HistoryPage() {
   const { state } = useAuth();
   return (
-    <section>
-      <PageHeader title="Meu histórico" />
+    <WorkPage
+      title="Meu histórico"
+      description="Suas execuções privadas ficam disponíveis por 30 dias."
+    >
       {state.status === 'autenticada' ? (
         <PrivateHistory key={state.session.subject} />
       ) : (
-        <p>Entre com Google para consultar seu histórico privado.</p>
+        <SignInPrompt>Entre com Google para consultar seu histórico privado.</SignInPrompt>
       )}
-    </section>
+    </WorkPage>
   );
 }

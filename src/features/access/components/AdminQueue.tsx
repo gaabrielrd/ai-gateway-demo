@@ -1,3 +1,4 @@
+import styles from './AccessPage.module.css';
 import { Check, RefreshCw, X } from 'lucide-react';
 import { Link } from 'react-router';
 import { useEffect, useState } from 'react';
@@ -47,12 +48,14 @@ export function AdminQueue() {
   if (rows === null || (rows === undefined && !message)) return null;
   return (
     <section>
-      <h3>Administração de acessos</h3>
-      {rows && <Link to="/admin/galeria">Gerenciar benchmarks</Link>}
-      {rows && <Link to="/admin/juizes">Configurar juízes por tarefa</Link>}
+      <h2>Administração de acessos</h2>
+      <div className={styles.links}>
+        {rows && <Link to="/admin/galeria">Gerenciar benchmarks</Link>}
+        {rows && <Link to="/admin/juizes">Configurar juízes por tarefa</Link>}
+      </div>
       <p role="status">{busy ? 'Consultando solicitações…' : message}</p>
       {rows?.length === 0 && <Empty>Nenhuma solicitação pendente.</Empty>}
-      <ul>
+      <ul className={styles.queue}>
         {rows?.map((row) => (
           <li key={row.id}>
             <strong>{row.email || row.id}</strong>
@@ -65,6 +68,7 @@ export function AdminQueue() {
               <Check className="icon icon-sm" aria-hidden="true" /> Aprovar
             </Button>
             <Button
+              variant="ghost"
               disabled={busy}
               aria-label={'Rejeitar ' + row.email}
               onClick={() => void decide(row.id, 'rejected')}

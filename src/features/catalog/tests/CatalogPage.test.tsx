@@ -4,7 +4,9 @@ import { expect, it, vi } from 'vitest';
 import catalog from '../../../../functions/catalog.json';
 import { CatalogPage, ModelSelector } from '../components/CatalogPage';
 
-vi.mock('@/features/auth', () => ({ useAuth: () => ({ state: { status: 'anonima' } }) }));
+vi.mock('@/features/auth/hooks/useAuth', () => ({
+  useAuth: () => ({ state: { status: 'anonima' } }),
+}));
 
 it.each([0, 1, 2, 3, 4])('limita a seleção com %i versões compatíveis', async (count) => {
   const user = userEvent.setup();

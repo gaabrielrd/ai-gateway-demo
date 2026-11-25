@@ -10,10 +10,10 @@ import styles from './RouteErrorFallback.module.css';
 export function NotFound() {
   return (
     <section className={styles.container} role="alert">
-      <h2 className={styles.title}>
+      <h1 className={styles.title}>
         <FileQuestionMark className="icon" aria-hidden="true" />
         Página não encontrada
-      </h2>
+      </h1>
       <p>O endereço acessado não existe neste aplicativo.</p>
       <Button asChild>
         <Link to="/">Voltar para o início</Link>
@@ -38,12 +38,20 @@ export function RouteErrorFallback() {
 
   return (
     <section className={styles.container} role="alert">
-      <h2 className={styles.title}>
+      <h1 className={styles.title}>
         <TriangleAlert className="icon" aria-hidden="true" />
         Não foi possível carregar esta página
-      </h2>
+      </h1>
       <p>Tente novamente. Se o problema continuar, avise quem mantém o projeto.</p>
-      {detail ? <pre className={styles.detail}>{detail}</pre> : null}
+      {detail ? (
+        <details>
+          <summary>Detalhes técnicos</summary>
+          <pre className={styles.detail}>{detail}</pre>
+        </details>
+      ) : null}
+      <Button variant="default" onClick={() => window.location.reload()}>
+        Tentar novamente
+      </Button>
       <Button asChild>
         <Link to="/">Voltar para o início</Link>
       </Button>
