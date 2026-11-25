@@ -97,6 +97,7 @@ export async function runCacheDemo(db, { uid, runId }, run = generate) {
           modelId: attempt.modelId,
           prompt: demo.get('prompt'),
           cacheTtl: demo.get('cacheTtl'),
+          collectLog: true,
           limits: attempt.limits,
         });
         const { cacheStatus, durationMs, inputTokens, outputTokens, logId, effectiveModel } =

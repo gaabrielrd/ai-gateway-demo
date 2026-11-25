@@ -28,6 +28,12 @@ test('a API responde à verificação local e identifica rota ou método inváli
     (await fetch(base + '/api/executions/sample/media/0', { method: 'DELETE' })).status,
     405,
   );
+  for (const kind of ['cache', 'fallback']) {
+    const demo = base + '/api/demos/' + kind;
+    assert.equal((await fetch(demo)).status, 401);
+    assert.equal((await fetch(demo, { method: 'POST' })).status, 401);
+    assert.equal((await fetch(demo + '/00000000-0000-0000-0000-000000000000')).status, 401);
+  }
   const health = await fetch(base + '/api/health');
   assert.equal(health.status, 200);
   assert.deepEqual(await health.json(), { status: 'ok' });

@@ -6,7 +6,7 @@ function tokens(value) {
 
 // Credenciais e parâmetros de conexão são fornecidos somente pelo servidor.
 export async function generate(
-  { modelId, prompt, limits, cacheTtl, judgeContent },
+  { modelId, prompt, limits, cacheTtl, collectLog = false, judgeContent },
   {
     accountId = process.env.CLOUDFLARE_ACCOUNT_ID,
     gatewayId = process.env.CLOUDFLARE_GATEWAY_ID,
@@ -31,6 +31,7 @@ export async function generate(
     'Content-Type': 'application/json',
     'cf-aig-gateway-id': gatewayId,
     'cf-aig-max-attempts': '1',
+    ...(collectLog ? { 'cf-aig-collect-log': 'true' } : {}),
     'cf-aig-collect-log-payload': 'false',
     ...(cacheTtl ? { 'cf-aig-cache-ttl': String(cacheTtl) } : { 'cf-aig-skip-cache': 'true' }),
   };

@@ -31,6 +31,7 @@ export async function requestFallback(attempt, fetchImpl = fetch) {
         'cf-aig-gateway-id': process.env.CLOUDFLARE_GATEWAY_ID,
         'cf-aig-skip-cache': 'true',
         'cf-aig-max-attempts': '1',
+        'cf-aig-collect-log': 'true',
         'cf-aig-collect-log-payload': 'false',
         'cf-aig-metadata': JSON.stringify({ demoPrimary: 'workers-ai/' + primary }),
       },

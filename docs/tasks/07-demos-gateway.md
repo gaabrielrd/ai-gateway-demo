@@ -8,7 +8,7 @@ Mostrar o que o gateway fez em chamadas controladas e quanto tempo cada tentativ
 
 - [x] **T21 — Entregar o exemplo de cache.** Preparar a entrada fixa e repetir a chamada pelas Functions. Ler a indicação de origem do gateway e medir cada tentativa. Testar acerto, duas passagens pelo provedor e metadado ausente.
 - [x] **T22 — Entregar o exemplo de fallback.** Configurar cenário isolado com falha controlada no primeiro destino. Apresentar a sequência efetiva, erros e modelo final. Exercitar também a indisponibilidade do segundo destino.
-- [ ] **T23 — Verificar custo e acesso das demos.** Aplicar aprovação e teto para as tentativas previstas. Conferir os indicadores com os registros do gateway em um ensaio controlado, incluindo um caso em que o cache não atende a repetição.
+- [x] **T23 — Verificar custo e acesso das demos.** Aplicar aprovação e teto para as tentativas previstas. Conferir os indicadores com os registros do gateway em um ensaio controlado, incluindo um caso em que o cache não atende a repetição.
 
 ## Critério de conclusão
 
