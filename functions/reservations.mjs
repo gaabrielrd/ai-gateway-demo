@@ -3,7 +3,9 @@ import { availableBudget, billingMonth, BudgetError } from './budget.mjs';
 function operationRef(db, uid, executionId) {
   if (
     typeof executionId !== 'string' ||
-    !/^(?:[a-zA-Z0-9_-]{1,128}|retry\.[a-f0-9]{64}|cache\.[a-f0-9-]{36})$/.test(executionId)
+    !/^(?:[a-zA-Z0-9_-]{1,128}|retry\.[a-f0-9]{64}|(?:cache|fallback)\.[a-f0-9-]{36})$/.test(
+      executionId,
+    )
   )
     throw new BudgetError('Identificador de execução inválido.');
   return db.collection('users').doc(uid).collection('reservations').doc(executionId);

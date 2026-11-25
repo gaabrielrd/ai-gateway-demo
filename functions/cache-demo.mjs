@@ -1,3 +1,4 @@
+import { fallbackModel, fallbackPrompt, fallbackPlan } from './fallback-demo.mjs';
 import { createHash } from 'node:crypto';
 import { isAdministrator } from './access.mjs';
 import { BudgetError, attemptCost, availableBudget, billingMonth, planBudget } from './budget.mjs';
@@ -8,9 +9,14 @@ const modelId = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const prompt = 'Em uma frase em português, descreva o que um cache faz.';
 const cacheTtl = 300;
 
-export async function cacheApi(db, req, res, identity) {
+export async function demoApi(db, req, res, identity) {
   const uid = identity.uid;
-  const runs = db.collection('users').doc(uid).collection('cacheDemos');
+  const kind = req.path.split('/')[3];
+  const fallback = kind === 'fallback';
+  const runs = db
+    .collection('users')
+    .doc(uid)
+    .collection(kind + 'Demos');
   if (
     !isAdministrator(identity) &&
     (await db.collection('accessRequests').doc(uid).get()).get('status') !== 'approved'
@@ -20,14 +26,18 @@ export async function cacheApi(db, req, res, identity) {
   if (id) {
     const saved = await runs.doc(id).get();
     if (!saved.exists) return res.sendStatus(404);
+    if (fallback)
+      return res.json({ rows: {}, ...saved.get('outcome'), finished: saved.get('finished') });
     return res.json({ rows: saved.get('rows'), finished: saved.get('finished') });
   }
-  const plan = planBudget({ kind: 'cache', task: 'summary', modelIds: [modelId] });
+  const plan = fallback
+    ? fallbackPlan()
+    : planBudget({ kind: 'cache', task: 'summary', modelIds: [modelId] });
   if (req.method === 'GET') {
     const balance = await monthlyBudgetRef(db, uid, billingMonth()).get();
     return res.json({
-      prompt,
-      modelId,
+      prompt: fallback ? fallbackPrompt : prompt,
+      modelId: fallback ? fallbackModel : modelId,
       ceilingMicroUsd: plan.ceilingMicroUsd,
       availableMicroUsd: availableBudget(balance.data()),
     });
@@ -39,7 +49,7 @@ export async function cacheApi(db, req, res, identity) {
     confirmedMicroUsd !== plan.ceilingMicroUsd
   )
     return res.status(400).json({ error: 'Consulte e confirme o teto atual.' });
-  const reservationId = 'cache.' + runId;
+  const reservationId = kind + '.' + runId;
   try {
     await reserveBudget(db, {
       uid,
@@ -49,7 +59,10 @@ export async function cacheApi(db, req, res, identity) {
         .update(JSON.stringify([modelId, prompt, cacheTtl, plan]))
         .digest('hex'),
       createExecution(tx) {
-        tx.create(runs.doc(runId), { prompt, cacheTtl, rows: {}, finished: false });
+        tx.create(
+          runs.doc(runId),
+          fallback ? { finished: false } : { prompt, cacheTtl, rows: {}, finished: false },
+        );
       },
     });
   } catch (e) {

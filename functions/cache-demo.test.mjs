@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { initializeApp, deleteApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-import { cacheApi, runCacheDemo } from './cache-demo.mjs';
+import { demoApi, runCacheDemo } from './cache-demo.mjs';
 
 test(
   'cache reserva duas chamadas idênticas, aceita MISS duplo e preserva origem ausente',
@@ -30,7 +30,7 @@ test(
           this.code = code;
         },
       };
-      await cacheApi(db, { method, path: path + suffix, body }, res, { uid: owner });
+      await demoApi(db, { method, path: path + suffix, body }, res, { uid: owner });
       return res;
     }
     assert.equal((await api('GET')).code, 403);

@@ -1,12 +1,15 @@
 import { authorizationHeader, type Session } from '@/features/auth';
 
-export interface CacheQuote {
+export type DemoKind = 'cache' | 'fallback';
+export interface DemoQuote {
   prompt: string;
   modelId: string;
   ceilingMicroUsd: number;
   availableMicroUsd: number;
 }
-interface CacheRow {
+interface DemoRow {
+  modelId?: string;
+  error?: string;
   status: string;
   cacheStatus?: string | null;
   durationMs?: number | null;
@@ -14,16 +17,20 @@ interface CacheRow {
   inputTokens?: number | null;
   outputTokens?: number | null;
 }
-export interface CacheResult {
-  rows: Record<string, CacheRow>;
+export interface DemoResult {
+  rows: Record<string, DemoRow>;
   finished: boolean;
+  durationMs?: number;
+  error?: string;
+  finalModel?: string | null;
 }
-async function cacheRequest<T>(
+async function demoRequest<T>(
   session: Session,
+  kind: DemoKind,
   path: string,
   options: RequestInit = {},
 ): Promise<T> {
-  const response = await fetch('/api/demos/cache' + path, {
+  const response = await fetch('/api/demos/' + kind + path, {
     ...options,
     headers: { ...authorizationHeader(session), 'Content-Type': 'application/json' },
   });
@@ -33,11 +40,17 @@ async function cacheRequest<T>(
   }
   return response.json() as Promise<T>;
 }
-export const quoteCache = (session: Session) => cacheRequest<CacheQuote>(session, '');
-export const startCache = (session: Session, runId: string, confirmedMicroUsd: number) =>
-  cacheRequest<{ runId: string }>(session, '', {
+export const quoteDemo = (session: Session, kind: DemoKind) =>
+  demoRequest<DemoQuote>(session, kind, '');
+export const startDemo = (
+  session: Session,
+  kind: DemoKind,
+  runId: string,
+  confirmedMicroUsd: number,
+) =>
+  demoRequest<{ runId: string }>(session, kind, '', {
     method: 'POST',
     body: JSON.stringify({ runId, confirmedMicroUsd }),
   });
-export const readCache = (session: Session, id: string, signal: AbortSignal) =>
-  cacheRequest<CacheResult>(session, '/' + encodeURIComponent(id), { signal });
+export const readDemo = (session: Session, kind: DemoKind, id: string, signal: AbortSignal) =>
+  demoRequest<DemoResult>(session, kind, '/' + encodeURIComponent(id), { signal });

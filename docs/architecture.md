@@ -249,3 +249,7 @@ A galeria lê o catálogo de publicações e serve o instantâneo e as imagens p
 ### Demonstração de cache
 
 A página `/demos/cache` consulta a previsão e pede confirmação para duas chamadas pelo mesmo destino. A Function confere aprovação e reserva o teto mensal. Um evento do Firestore dispara as chamadas em sequência com o mesmo corpo e TTL de 300 segundos. A chave da reserva e o registro de despacho evitam repetir uma chamada após um reenvio. Cada resultado registra o indicador de cache, o tempo, os tokens e o identificador do log retornados pelo gateway. Um HIT liquida a parcela por zero. Um MISS com uso conhecido liquida o custo estimado. Uma origem ausente deixa o custo em reconciliação.
+
+### Rota isolada de fallback
+
+A demo usa a rota dinâmica `dynamic/demo_fallback` do gateway. Na versão `8b652044e3ec`, o nó primário lê `metadata.demoPrimary` e sua saída de fallback leva ao Llama 3.3 70B FP8 Fast. As Functions fixam esse metadado em um identificador fictício de Workers AI e limitam a saída a 64 tokens. Somente o destino de recuperação tem capacidade de gerar e entra na reserva. A tela registra a duração total e reconhece a recuperação quando a resposta identifica o modelo desse segundo nó. Em caso de falha da rota, mostra o status HTTP disponível e mantém o uso desconhecido em reconciliação. [Rotas dinâmicas da Cloudflare](https://developers.cloudflare.com/ai-gateway/features/routing/dynamic-routing/).

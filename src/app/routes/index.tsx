@@ -1,4 +1,4 @@
-import { CachePage } from '@/features/demos';
+import { DemoPage } from '@/features/demos';
 import { createBrowserRouter, type RouteObject } from 'react-router';
 import { App } from '@/app/App';
 import { AuthCallbackRoute, AuthGate } from '@/app/components/AuthGate';
@@ -36,7 +36,8 @@ export const routes: RouteObject[] = [
         path: 'auth/callback',
         element: <AuthCallbackRoute />,
       },
-      { path: 'demos/cache', element: <CachePage /> },
+      { path: 'demos/fallback', element: <DemoPage kind="fallback" /> },
+      { path: 'demos/cache', element: <DemoPage /> },
       { path: 'galeria', element: <GalleryPage /> },
       { path: 'galeria/:id', element: <ExecutionPage published /> },
       { path: 'admin/galeria', element: <GalleryPage manage /> },
