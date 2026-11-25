@@ -2,7 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import catalog from './catalog.json' with { type: 'json' };
 import { availableBudget, billingMonth, planBudget, priceAttempt } from './budget.mjs';
-const ids = catalog.models.filter((model) => model.output === 'text').map((m) => m.id);
+const ids = catalog.models
+  .filter((model) => model.output === 'text')
+  .slice(0, 3)
+  .map((m) => m.id);
 const request = { task: 'summary', modelIds: ids };
 test('comparação inclui a geração e o painel mesmo quando usam o mesmo modelo', () => {
   const quote = planBudget(request, ids);

@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/features/auth';
 import { Button } from '@/shared/ui';
@@ -46,6 +47,7 @@ export function AdminQueue() {
   return (
     <section>
       <h3>Administração de acessos</h3>
+      {rows && <Link to="/admin/juizes">Configurar juízes por tarefa</Link>}
       <p role="status">{busy ? 'Consultando solicitações…' : message}</p>
       {rows?.length === 0 && <p>Nenhuma solicitação pendente.</p>}
       <ul>

@@ -17,7 +17,10 @@ test(
     t.after(() => deleteApp(app));
     const db = getFirestore(app, 'cf-ai-gateway');
     const identity = { uid: randomUUID() };
-    const modelIds = catalog.models.filter((m) => m.output === 'text').map((m) => m.id);
+    const modelIds = catalog.models
+      .filter((m) => m.output === 'text')
+      .slice(0, 3)
+      .map((m) => m.id);
     const executionId = randomUUID();
     const request = {
       modelIds,

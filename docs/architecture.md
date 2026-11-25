@@ -221,3 +221,7 @@ O cliente de geração em `functions/gateway.mjs` usa `CLOUDFLARE_ACCOUNT_ID`, `
 Na execução privada, cada tentativa com falha oferece uma nova previsão. `POST /api/executions/{id}/attempts/{index}/quote` consulta o saldo atual e calcula o teto de uma geração com o painel da execução. A confirmação em `/retry` grava a nova reserva, a ligação entre as tentativas e o próximo índice em uma transação. Reenviar a confirmação para a mesma tentativa devolve o índice já criado. A URL da comparação e os resultados dos demais modelos são preservados.
 
 O trabalhador tem limite de 180 segundos. Se uma tentativa despachada continuar em andamento após cinco minutos, a consulta a apresenta como interrompida. A cobrança anterior permanece em reconciliação. O usuário pode confirmar uma nova tentativa com orçamento próprio.
+
+### Configuração dos juízes
+
+A administração em `/admin/juizes` usa `GET` e `POST /api/admin/panels`. A Function verifica o papel administrativo e aceita três IDs distintos e compatíveis por tarefa. O catálogo registra janela de contexto e capacidade de inspecionar imagens verificada no gateway. A previsão identifica os juízes e os critérios. O comparador envia os IDs confirmados e, se eles mudarem, o servidor pede uma nova previsão. Cada execução preserva as versões dos juízes e a lista de critérios, inclusive o critério próprio informado pelo autor.

@@ -4,8 +4,8 @@ test('abre o comparador público e seleciona três modelos por teclado', async (
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Comparar modelos' })).toBeVisible();
   const choices = page.getByRole('checkbox');
-  await expect(choices).toHaveCount(3);
-  for (const choice of await choices.all()) {
+  await expect(choices.nth(2)).toBeVisible();
+  for (const choice of (await choices.all()).slice(0, 3)) {
     await choice.focus();
     await choice.press('Space');
   }

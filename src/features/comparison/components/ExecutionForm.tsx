@@ -17,10 +17,12 @@ export function ExecutionForm({
   task,
   modelIds,
   confirmedMicroUsd,
+  confirmedJudges,
 }: {
   task: string;
   modelIds: string[];
   confirmedMicroUsd: number;
+  confirmedJudges?: string[];
 }) {
   const { ensureSession } = useAuth();
   const navigate = useNavigate();
@@ -37,7 +39,15 @@ export function ExecutionForm({
     try {
       const session = await ensureSession();
       if (!session) throw new Error('Entre com Google para confirmar.');
-      const fields = { task, modelIds, prompt, reference, criterion, confirmedMicroUsd };
+      const fields = {
+        task,
+        modelIds,
+        prompt,
+        reference,
+        criterion,
+        confirmedMicroUsd,
+        confirmedJudges,
+      };
       const signature = JSON.stringify(fields);
       if (last.current.signature !== signature)
         last.current = { signature, id: crypto.randomUUID() };

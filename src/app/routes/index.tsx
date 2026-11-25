@@ -4,6 +4,7 @@ import { AuthCallbackRoute, AuthGate } from '@/app/components/AuthGate';
 import { NotFound, RouteErrorFallback } from '@/app/components/RouteErrorFallback';
 import { GoogleAccountButton } from '@/features/auth';
 import { CatalogPage } from '@/features/catalog';
+import { PanelsPage } from '@/features/judges';
 import { AccessPage } from '@/features/access';
 import { ExecutionPage } from '@/features/comparison';
 import { env } from '@/shared/config/env';
@@ -36,6 +37,7 @@ export const routes: RouteObject[] = [
       },
       { path: 'execucoes/:id', element: <ExecutionPage /> },
       { path: 'comparar', element: <CatalogPage /> },
+      { path: 'admin/juizes', element: <PanelsPage /> },
       { path: 'acesso', element: <AccessPage /> },
       {
         // Qualquer endereco desconhecido cai aqui, dentro do layout.

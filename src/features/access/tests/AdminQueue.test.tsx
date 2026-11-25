@@ -1,3 +1,4 @@
+import { MemoryRouter } from 'react-router';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { AdminQueue } from '../components/AdminQueue';
@@ -16,7 +17,11 @@ test('administrador decide um pedido e vê a fila atualizada', async () => {
     .mockResolvedValueOnce(Response.json({ status: 'approved' }))
     .mockResolvedValueOnce(Response.json({ requests: [] }));
   vi.stubGlobal('fetch', http);
-  render(<AdminQueue />);
+  render(
+    <MemoryRouter>
+      <AdminQueue />
+    </MemoryRouter>,
+  );
   fireEvent.click(await screen.findByRole('button', { name: 'Aprovar p@example.test' }));
   expect(await screen.findByText('Nenhuma solicitação pendente.')).toBeInTheDocument();
   expect(http.mock.calls[1]?.[1]).toMatchObject({

@@ -1,6 +1,8 @@
 import { authorizationHeader, type Session } from '@/features/auth';
 
 interface Quote {
+  judges?: string[];
+  criteria?: { id: string; label: string }[];
   availableMicroUsd: number;
   ceilingMicroUsd: number | null;
   reason: string | null;

@@ -5,6 +5,7 @@ import catalog from './catalog.json' with { type: 'json' };
 import { BudgetError, planBudget, taskOutputs } from './budget.mjs';
 import { isAdministrator } from './access.mjs';
 import { reserveBudget, claimAttempt, settleAttempt } from './reservations.mjs';
+import { criteriaFor } from './panels.mjs';
 import { interrupted } from './retries.mjs';
 import { generate } from './gateway.mjs';
 
@@ -48,7 +49,23 @@ export async function createExecution(db, identity, body, now = new Date()) {
     throw new BudgetError(
       'Pedido inválido. Confira a tarefa, os modelos, os limites de texto e o teto confirmado.',
     );
-  const request = { task, prompt, modelIds, reference, criterion, confirmedMicroUsd };
+  const confirmedJudges = body.confirmedJudges;
+  if (
+    confirmedJudges !== undefined &&
+    (!Array.isArray(confirmedJudges) ||
+      confirmedJudges.length !== 3 ||
+      !confirmedJudges.every((id) => typeof id === 'string'))
+  )
+    throw new BudgetError('Painel confirmado inválido.');
+  const request = {
+    task,
+    prompt,
+    modelIds,
+    reference,
+    criterion,
+    confirmedMicroUsd,
+    ...(confirmedJudges ? { confirmedJudges } : {}),
+  };
   const requestHash = createHash('sha256').update(JSON.stringify(request)).digest('hex');
   const ref = refFor(db, identity.uid, executionId);
   const existing = await ref.get();
@@ -61,6 +78,8 @@ export async function createExecution(db, identity, body, now = new Date()) {
     return executionId;
   }
   const panel = await db.collection('judgePanels').doc(task).get();
+  if (confirmedJudges && JSON.stringify(confirmedJudges) !== JSON.stringify(panel.get('modelIds')))
+    throw new BudgetError('O painel mudou. Consulte novamente o orçamento.');
   const plan = planBudget({ task, modelIds }, panel.get('modelIds'));
   if (plan.ceilingMicroUsd > confirmedMicroUsd)
     throw new BudgetError('O teto mudou. Consulte novamente o orçamento.');
@@ -78,6 +97,7 @@ export async function createExecution(db, identity, body, now = new Date()) {
           createdAt: now,
           expiresAt: new Date(+now + 30 * 86400000),
           judges: panel.get('modelIds'),
+          criteria: criteriaFor(task, criterion),
           ceilingMicroUsd: plan.ceilingMicroUsd,
         });
         plan.attempts.forEach((a, i) => {

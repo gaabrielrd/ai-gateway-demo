@@ -9,6 +9,7 @@ import { quoteBudget } from './quote.mjs';
 
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
 import { getFirestore } from 'firebase-admin/firestore';
+import { panelsApi } from './panels.mjs';
 import { retryApi } from './retries.mjs';
 import { executionApi, executionPath, processAttempt } from './executions.mjs';
 
@@ -38,13 +39,16 @@ export const aiGatewayApi = onRequest(async (request, response) => {
   const detailRoute = /^\/api\/executions\/[A-Za-z0-9_-]{1,128}(?:\/media\/\d+)?$/.test(
     request.path,
   );
-  const accessRoute = ['/api/access', '/api/admin/access'].includes(request.path);
+  const accessRoute = ['/api/access', '/api/admin/access', '/api/admin/panels'].includes(
+    request.path,
+  );
   const quoteRoute = request.path === '/api/budget/quote';
   if (
     !retryRoute &&
     !createRoute &&
     !detailRoute &&
     !quoteRoute &&
+    !accessRoute &&
     !['/api/health', '/api/session', '/api/access', '/api/admin/access'].includes(request.path)
   ) {
     response.status(404).json({ error: 'Rota desconhecida' });
@@ -88,9 +92,11 @@ export const aiGatewayApi = onRequest(async (request, response) => {
       try {
         const handler = quoteRoute
           ? quoteBudget
-          : request.path === '/api/access'
-            ? ownAccess
-            : adminAccess;
+          : request.path === '/api/admin/panels'
+            ? panelsApi
+            : request.path === '/api/access'
+              ? ownAccess
+              : adminAccess;
         await handler(request, response, identity);
       } catch {
         response.status(503).json({

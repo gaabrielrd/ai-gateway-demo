@@ -4,11 +4,13 @@ export const MONTHLY_MICRO_USD = 5_000_000;
 export const taskOutputs = Object.freeze({ summary: 'text', extraction: 'text', image: 'image' });
 
 // A janela publicada limita toda a entrada, incluindo a serialização de mensagens e o painel.
-const contextTokens = new Map([
-  ['@cf/meta/llama-3.3-70b-instruct-fp8-fast', 24000],
-  ['@cf/mistralai/mistral-small-3.1-24b-instruct', 128000],
-  ['@cf/qwen/qwen2.5-coder-32b-instruct', 32768],
-]);
+export function compatibleJudge(model, task) {
+  return (
+    model.output === 'text' &&
+    Number.isSafeInteger(model.contextTokens) &&
+    (task !== 'image' || model.acceptsImages === true)
+  );
+}
 
 export class BudgetError extends Error {}
 
@@ -91,16 +93,13 @@ export function planBudget(
     throw new BudgetError('O administrador precisa configurar três juízes para a tarefa.');
   function attempt(id, role) {
     const model = models.find((m) => m.id === id);
-    if (
-      !model ||
-      (role === 'judge' && (model.output !== 'text' || (task === 'image' && !model.acceptsImages)))
-    )
+    if (!model || (role === 'judge' && !compatibleJudge(model, task)))
       throw new BudgetError('Juiz incompatível com a tarefa.');
     const limits =
       model.output === 'image'
         ? (model.imageLimits ?? {})
         : {
-            inputTokens: contextTokens.get(id),
+            inputTokens: model.contextTokens,
             outputTokens: role === 'judge' ? 1024 : 512,
           };
     return priceAttempt(model, role, limits);

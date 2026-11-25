@@ -42,11 +42,14 @@ function QuoteForm({ task, modelIds }: { task: string; modelIds: string[] }) {
           {quote.ceilingMicroUsd !== null && (
             <p>Custo máximo com julgamento: {format.format(quote.ceilingMicroUsd / 1e6)}</p>
           )}
+          {quote.judges && <p>Juízes: {quote.judges.join(' · ')}</p>}
+          {quote.criteria && <p>Critérios: {quote.criteria.map((c) => c.label).join(' · ')}</p>}
           {quote.reason && <p>{quote.reason}</p>}
           {!quote.reason && quote.ceilingMicroUsd !== null && (
             <ExecutionForm
               task={task}
               modelIds={modelIds}
+              confirmedJudges={quote.judges}
               confirmedMicroUsd={quote.ceilingMicroUsd}
             />
           )}

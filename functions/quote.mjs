@@ -1,4 +1,5 @@
 import { getFirestore } from 'firebase-admin/firestore';
+import { criteriaFor } from './panels.mjs';
 import { monthlyBudgetRef } from './reservations.mjs';
 import { isAdministrator } from './access.mjs';
 import { availableBudget, billingMonth, BudgetError, planBudget, taskOutputs } from './budget.mjs';
@@ -27,6 +28,8 @@ export async function quoteBudget(request, response, identity) {
       month,
       availableMicroUsd,
       ...plan,
+      judges: panel.get('modelIds'),
+      criteria: criteriaFor(task),
       reason:
         plan.ceilingMicroUsd > availableMicroUsd ? 'Saldo insuficiente para esta execução.' : null,
     });
