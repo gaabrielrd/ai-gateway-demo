@@ -1,0 +1,47 @@
+{
+  "verifiedOn": "2026-11-25",
+  "currency": "USD",
+  "priceSource": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+  "models": [
+    {
+      "id": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "price": {
+        "perMillionInputTokens": 0.293,
+        "perMillionOutputTokens": 2.253
+      }
+    },
+    {
+      "id": "@cf/mistralai/mistral-small-3.1-24b-instruct",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "price": {
+        "perMillionInputTokens": 0.351,
+        "perMillionOutputTokens": 0.555
+      }
+    },
+    {
+      "id": "@cf/qwen/qwen2.5-coder-32b-instruct",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "price": {
+        "perMillionInputTokens": 0.66,
+        "perMillionOutputTokens": 1.0
+      }
+    },
+    {
+      "id": "@cf/black-forest-labs/flux-1-schnell",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "image",
+      "price": {
+        "per512x512Tile": 5.28e-5,
+        "perStep": 0.0001056
+      }
+    }
+  ]
+}
