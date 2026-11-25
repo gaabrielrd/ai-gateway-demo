@@ -1,3 +1,5 @@
+import { PublishBenchmark } from './GalleryPage';
+import { readBenchmark } from '../services/gallery';
 import { Fragment, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { useAuth } from '@/features/auth';
@@ -65,7 +67,7 @@ function PrivateImage({ id, attempt }: { id: string; attempt: Attempt }) {
   );
 }
 
-function Results({ id }: { id: string }) {
+function Results({ id, published = false }: { id: string; published?: boolean }) {
   const { ensureSession } = useAuth();
   const [record, setRecord] = useState<Execution>(),
     [error, setError] = useState(''),
@@ -74,9 +76,13 @@ function Results({ id }: { id: string }) {
     const ctl = new AbortController();
     let timer: ReturnType<typeof setTimeout>;
     async function load() {
-      const session = await ensureSession();
-      if (!session) throw new Error('Entre com Google para consultar a execução.');
-      const result = await readExecution(session, id, ctl.signal);
+      let result;
+      if (published) result = await readBenchmark(id, ctl.signal);
+      else {
+        const session = await ensureSession();
+        if (!session) throw new Error('Entre com Google para consultar a execução.');
+        result = await readExecution(session, id, ctl.signal);
+      }
       if (ctl.signal.aborted) return;
       setRecord(result);
       if (
@@ -95,7 +101,7 @@ function Results({ id }: { id: string }) {
       ctl.abort();
       clearTimeout(timer);
     };
-  }, [ensureSession, id, revision]);
+  }, [ensureSession, id, published, revision]);
   return (
     <>
       {error && (
@@ -114,9 +120,12 @@ function Results({ id }: { id: string }) {
       {!record && !error && <p role="status">Carregando execução…</p>}
       {record && (
         <>
+          {record.title && <h2>{record.title}</h2>}
           <details>
             <summary>Prompt enviado</summary>
             <p>{record.prompt}</p>
+            {record.reference && <p>Referência: {record.reference}</p>}
+            {record.criterion && <p>Critério adicional: {record.criterion}</p>}
           </details>
           <section className={styles.grid} aria-label="Resultados por modelo">
             {record.attempts
@@ -148,7 +157,7 @@ function Results({ id }: { id: string }) {
                     {a.retryOf !== undefined && <p>Repetição da tentativa {a.retryOf + 1}</p>}
                     <p role="status">{labels[a.status]}</p>
                     {a.error && <p>{a.error}</p>}
-                    {a.status === 'failed' && (
+                    {!published && a.status === 'failed' && (
                       <RetryAttempt
                         id={id}
                         index={a.index}
@@ -158,7 +167,18 @@ function Results({ id }: { id: string }) {
                     {a.output?.type === 'text' && (
                       <GenerationOutput model={a.modelId} content={a.output} />
                     )}
-                    {a.output?.type === 'image' && <PrivateImage id={id} attempt={a} />}
+                    {a.output?.type === 'image' &&
+                      (published ? (
+                        <GenerationOutput
+                          model={a.modelId}
+                          content={{
+                            type: 'image',
+                            url: '/api/gallery/' + id + '/media/' + a.index,
+                          }}
+                        />
+                      ) : (
+                        <PrivateImage id={id} attempt={a} />
+                      ))}
                     {['completed', 'failed'].includes(a.status) && (
                       <dl className={styles.metrics}>
                         {metrics.map(([label, value]) => (
@@ -174,18 +194,30 @@ function Results({ id }: { id: string }) {
               })}
           </section>
           <EvaluationResults record={record} />
+          {!published &&
+            record.canPublish &&
+            record.evaluation?.status === 'finished' &&
+            typeof record.evaluation.revision === 'number' && (
+              <PublishBenchmark
+                key={record.evaluation.revision}
+                id={id}
+                revision={record.evaluation.revision}
+              />
+            )}
         </>
       )}
     </>
   );
 }
-export function ExecutionPage() {
+export function ExecutionPage({ published = false }: { published?: boolean }) {
   const { id = '' } = useParams();
   const { state } = useAuth();
   return (
     <section className={styles.page}>
-      <PageHeader title="Resultados da comparação" />
-      {state.status === 'autenticada' ? (
+      <PageHeader title={published ? 'Benchmark publicado' : 'Resultados da comparação'} />
+      {published ? (
+        <Results key={id} id={id} published />
+      ) : state.status === 'autenticada' ? (
         <Results key={state.session.subject + ':' + id} id={id} />
       ) : (
         <p>Entre com Google para ver esta execução privada.</p>

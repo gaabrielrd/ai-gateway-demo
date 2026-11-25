@@ -239,3 +239,9 @@ A leitura privada calcula a classificação para os índices da rodada mais rece
 ### Histórico privado
 
 Em `/historico`, a conta autenticada lista e exclui execuções pelo próprio UID. O servidor aplica o prazo de 30 dias na listagem, no detalhe e na leitura de mídia. Excluir antecipa a expiração imediatamente. A função agendada `purgePrivateHistory` consulta o índice de grupo de coleções a cada cinco minutos e aguarda cinco minutos desde a expiração para que trabalhadores em andamento possam liquidar seus custos. Ela remove o prefixo privado no Storage e as subcoleções antes do documento principal. Uma falha deixa o documento elegível para nova tentativa. O gasto e as reservas financeiras ficam em coleções independentes. A limpeza libera apenas a parte reservada para chamadas que nunca foram despachadas.
+
+### Publicação e retirada de benchmarks
+
+O administrador revisa a rodada finalizada em sua execução e confirma a autoria do material. A Function verifica o UID, a validade da origem e a revisão. Ela copia as imagens e grava um instantâneo JSON em um prefixo independente do Storage. Uma transação no Firestore torna a cópia visível depois de conferir a origem novamente. Cada tentativa usa um prefixo próprio e descarta a cópia incompleta se houver falha. O identificador da publicação deriva do autor, da execução e da revisão.
+
+A galeria lê o catálogo de publicações e serve o instantâneo e as imagens por rotas públicas com verificação de visibilidade. A retirada desativa a publicação antes de limpar seu prefixo. A limpeza do histórico privado atua somente nos caminhos do autor.

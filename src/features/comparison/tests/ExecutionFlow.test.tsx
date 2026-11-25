@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { ExecutionForm } from '../components/ExecutionForm';
+import { PublishBenchmark, GalleryPage } from '../components/GalleryPage';
 import { HistoryPage } from '../components/HistoryPage';
 import { ExecutionPage } from '../components/ExecutionPage';
 
@@ -226,4 +227,53 @@ it('abre a comparação pelo histórico e só exclui após confirmação', async
     '/api/executions/minha',
     expect.objectContaining({ method: 'DELETE' }),
   );
+});
+
+it('exige revisão e autoria antes de publicar o benchmark', async () => {
+  const fetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ id: 'publicada' }));
+  render(
+    <MemoryRouter>
+      <PublishBenchmark id="privada" revision={2} />
+    </MemoryRouter>,
+  );
+  const publish = screen.getByRole('button', { name: 'Publicar na galeria' });
+  const user = userEvent.setup();
+  await user.type(screen.getByLabelText('Título do benchmark'), 'Fatura fictícia');
+  expect(publish).toBeDisabled();
+  await user.click(screen.getByRole('checkbox'));
+  await user.click(publish);
+  expect(await screen.findByRole('link', { name: 'Ver benchmark publicado' })).toHaveAttribute(
+    'href',
+    '/galeria/publicada',
+  );
+  expect(fetch).toHaveBeenCalledWith(
+    '/api/admin/gallery',
+    expect.objectContaining({
+      method: 'POST',
+      body: JSON.stringify({
+        executionId: 'privada',
+        revision: 2,
+        title: 'Fatura fictícia',
+        ownMaterial: true,
+      }),
+    }),
+  );
+});
+
+it('carrega a galeria pública sem pedir uma sessão', async () => {
+  auth.ensureSession.mockClear();
+  vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+    Response.json([{ id: 'resumo', title: 'Resumo técnico' }]),
+  );
+  render(
+    <MemoryRouter>
+      <GalleryPage />
+    </MemoryRouter>,
+  );
+  expect(await screen.findByRole('link', { name: 'Resumo técnico' })).toHaveAttribute(
+    'href',
+    '/galeria/resumo',
+  );
+  expect(auth.ensureSession).not.toHaveBeenCalled();
+  expect(screen.queryByRole('button', { name: 'Retirar' })).not.toBeInTheDocument();
 });

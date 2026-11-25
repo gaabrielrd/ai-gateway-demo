@@ -231,6 +231,14 @@ export async function executionApi(request, response, identity) {
       .download();
     return response.type(output.contentType).send(bytes);
   }
+  return response.json({
+    ...(await executionSnapshot(execution)),
+    canPublish: isAdministrator(identity),
+  });
+}
+
+export async function executionSnapshot(execution) {
+  const ref = execution.ref;
   const [attempts, rounds] = await Promise.all([
     ref.collection('attempts').orderBy('index').get(),
     ref.collection('rounds').orderBy('revision', 'desc').limit(1).get(),
@@ -253,11 +261,11 @@ export async function executionApi(request, response, identity) {
       reviews: evaluation.reviews,
       finished: evaluation.status === 'finished',
     });
-  return response.json({
+  return {
     ...record,
     criteria,
     evaluation,
-    executionId: id,
+    executionId: ref.id,
     createdAt: record.createdAt.toDate().toISOString(),
     expiresAt: record.expiresAt.toDate().toISOString(),
     attempts: attempts.docs.map((d) => {
@@ -266,5 +274,5 @@ export async function executionApi(request, response, identity) {
         ? { ...a, status: 'failed', error: 'Execução interrompida. Custo em reconciliação.' }
         : a;
     }),
-  });
+  };
 }

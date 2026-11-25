@@ -28,6 +28,7 @@ export interface Attempt {
   output?: { type: 'text'; text: string } | { type: 'image'; contentType: string };
 }
 interface Round {
+  revision?: number;
   status: string;
   checks?: { index: number; fields: { field: string; correct: boolean }[] | null }[];
   reviews: {
@@ -58,6 +59,10 @@ interface Round {
   };
 }
 export interface Execution {
+  reference?: string;
+  criterion?: string;
+  title?: string;
+  canPublish?: boolean;
   criteria?: { id: string; label: string }[];
   judges?: string[];
   evaluation?: Round | null;

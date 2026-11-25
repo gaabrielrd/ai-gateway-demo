@@ -35,6 +35,7 @@ export function App({ account }: { account?: ReactNode }) {
             Início
           </NavLink>
           <NavLink to="/comparar">Comparar modelos</NavLink>
+          <NavLink to="/galeria">Galeria</NavLink>
           <NavLink to="/historico">Meu histórico</NavLink>
           <NavLink to="/acesso">Meu acesso</NavLink>
           {account}

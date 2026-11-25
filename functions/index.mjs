@@ -1,3 +1,4 @@
+import { galleryApi } from './gallery.mjs';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { purgeExpired } from './history.mjs';
 import { onRequest } from 'firebase-functions/v2/https';
@@ -58,6 +59,8 @@ const auth = getAuth(initializeApp());
 
 export const aiGatewayApi = onRequest(async (request, response) => {
   response.set('Cache-Control', 'no-store');
+  const publicGallery = /^\/api\/gallery(?:\/[a-f0-9]{64}(?:\/media\/\d+)?)?$/.test(request.path);
+  const adminGallery = /^\/api\/admin\/gallery(?:\/[a-f0-9]{64})?$/.test(request.path);
   const retryRoute = /^\/api\/executions\/[A-Za-z0-9_-]{1,128}\/attempts\/\d+\/(quote|retry)$/.test(
     request.path,
   );
@@ -70,6 +73,8 @@ export const aiGatewayApi = onRequest(async (request, response) => {
   );
   const quoteRoute = request.path === '/api/budget/quote';
   if (
+    !publicGallery &&
+    !adminGallery &&
     !retryRoute &&
     !createRoute &&
     !detailRoute &&
@@ -84,10 +89,12 @@ export const aiGatewayApi = onRequest(async (request, response) => {
   if (createRoute || accessRoute) methods = ['GET', 'POST'];
   if (quoteRoute || retryRoute) methods = ['POST'];
   if (detailRoute && !request.path.includes('/media/')) methods = ['GET', 'DELETE'];
+  if (adminGallery) methods = request.path === '/api/admin/gallery' ? ['GET', 'POST'] : ['DELETE'];
   if (!methods.includes(request.method)) {
     response.set('Allow', methods.join(', ')).status(405).end();
     return;
   }
+  if (publicGallery) return galleryApi(getFirestore('cf-ai-gateway'), request, response);
   if (request.path !== '/api/health') {
     const bearer = /^Bearer ([^ ]+)$/.exec(request.get('Authorization') ?? '');
     let identity;
@@ -99,6 +106,7 @@ export const aiGatewayApi = onRequest(async (request, response) => {
       response.status(401).json({ error: 'Entre com Google para continuar' });
       return;
     }
+    if (adminGallery) return galleryApi(getFirestore('cf-ai-gateway'), request, response, identity);
     if (createRoute || detailRoute || retryRoute) {
       try {
         const handler = retryRoute ? retryApi : executionApi;
