@@ -41,9 +41,7 @@ function copyFixture() {
     join(root, '.template-state.json'),
     `${JSON.stringify(
       {
-        technicalName: 'web-project-template',
-        displayName: 'Web Project Template',
-        templateVersion: readTemplateVersion(),
+        ...readProjectState(),
         profile: 'padrao',
         capabilities: { styleguide: true, auth: true, e2e: true, visualRegression: false },
       },
@@ -71,9 +69,8 @@ function semCapacidade(nome) {
   return state.capabilities?.[nome] === false ? `projeto sem a capacidade "${nome}"` : false;
 }
 
-function readTemplateVersion() {
-  return JSON.parse(readFileSync(join(projectRoot, '.template-state.json'), 'utf8'))
-    .templateVersion;
+function readProjectState() {
+  return JSON.parse(readFileSync(join(projectRoot, '.template-state.json'), 'utf8'));
 }
 
 function runSetup(root, ...args) {

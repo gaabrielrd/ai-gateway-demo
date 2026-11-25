@@ -1,0 +1,96 @@
+/* Base visual do projeto.
+ *
+ * Mesmo contrato de nomes que o template usa nos componentes, com valores
+ * neutros. Trocar a identidade visual é trocar estes valores — não os
+ * componentes. Cor literal em CSS de componente continua sendo erro.
+ */
+:root {
+  /* Cores */
+  --ink: #1a1c1e;
+  --ink-soft: #5a6169;
+  --paper: #ffffff;
+  --paper-2: #f5f6f8;
+  --line: #dfe3e8;
+  --accent: #1f6feb;
+  --on-accent: #ffffff;
+  --danger: #b3261e;
+  --danger-line: #f0c2bf;
+  --danger-bg: #fdf3f2;
+  --success: #1a7f4b;
+  --field-bg: #ffffff;
+  --field-border: #c4cad1;
+  --shadow: 0 1px 2px rgb(26 28 30 / 8%), 0 4px 12px rgb(26 28 30 / 6%);
+  --backdrop: rgb(26 28 30 / 45%);
+
+  /* Tipografia */
+  --font-display: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', monospace;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+
+  /* Espaçamento */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Formas e movimento */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --border-width: 1px;
+  --transition-base: 150ms ease;
+  --focus-ring: 2px solid var(--accent);
+  --icon-size: 1.25rem;
+  --icon-size-sm: 1rem;
+  --layout-width: 72rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+}
+
+:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex: none;
+}
+
+.icon-sm {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}

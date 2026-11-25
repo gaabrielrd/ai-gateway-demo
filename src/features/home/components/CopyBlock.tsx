@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@vitru/styleguide';
+import { Button } from '@/shared/ui';
 import { Copy } from 'lucide-react';
 import styles from './HomePage.module.css';
 

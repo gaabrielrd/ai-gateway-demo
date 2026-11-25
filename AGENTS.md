@@ -63,23 +63,18 @@ entendimento do projeto, não para toda edição.
 
 ## Estilo e interface
 
-Aplicável quando a capacidade `styleguide` está ligada.
-
-- Siga `docs/styleguide.md`.
-- Cor, espaçamento, tipografia, raio e transição vêm dos tokens de
-  `@vitru/styleguide/tokens.css`. Não escreva cor literal em CSS de componente.
+- A base visual é local: tokens em `src/styles/tokens.css` e primitivos em
+  `src/shared/ui`. Este projeto não usa o kit `@vitru/styleguide`.
+- Cor, espaçamento, tipografia, raio e transição vêm dos tokens. Não escreva
+  cor literal em CSS de componente.
 - Ícones somente de `lucide-react`, com a classe `icon`; acrescente
   `icon-sm` para o tamanho menor.
-- Fontes oficiais: TheMix nos títulos (`--font-display`, só peso 700) e
-  Archivo no texto (`--font-sans`). Não adicione fonte nem use CDN.
 - Estilo de componente fica no CSS Module do próprio componente.
-- Monte as telas com o kit de `@vitru/styleguide` (`PageHeader`, `Card`,
-  `Input`, `Table`, `Alert`, `Dialog`, `LoadingState`, `EmptyState`,
-  `ErrorState`...). Só crie componente novo se nenhum deles resolver.
-- Campo de formulário sempre pelo `Input`/`Textarea`/`Select`.
+- Reutilize os primitivos de `src/shared/ui` antes de criar componente novo;
+  quando criar, deixe-o lá se mais de uma feature for usá-lo.
+- Campo de formulário tem `label` associado e mensagem de erro programática.
 - Toda tela que busca dados cobre carregando, vazio, erro e sucesso.
 - Para mudar a identidade visual, altere os tokens, não os componentes.
-- Mantenha a rota `/styleguide` funcionando e atualizada.
 
 ## Autenticação
 

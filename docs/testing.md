@@ -49,33 +49,14 @@ O E2E escolhe uma porta efêmera, gera o bundle e serve a aplicação localmente
 
 ## Identidade visual
 
-`e2e/styleguide.spec.ts` protege o styleguide em duas camadas:
+Este projeto usa base visual local, sem pacote compartilhado e sem página de
+referência, então não há contrato de estilo nem regressão visual a proteger. O
+que cobre a aparência é o teste de comportamento dos componentes: nome
+acessível, estado visível e os quatro estados de tela (carregando, vazio, erro
+e sucesso).
 
-1. **Contrato de estilo**: compara os valores realmente aplicados (`--accent`,
-   `--danger`, cor de fundo do botão primário, cor da mensagem de erro). É
-   determinístico em qualquer sistema operacional e a falha diz exatamente qual
-   valor mudou. Roda sempre, inclusive no CI.
-2. **Regressão visual**: compara a página `/styleguide` inteira, pixel a pixel,
-   com a imagem em `e2e/__screenshots__/<plataforma>/`. Pega mudanças de
-   layout e espaçamento que o contrato não vê.
-
-A fonte do sistema muda o resultado, então cada plataforma tem sua própria
-imagem. Quando não existe imagem para a plataforma atual (por exemplo, no Linux
-do CI antes de alguém gerar a primeira), o teste é **pulado** com a instrução,
-em vez de falhar.
-
-Depois de uma mudança visual **intencional**, regere e revise a imagem no diff
-do pull request:
-
-```bash
-npm run test:e2e:update
-```
-
-Se a imagem mudou sem que ninguém tenha mexido no visual, é regressão: veja o
-comparativo em `test-results/` antes de aceitar.
-Ele não depende de rede externa nem de dados preexistentes. O CI instala também
-as dependências de sistema do Chromium e publica trace e screenshot apenas em
-caso de falha.
+Se o projeto adotar um kit compartilhado, ligue a capacidade `styleguide` em
+`.template-state.json` e traga de volta o gate correspondente.
 
 ## Cobertura
 

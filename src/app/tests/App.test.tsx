@@ -31,9 +31,9 @@ describe('composicao da aplicacao', () => {
     expect(
       await screen.findByRole('heading', { name: 'Seu projeto começa aqui' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Styleguide' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Início' })).toHaveAttribute(
       'href',
-      '/template-ia-web/styleguide',
+      '/template-ia-web/',
     );
   });
 

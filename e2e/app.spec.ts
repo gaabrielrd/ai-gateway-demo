@@ -41,10 +41,4 @@ test('orienta o início e mantém a navegação do guia no celular', async ({ pa
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
-  await page.getByRole('link', { name: 'Abrir o styleguide' }).click();
-  await expect(page).toHaveURL(/\/styleguide$/);
-  await expect(page.getByRole('link', { name: 'Styleguide', exact: true })).toHaveAttribute(
-    'aria-current',
-    'page',
-  );
 });

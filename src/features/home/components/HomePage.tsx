@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
-import { Link } from 'react-router';
-import { PageHeader, SectionHeading } from '@vitru/styleguide';
-import { ArrowRight, BookOpen, NotebookPen, Palette, Terminal } from 'lucide-react';
+import { PageHeader, SectionHeading } from '@/shared/ui';
+import { ArrowRight, BookOpen, NotebookPen, Terminal } from 'lucide-react';
 import { CopyBlock } from './CopyBlock';
 import styles from './HomePage.module.css';
 
@@ -72,7 +71,7 @@ export function HomePage({ example }: { example?: ReactNode }) {
                 </span>
               </summary>
               <div className={styles.stepContent}>
-                <p>Veja como os componentes se comportam antes de construir sua primeira tela.</p>
+                <p>Conheça a base visual antes de construir sua primeira tela.</p>
                 <div className={styles.links}>
                   {example && (
                     <a href="#exemplo">
@@ -80,14 +79,10 @@ export function HomePage({ example }: { example?: ReactNode }) {
                       Experimentar as notas
                     </a>
                   )}
-                  <Link to="/styleguide">
-                    <Palette className="icon icon-sm" aria-hidden="true" />
-                    Abrir o styleguide
-                  </Link>
                 </div>
                 <p className={styles.hint}>
-                  Em <code>/styleguide</code> você encontra os componentes, as cores e a tipografia
-                  que deve usar no projeto.
+                  Os tokens ficam em <code>src/styles/tokens.css</code> e os primitivos em{' '}
+                  <code>src/shared/ui</code>.
                 </p>
               </div>
             </details>

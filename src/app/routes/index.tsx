@@ -1,5 +1,4 @@
 import { createBrowserRouter, type RouteObject } from 'react-router';
-import { StyleguidePage } from '@vitru/styleguide/showcase';
 import { App } from '@/app/App';
 import { AuthCallbackRoute, AuthGate } from '@/app/components/AuthGate';
 import { NotFound, RouteErrorFallback } from '@/app/components/RouteErrorFallback';
@@ -27,11 +26,6 @@ export const routes: RouteObject[] = [
       {
         index: true,
         element: <HomePage example={<NoteList />} />,
-      },
-      {
-        // Referência viva fornecida pelo pacote compartilhado.
-        path: 'styleguide',
-        element: <StyleguidePage />,
       },
       {
         // Retorno do provedor de identidade (`redirect_uri`).

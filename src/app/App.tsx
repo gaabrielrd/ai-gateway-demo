@@ -2,18 +2,15 @@
 //
 // Erros de renderizacao deste layout ou das rotas filhas sao tratados pelo
 // `errorElement` registrado em `app/routes`, que cobre inclusive falhas no
-// proprio header. Para isolar um widget arriscado dentro de uma pagina, use
-// o `ErrorBoundary` de `@vitru/styleguide`.
-import { Home, Palette } from 'lucide-react';
-import { NavLink, Outlet, useMatch } from 'react-router';
+// proprio header.
+import { Home } from 'lucide-react';
+import { NavLink, Outlet } from 'react-router';
 import { env } from '@/shared/config/env';
 import styles from './App.module.css';
 
-const PROJECT_NAME = 'Web Project Template';
+const PROJECT_NAME = 'AI Gateway Demo';
 
 export function App() {
-  const isStyleguide = useMatch('/styleguide');
-
   return (
     <div className={styles.app}>
       <a className={styles.skipLink} href="#conteudo">
@@ -36,18 +33,10 @@ export function App() {
             <Home className="icon icon-sm" aria-hidden="true" />
             Início
           </NavLink>
-          <NavLink to="/styleguide">
-            <Palette className="icon icon-sm" aria-hidden="true" />
-            Styleguide
-          </NavLink>
         </nav>
       </header>
 
-      <main
-        id="conteudo"
-        className={`${styles.content} ${isStyleguide ? styles.fullWidth : ''}`}
-        tabIndex={-1}
-      >
+      <main id="conteudo" className={styles.content} tabIndex={-1}>
         <Outlet />
       </main>
     </div>

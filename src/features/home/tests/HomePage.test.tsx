@@ -29,13 +29,9 @@ describe('onboarding do template', () => {
     expect(screen.getByText(/Quero criar \[descreva a ideia/)).toBeInTheDocument();
   });
 
-  it('mantém a orientação e o styleguide quando a demonstração foi removida', async () => {
+  it('mantém a orientação quando a demonstração foi removida', async () => {
     const { user } = renderWithProviders(<HomePage />);
     await user.click(screen.getByText('Explore o que já vem pronto'));
-    expect(screen.getByRole('link', { name: 'Abrir o styleguide' })).toHaveAttribute(
-      'href',
-      '/styleguide',
-    );
     expect(screen.queryByRole('link', { name: 'Experimentar as notas' })).not.toBeInTheDocument();
     expect(screen.queryByRole('region', { name: 'Exemplo de notas' })).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Copiar Comando de validação' }));

@@ -106,19 +106,6 @@ export function removeAuth(root, log = () => {}) {
   );
 
   edit(root, 'AGENTS.md', (source) => removeSection(source, 'Autenticação'));
-  edit(root, 'README.md', (source, file) =>
-    replaceExact(
-      source,
-      `Autenticação **é** suportada: o template traz o fluxo Authorization Code com
-PKCE contra um provedor de identidade que já existe (Entra ID, Auth0, Keycloak,
-Google), com token apenas em memória. Veja a
-[ADR 0015](docs/decisions/0015-authentication.md). O que exige servidor é
-manter a sua própria base de usuários e senhas.`,
-      `Este projeto foi criado sem a capacidade \`auth\`. Para autenticar usuários,
-recupere \`src/features/auth\` do histórico do template ou implemente o fluxo
-Authorization Code com PKCE — nunca guardando segredo no front-end.`,
-      file,
-    ),
-  );
+  edit(root, 'README.md', (source) => removeSection(source, 'Autenticação'));
   log('Regras e documentação realinhadas: AGENTS.md, README.md');
 }

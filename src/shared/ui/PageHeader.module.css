@@ -1,0 +1,40 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+}
+
+.title,
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-family: var(--font-display);
+  line-height: var(--leading-tight);
+}
+
+.title {
+  font-size: var(--text-xl);
+}
+
+.section {
+  margin-bottom: var(--space-4);
+}
+
+.sectionTitle {
+  font-size: var(--text-lg);
+}
+
+.description {
+  margin: var(--space-2) 0 0;
+  color: var(--ink-soft);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+}

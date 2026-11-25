@@ -1,6 +1,6 @@
 # Arquitetura
 
-Este documento descreve como o código do `web-project-template` é organizado e as regras que mantêm o projeto simples e sustentável.
+Este documento descreve como o código do `AI Gateway Demo` é organizado e as regras que mantêm o projeto simples e sustentável.
 
 ## Princípios
 
@@ -11,9 +11,42 @@ Este documento descreve como o código do `web-project-template` é organizado e
 
 ## Documentos de produto e arquitetura
 
-Ao iniciar um aplicativo a partir do template, use a skill `plan-app` para conduzir a descoberta antes de implementar. Ela cria `docs/prd.md` com o problema, os usuários, o escopo, o não escopo, os requisitos e os critérios de aceite aprovados.
+O [PRD da primeira versão](prd.md) registra o escopo aprovado e seus critérios de aceite. As decisões abaixo orientam a implementação. As seções sobre a estrutura atual descrevem a base existente do repositório.
 
-Este arquivo continua sendo a fonte das decisões técnicas. A `plan-app` deve preservar as regras do template e acrescentar uma seção `Decisões do produto` com o limite do sistema, o mapa de features, o fluxo de dados, a persistência, as integrações e os trade-offs definidos para o aplicativo. O PRD explica **o que e por que** construir; a arquitetura explica **como o sistema será organizado**.
+## Decisões do produto
+
+### Fronteiras e distribuição
+
+O Firebase Hosting servirá o bundle estático produzido pelo Vite. O navegador apresentará o comparador em português do Brasil, com resultados lado a lado no desktop e empilhados no celular. A navegação, a seleção dos modelos e a leitura dos pareceres devem funcionar por teclado. A publicação por GitHub Pages descrita no fim deste documento pertence à base do template. O destino do produto é o Firebase Hosting.
+
+As Cloud Functions formarão a fronteira de servidor aprovada para o produto. Receberão a identidade de login com Google, verificarão a sessão e consultarão a autorização do usuário antes de aceitar uma execução. A decisão de acesso, as reservas, o histórico e as publicações terão persistência controlada pelo servidor. As credenciais do gateway e dos provedores permanecem fora do bundle. O navegador consultará os serviços da aplicação. As funções encaminharão gerações e julgamentos pelo Cloudflare AI Gateway.
+
+### Mapa de capacidades
+
+| Capacidade             | Responsabilidade                                                                                                                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Acesso e administração | Integrar o login Google à feature de autenticação, acompanhar solicitações, decidir pedidos e configurar juízes por tarefa. Verificar no servidor o papel exigido por cada operação. |
+| Catálogo e comparação  | Expor modelos e versões habilitados, modalidades e unidades de cobrança. Filtrar destinos pela tarefa e compor os resultados por tentativa.                                          |
+| Avaliação              | Registrar o painel e os critérios usados na execução, preparar entradas sem identificação dos candidatos, validar os pareceres e calcular medianas, média e empates.                 |
+| Orçamento              | Controlar no servidor o saldo mensal, a reserva e a contabilização de chamadas de geração e julgamento.                                                                              |
+| Histórico e galeria    | Restringir o histórico ao autor, aplicar a retenção e manter uma cópia pública independente para cada benchmark publicado.                                                           |
+| Demos do gateway       | Executar os exemplos aprovados e expor a origem informada pelo gateway, os tempos e a sequência efetiva de destinos.                                                                 |
+
+Em `src/features`, o `model/` de cada capacidade concentra regras puras, os `services/` encapsulam chamadas às funções e os `components/` apresentam formulários, estados e resultados. As rotas em `app/routes/` compõem as interfaces públicas das features. Formulários e seleção ficam no estado local da tela. Permissões, consumo, publicação e resultados confirmados têm o servidor como fonte de verdade.
+
+### Fluxo de uma comparação
+
+1. O cliente envia tarefa, versões escolhidas, prompt textual e os campos opcionais de referência e critério. O servidor valida acesso, compatibilidade, preços e limites de geração suficientes para calcular um teto, incluindo a avaliação.
+2. As funções reservam o teto de forma atômica no orçamento do usuário para o mês-calendário de Brasília. O saldo disponível considera gasto e reservas em aberto. Uma repetição técnica da mesma solicitação precisa recuperar a operação existente para evitar chamadas ou débitos duplicados.
+3. A execução acompanha cada tentativa de forma independente. Registra provedor e versão efetivos, saída textual ou mídia gerada, estado, duração até a resposta completa, uso reportado e custo estimado com sua unidade. O cliente pode exibir cada resultado concluído enquanto os demais estão em andamento.
+4. Três juízes configurados para a modalidade recebem o prompt, referências, critérios e saídas identificadas de forma anônima. A aplicação guarda notas e justificativas, resultados verificáveis contra o gabarito e o estado de cada parecer. A classificação segue RN-03 a RN-05 do PRD. O tempo e o custo da avaliação são registrados separadamente dos de geração.
+5. O servidor contabiliza o uso e libera a parcela não utilizada da reserva. Falhas parciais preservam tentativas concluídas. Uma nova execução pedida pelo usuário para repetir uma tentativa falha exige sua própria previsão e reserva, considerando eventual reavaliação.
+
+### Privacidade, retenção e operação
+
+A leitura pública do catálogo e de publicações recupera dados já registrados. A consulta ao histórico exige verificar a autoria. Os conteúdos privados, inclusive mídias e pareceres, expiram em 30 dias ou são excluídos antes pelo autor. O registro de consumo é independente para preservar o saldo mensal. A publicação administrativa copia dados e mídias de uma execução própria revisada, com seus indicadores e configurações. A cópia continua disponível após a exclusão ou expiração da origem e pode ser retirada por um administrador.
+
+Os exemplos de cache repetem a mesma entrada e exibem a origem observada em cada tentativa. O cenário de fallback provoca uma falha controlada no primeiro destino e registra as tentativas seguintes. Ambas as demos usam a mesma verificação de acesso e reserva de orçamento do comparador.
 
 ## Árvore de pastas
 
@@ -110,22 +143,14 @@ Toda leitura de `import.meta.env` passa por `shared/config/env.ts`. As variávei
 ## Estilo e identidade visual
 
 Estilização por CSS Modules ([ADR 0005](decisions/0005-css-modules.md)), com os
-valores fornecidos por `@vitru/styleguide/tokens.css`
-([ADR 0011](decisions/0011-design-tokens-and-styleguide.md)). Cor, tipografia,
-espaçamento, raio, sombra e movimento vêm de tokens; nenhum CSS de componente
-declara cor literal. Archivo vem do pacote; os arquivos licenciados da TheMix
-ficam apenas no projeto consumidor, em `public/fonts/`
-([ADR 0013](decisions/0013-official-fonts.md)). O tema padrão é `vitru`, aplicado pelo atributo
-`data-theme` no `index.html`.
+valores vindos de `src/styles/tokens.css`. Cor, tipografia, espaçamento,
+raio, sombra e movimento vêm de tokens; nenhum CSS de componente declara cor
+literal.
 
-As telas são montadas com o kit de `@vitru/styleguide` (cabeçalho, blocos,
-campos, tabela, avisos, modal e os estados de carregando, vazio e erro), que já
-consome os tokens e traz a semântica de acessibilidade esperada
-([ADR 0012](decisions/0012-component-kit-and-visual-guardrails.md)). O subpath
-`@vitru/styleguide/showcase` renderiza tokens e kit em `/styleguide` e serve de
-referência viva para pessoas e agentes. Ícones vêm de `lucide-react`. As regras
-completas estão em [styleguide.md](styleguide.md) e `npm run check:styleguide`
-avisa quando são quebradas.
+Os primitivos reutilizáveis ficam em `src/shared/ui` e são a base das telas.
+`shared/ui` é neutro em relação ao domínio, como o resto de `shared`: ele
+não conhece nenhuma feature. As regras completas estão em
+[styleguide.md](styleguide.md).
 
 ## Estado
 

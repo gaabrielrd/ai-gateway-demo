@@ -1,10 +1,10 @@
 {
-  "technicalName": "web-project-template",
-  "displayName": "Web Project Template",
+  "technicalName": "ai-gateway-demo",
+  "displayName": "AI Gateway Demo",
   "templateVersion": "1.0.0",
   "profile": "padrao",
   "capabilities": {
-    "styleguide": true,
+    "styleguide": false,
     "auth": true,
     "e2e": true,
     "visualRegression": false

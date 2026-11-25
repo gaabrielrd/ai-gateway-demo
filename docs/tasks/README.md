@@ -1,5 +1,7 @@
 # Tarefas e planejamento
 
+O [plano da primeira versão do AI Gateway Demo](plano-v1.md) reúne as fases, dependências e tarefas de implementação do aplicativo.
+
 Esta pasta guarda o planejamento de funcionalidades e tarefas. Cada arquivo descreve uma demanda antes de ela virar código: o que será feito, por quê e como saber que ficou pronta.
 
 Isso ajuda você e os agentes a manterem o foco e o escopo controlado.
