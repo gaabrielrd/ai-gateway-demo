@@ -60,3 +60,11 @@ firebase emulators:start --only hosting,functions --project demo-ai-gateway
 ```
 
 Abra `http://127.0.0.1:5500/`. O caminho `/api/health` verifica a função sem chamar provedores. Os segredos de funções que integram serviços externos devem ser vinculados à função consumidora pelo Secret Manager. O emulador aceita valores de desenvolvimento em `functions/.secret.local`, ignorado pelo Git. O endpoint de saúde dispensa segredos.
+
+### Login Google no Hosting local
+
+O alias Firebase `homologacao` identifica o projeto `timekeeper-d9a0a`; o site de Hosting e o grupo de Functions do app são `cf-ai-gateway`.
+
+Use um cliente OAuth do tipo **Aplicativo da Web** no projeto de homologação e cadastre exatamente o retorno `http://127.0.0.1:5500/auth/callback`. Na raiz, preencha `.env.local` a partir de `.env.example` com o emissor Google, Client ID e retorno. Em `functions/.env.local`, configure `GOOGLE_OAUTH_CLIENT_ID` e `GOOGLE_OAUTH_REDIRECT_URI` com os mesmos valores. Em `functions/.secret.local`, configure `GOOGLE_OAUTH_CLIENT_SECRET`. Guarde o segredo de deploy no Secret Manager.
+
+Gere o bundle após configurar os valores públicos e abra o endereço do Hosting local. O botão **Entrar com Google** inicia o fluxo. O retorno verifica o estado e envia o código e o verificador PKCE à função de troca. O token de identidade verificado permanece em memória até sair ou expirar. Após a expiração, entre novamente. [Fluxo OpenID Connect do Google](https://developers.google.com/identity/openid-connect/openid-connect).

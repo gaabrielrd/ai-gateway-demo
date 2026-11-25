@@ -23,3 +23,5 @@ export {
   type Session,
   type TokenResponse,
 } from './model/session';
+
+export { GoogleAccountButton } from './components/GoogleAccountButton';

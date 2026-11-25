@@ -20,6 +20,13 @@ const TIMEOUT_MS = 10_000;
 /** Endpoints derivados do emissor, no padrao OIDC. */
 function endpoints(config: AuthEnv) {
   const base = config.issuer.replace(/\/$/, '');
+  if (base === 'https://accounts.google.com') {
+    return {
+      authorize: 'https://accounts.google.com/o/oauth2/v2/auth',
+      token: '/api/auth/google/token',
+      logout: null,
+    };
+  }
   return {
     authorize: `${base}/authorize`,
     token: `${base}/oauth/token`,
@@ -171,7 +178,9 @@ export async function refreshSession(
 
 /** Endereco de encerramento no provedor, para o logout completo. */
 export function logoutUrl(config: AuthEnv, returnTo: string): string {
-  const url = new URL(endpoints(config).logout);
+  const endpoint = endpoints(config).logout;
+  if (endpoint === null) return returnTo;
+  const url = new URL(endpoint);
   url.searchParams.set('client_id', config.clientId);
   url.searchParams.set('returnTo', returnTo);
   return url.toString();

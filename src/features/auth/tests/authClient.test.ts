@@ -170,3 +170,21 @@ test('logoutUrl aponta para o encerramento no provedor', () => {
   expect(url.searchParams.get('client_id')).toBe('cliente-123');
   expect(url.searchParams.get('returnTo')).toBe('https://app.exemplo.com');
 });
+
+test('inicia Google com PKCE e troca o código pela API da aplicação', async () => {
+  const google = { ...config, issuer: 'https://accounts.google.com' };
+  const url = new URL(await beginAuthorization(google, '/'));
+  expect(url.origin + url.pathname).toBe('https://accounts.google.com/o/oauth2/v2/auth');
+  expect(url.searchParams.get('code_challenge_method')).toBe('S256');
+  const fetchSpy = vi
+    .spyOn(globalThis, 'fetch')
+    .mockResolvedValue(
+      jsonResponse({ access_token: 'sessao', token_type: 'Bearer', expires_in: 60 }),
+    );
+  await completeAuthorization(
+    google,
+    new URLSearchParams({ code: 'codigo', state: url.searchParams.get('state')! }),
+  );
+  expect(fetchSpy.mock.calls[0]?.[0]).toBe('/api/auth/google/token');
+  expect(logoutUrl(google, '/')).toBe('/');
+});

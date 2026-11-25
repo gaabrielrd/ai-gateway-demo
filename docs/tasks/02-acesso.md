@@ -17,3 +17,7 @@ Um visitante consulta conteúdo público. Uma conta pendente ou rejeitada não e
 ## Risco principal
 
 Login comprova identidade. A aprovação precisa ser consultada nas funções inclusive em chamadas diretas, independentemente dos controles exibidos pela interface.
+
+## Homologação da T04
+
+O cliente Google habilitado em `timekeeper-d9a0a` respondeu `redirect_uri_mismatch` para o callback local do Hosting em 25/11/2026. O fluxo com PKCE, a troca na Function, a guarda em memória e a validação da identidade já têm implementação. Os testes locais passaram. A homologação com conta real aguarda o cadastro de `http://127.0.0.1:5500/auth/callback` no cliente OAuth e a configuração do segredo no ambiente das Functions. O site do app é `cf-ai-gateway`.

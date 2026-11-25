@@ -5,12 +5,13 @@
 // proprio header.
 import { Home } from 'lucide-react';
 import { NavLink, Outlet } from 'react-router';
+import type { ReactNode } from 'react';
 import { env } from '@/shared/config/env';
 import styles from './App.module.css';
 
 const PROJECT_NAME = 'AI Gateway Demo';
 
-export function App() {
+export function App({ account }: { account?: ReactNode }) {
   return (
     <div className={styles.app}>
       <a className={styles.skipLink} href="#conteudo">
@@ -33,6 +34,7 @@ export function App() {
             <Home className="icon icon-sm" aria-hidden="true" />
             Início
           </NavLink>
+          {account}
         </nav>
       </header>
 

@@ -2,6 +2,7 @@ import { createBrowserRouter, type RouteObject } from 'react-router';
 import { App } from '@/app/App';
 import { AuthCallbackRoute, AuthGate } from '@/app/components/AuthGate';
 import { NotFound, RouteErrorFallback } from '@/app/components/RouteErrorFallback';
+import { GoogleAccountButton } from '@/features/auth';
 import { HomePage } from '@/features/home';
 import { NoteList } from '@/features/notes';
 import { env } from '@/shared/config/env';
@@ -17,7 +18,9 @@ export const routes: RouteObject[] = [
     // retorno do provedor precisam do mesmo estado de sessao.
     element: (
       <AuthGate>
-        <App />
+        <App
+          account={env.auth?.issuer === 'https://accounts.google.com' && <GoogleAccountButton />}
+        />
       </AuthGate>
     ),
     // Captura erros do layout e de qualquer rota filha sem errorElement proprio.

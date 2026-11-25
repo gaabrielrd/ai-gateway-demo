@@ -60,6 +60,18 @@ export function AuthProvider({
     if (state.status === 'anonima') sessionRef.current = undefined;
   }, [state]);
 
+  useEffect(() => {
+    if (state.status !== 'autenticada' || state.session.refreshToken !== undefined) return;
+    const timer = setTimeout(
+      () => {
+        sessionRef.current = undefined;
+        setState({ status: 'anonima' });
+      },
+      Math.max(0, state.session.expiresAt - now()),
+    );
+    return () => clearTimeout(timer);
+  }, [state, now]);
+
   const login = useCallback(
     async (returnTo = '/') => {
       if (config === undefined) {
