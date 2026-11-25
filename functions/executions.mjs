@@ -5,6 +5,7 @@ import catalog from './catalog.json' with { type: 'json' };
 import { BudgetError, attemptCost, planBudget, taskOutputs } from './budget.mjs';
 import { isAdministrator } from './access.mjs';
 import { reserveBudget, claimAttempt, settleAttempt } from './reservations.mjs';
+import { summarizeRanking } from './ranking.mjs';
 import { criteriaFor } from './panels.mjs';
 import { interrupted } from './retries.mjs';
 import { generate } from './gateway.mjs';
@@ -234,8 +235,19 @@ export async function executionApi(request, response, identity) {
       }
     : null;
   const { requestHash: _hash, ...record } = execution.data();
+  const criteria = record.criteria ?? criteriaFor(record.task, record.criterion);
+  if (evaluation)
+    evaluation.ranking = summarizeRanking({
+      attempts: attempts.docs.map((d) => d.data()),
+      indices: evaluation.indices,
+      judges: record.judges,
+      criteria,
+      reviews: evaluation.reviews,
+      finished: evaluation.status === 'finished',
+    });
   return response.json({
     ...record,
+    criteria,
     evaluation,
     executionId: id,
     createdAt: record.createdAt.toDate().toISOString(),

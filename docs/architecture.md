@@ -231,3 +231,7 @@ A administração em `/admin/juizes` usa `GET` e `POST /api/admin/panels`. A Fun
 Cada reserva cria uma rodada com os índices das gerações incluídas. Uma repetição substitui somente o índice do modelo repetido na composição da nova rodada. O gatilho de atualização de tentativas espera todas as gerações da rodada terminarem e distribui as concluídas aos três juízes. O payload contém identificadores anônimos, prompt, referência, critérios e o conteúdo das respostas. Imagens privadas seguem diretamente do Storage para o juiz visual.
 
 Os pareceres são persistidos separadamente em `rounds/{reserva}/reviews/{slot}`. A tomada de cada slot usa a reserva antes do despacho. Um erro de formato preserva os outros pareceres e contabiliza o uso informado. Uma falha de leitura anterior ao despacho libera a parcela. A consulta privada retorna a rodada mais recente com pareceres e a conferência campo a campo quando o gabarito de extração é um objeto JSON.
+
+### Classificação de qualidade
+
+A leitura privada calcula a classificação para os índices da rodada mais recente. Cada critério precisa das três notas do painel para formar uma mediana. A média das medianas considera também o critério próprio e determina as posições. Empates compartilham posição. A classificação parcial preserva as notas existentes, explica as lacunas e apresenta cada justificativa. O tempo do painel mede o intervalo entre o primeiro início e o último término. O custo reúne as três chamadas da rodada quando os valores estão disponíveis.

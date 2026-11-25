@@ -27,7 +27,40 @@ export interface Attempt {
   error?: string;
   output?: { type: 'text'; text: string } | { type: 'image'; contentType: string };
 }
+interface Round {
+  status: string;
+  checks?: { index: number; fields: { field: string; correct: boolean }[] | null }[];
+  reviews: {
+    modelId: string;
+    status: string;
+    costMicroUsd?: number | null;
+    durationMs?: number;
+    error?: string;
+    verdict?: { index: number; marks: { id: string; score: number | null; reason: string }[] }[];
+  }[];
+  ranking?: {
+    rows: {
+      index: number;
+      modelId: string;
+      position: number | null;
+      score: number | null;
+      marks: {
+        id: string;
+        label: string;
+        scores: (number | null)[];
+        median: number | null;
+        divergent: boolean;
+      }[];
+    }[];
+    reasons: string[];
+    elapsedMs: number | null;
+    totalCostMicroUsd: number | null;
+  };
+}
 export interface Execution {
+  criteria?: { id: string; label: string }[];
+  judges?: string[];
+  evaluation?: Round | null;
   executionId: string;
   prompt: string;
   attempts: Attempt[];

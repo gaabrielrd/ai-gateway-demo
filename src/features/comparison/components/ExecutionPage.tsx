@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router';
 import { useAuth } from '@/features/auth';
 import { Button, PageHeader } from '@/shared/ui';
 import { readExecution, readImage, type Attempt, type Execution } from '../services/executions';
+import { EvaluationResults } from './EvaluationResults';
 import { RetryAttempt } from './RetryAttempt';
 import { GenerationOutput } from './GenerationOutput';
 import styles from './Comparison.module.css';
@@ -78,7 +79,10 @@ function Results({ id }: { id: string }) {
       const result = await readExecution(session, id, ctl.signal);
       if (ctl.signal.aborted) return;
       setRecord(result);
-      if (result.attempts.some((a) => a.status === 'queued' || a.status === 'running'))
+      if (
+        result.evaluation?.status === 'pending' ||
+        result.attempts.some((a) => a.status === 'queued' || a.status === 'running')
+      )
         timer = setTimeout(poll, 1500);
     }
     function poll() {
@@ -169,10 +173,7 @@ function Results({ id }: { id: string }) {
                 );
               })}
           </section>
-          <section>
-            <h2>Pareceres dos juízes</h2>
-            <p>Aguardando avaliação.</p>
-          </section>
+          <EvaluationResults record={record} />
         </>
       )}
     </>
