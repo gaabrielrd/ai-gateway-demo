@@ -1,1 +1,1 @@
-export { CatalogPage } from './components/CatalogPage';
+export { CatalogPage, CatalogRoute } from './components/CatalogPage';

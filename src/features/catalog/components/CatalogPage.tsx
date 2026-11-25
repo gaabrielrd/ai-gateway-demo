@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 import { loadCatalog, type Catalog } from '../services/catalog';
 import { PageHeader } from '@/shared/ui';
@@ -24,15 +25,40 @@ function tariff({ price }: Model) {
   return `${usd.format(price.per512x512Tile)} por bloco de 512 × 512 px · ${usd.format(price.perStep)} por passo`;
 }
 
-export function ModelSelector({ catalog }: { catalog: Catalog }) {
-  const [task, setTask] = useState(tasks[0]!);
-  const [selected, setSelected] = useState<string[]>([]);
+interface BenchmarkDraft {
+  task?: string;
+  modelIds?: string[];
+  prompt?: string;
+  reference?: string;
+  criterion?: string;
+}
+
+export function CatalogRoute() {
+  const location = useLocation();
+  return <CatalogPage key={location.key} draft={location.state as BenchmarkDraft | undefined} />;
+}
+
+export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: BenchmarkDraft }) {
+  const [task, setTask] = useState(tasks.find((t) => t.id === draft?.task) ?? tasks[0]!);
+
   const compatible = catalog.models.filter(
     (model) => model.input === 'text' && model.output === task.output,
   );
   const required = Math.min(3, compatible.filter((model) => !model.budgetRestriction).length);
+  const [selected, setSelected] = useState<string[]>(() =>
+    compatible
+      .filter((m) => !m.budgetRestriction && draft?.modelIds?.includes(m.id))
+      .slice(0, required)
+      .map((m) => m.id),
+  );
   return (
     <section className={styles.page}>
+      {draft?.prompt && (
+        <details open>
+          <summary>Prompt do benchmark</summary>
+          <p>{draft.prompt}</p>
+        </details>
+      )}
       <label className={styles.task}>
         Tarefa
         <select
@@ -102,7 +128,7 @@ export function ModelSelector({ catalog }: { catalog: Catalog }) {
   );
 }
 
-export function CatalogPage() {
+export function CatalogPage({ draft }: { draft?: BenchmarkDraft } = {}) {
   const [catalog, setCatalog] = useState<Catalog | null>(null);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -121,7 +147,7 @@ export function CatalogPage() {
     <section className={styles.page}>
       <PageHeader title="Comparar modelos" />
       {catalog ? (
-        <ModelSelector catalog={catalog} />
+        <ModelSelector catalog={catalog} draft={draft} />
       ) : error ? (
         <div role="alert">
           <p>Falha ao carregar o catálogo.</p>

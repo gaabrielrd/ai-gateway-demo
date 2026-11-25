@@ -1,6 +1,6 @@
 import examples from '../model/examples.json';
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { useAuth } from '@/features/auth';
 import { Button } from '@/shared/ui';
 import { startExecution } from '../services/executions';
@@ -19,9 +19,16 @@ export function ExecutionForm({
 }) {
   const { ensureSession } = useAuth();
   const navigate = useNavigate();
-  const [prompt, setPrompt] = useState(''),
-    [reference, setReference] = useState(''),
-    [criterion, setCriterion] = useState('');
+  const draft = useLocation().state as {
+    task?: string;
+    prompt?: string;
+    reference?: string;
+    criterion?: string;
+  } | null;
+  const initial = draft?.task === task ? draft : null;
+  const [prompt, setPrompt] = useState(initial?.prompt ?? ''),
+    [reference, setReference] = useState(initial?.reference ?? ''),
+    [criterion, setCriterion] = useState(initial?.criterion ?? '');
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('');
   const last = useRef({ signature: '', id: '' });

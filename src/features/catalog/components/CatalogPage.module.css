@@ -38,3 +38,7 @@
   display: block;
   color: var(--ink-soft);
 }
+
+.row {
+  font-family: var(--font-mono);
+}

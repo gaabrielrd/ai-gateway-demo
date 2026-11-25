@@ -1,0 +1,255 @@
+.console {
+  --edge: 1px solid var(--line);
+  --selected: color-mix(in srgb, var(--accent) 14%, var(--paper));
+  font-family: var(--font-display);
+}
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 0 1vw 1.6rem;
+}
+.hero h1 {
+  font-size: clamp(2.6rem, 4.5vw, 5rem);
+  letter-spacing: -0.035em;
+  margin: 0;
+}
+.hero p {
+  font-size: clamp(1.2rem, 1.8vw, 2rem);
+  font-style: italic;
+  margin: 0.2rem 0 0;
+}
+.action {
+  padding: 0.7em 1.25em;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: 0.45rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+.left {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+.panel,
+.flow,
+.inspector {
+  border: var(--edge);
+  border-radius: var(--radius-md);
+  min-width: 0;
+}
+.panel {
+  overflow-x: auto;
+}
+.console table,
+.console dl,
+.console pre,
+.console footer,
+.flow,
+.inspector details {
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 1.23vw, 1.1rem);
+}
+.console table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.console td,
+.console th {
+  padding: 1rem 0.65rem;
+  border-bottom: var(--edge);
+}
+.console th:first-child {
+  text-align: left;
+  padding-left: 1.3rem;
+  overflow-wrap: anywhere;
+}
+.console button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.console th button {
+  padding: 0;
+  text-align: left;
+}
+.console tbody tr {
+  cursor: pointer;
+}
+.console tbody tr:hover {
+  background: var(--paper-2);
+}
+.console tr[data-active='true'] {
+  background: var(--selected);
+  box-shadow: inset 4px 0 var(--accent);
+}
+.console footer {
+  padding: 0.65rem 1.3rem;
+  color: var(--ink-soft);
+}
+.flow {
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+  min-height: 13rem;
+}
+.flow details {
+  position: relative;
+  z-index: 1;
+}
+.flow .source {
+  position: absolute;
+  min-width: 22rem;
+  background: var(--paper-2);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  border: var(--edge);
+}
+.flow summary,
+.branch button,
+.branch b {
+  border: var(--edge);
+  border-radius: 0.36rem;
+  padding: 0.5em 0.85em;
+  text-align: center;
+}
+.branches {
+  flex: 1;
+  min-width: 0;
+}
+.branch {
+  height: 4rem;
+  display: grid;
+  position: relative;
+  align-items: center;
+  grid-template-columns: 25% minmax(0, 1fr) 20% auto;
+}
+.branch svg {
+  position: absolute;
+  width: 25%;
+  pointer-events: none;
+  overflow: visible;
+  stroke: var(--ink-soft);
+  fill: none;
+}
+.branch path {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 2;
+}
+.branch button {
+  grid-column: 2;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.branch span {
+  text-align: center;
+}
+.branch[data-active='true'] :is(button, b) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.branch[data-active='true'] svg {
+  stroke: var(--accent);
+}
+.inspector {
+  padding: 1.2rem 1.4rem;
+  overflow-wrap: anywhere;
+}
+.inspector h2 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem;
+}
+.tabs {
+  display: flex;
+  border-bottom: var(--edge);
+  gap: 0.6rem;
+}
+.tabs button {
+  padding: 0.5rem 0.7rem;
+  font-size: 1.15rem;
+}
+.tabs button[aria-pressed='true'] {
+  color: var(--accent);
+  box-shadow: inset 0 -2px var(--accent);
+}
+.inspector h3 {
+  font-size: 1.45rem;
+  margin: 1.1rem 0 0.65rem;
+}
+.inspector dl,
+.inspector pre {
+  border: var(--edge);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  background: var(--paper-2);
+}
+.inspector dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.15rem 0.7rem;
+}
+.inspector dd {
+  margin: 0;
+}
+.inspector pre {
+  white-space: pre-wrap;
+  line-height: 1.65;
+}
+.inspector img {
+  width: 100%;
+  margin-block: 1rem;
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.arrow {
+  height: 2px;
+  background: currentColor;
+  position: relative;
+  color: var(--ink-soft);
+}
+.arrow::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -4px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid currentColor;
+}
+.branch[data-active='true'] .arrow {
+  color: var(--accent);
+}
+.branch button,
+.branch b {
+  font-size: 1.04em;
+}
+.flow .source {
+  width: 26rem;
+  max-height: 22rem;
+  overflow: auto;
+  bottom: 100%;
+  overflow-wrap: anywhere;
+}
+.inspector pre {
+  color: var(--ink);
+  tab-size: 2;
+}

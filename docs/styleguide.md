@@ -3,6 +3,8 @@
 Este projeto **não usa** o kit `@vitru/styleguide`. A base visual é local e
 pertence ao projeto.
 
+A direção desktop usa fundo grafite, destaque âmbar, títulos em serifa e IBM Plex Mono local nas tabelas e nos dados dos cards. A [referência visual](../DESIGN.md) descreve a composição.
+
 ## Onde cada coisa está
 
 - **Tokens** (cor, tipografia, espaçamento, forma, movimento):

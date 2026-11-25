@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, Navigate } from 'react-router';
 import { useAuth } from '@/features/auth';
 import { Button, PageHeader } from '@/shared/ui';
 import { listBenchmarks, publishBenchmark, withdrawBenchmark } from '../services/gallery';
@@ -55,7 +55,13 @@ export function PublishBenchmark({ id, revision }: { id: string; revision: numbe
   );
 }
 
-export function GalleryPage({ manage = false }: { manage?: boolean }) {
+export function GalleryPage({
+  manage = false,
+  featured = false,
+}: {
+  manage?: boolean;
+  featured?: boolean;
+}) {
   const { ensureSession } = useAuth();
   const [items, setItems] = useState<{ id: string; title: string }[]>(),
     [error, setError] = useState(''),
@@ -93,6 +99,10 @@ export function GalleryPage({ manage = false }: { manage?: boolean }) {
     } finally {
       setBusy(false);
     }
+  }
+  if (featured && items?.length) {
+    const first = items.find((item) => item.title === 'Fatura fictícia com desconto') ?? items[0]!;
+    return <Navigate replace to={'/galeria/' + first.id} />;
   }
   return (
     <section>

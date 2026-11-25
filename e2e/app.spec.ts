@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('abre o comparador público e seleciona três modelos por teclado', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/comparar');
   await expect(page.getByRole('heading', { name: 'Comparar modelos' })).toBeVisible();
   const choices = page.getByRole('checkbox');
   await expect(choices.nth(2)).toBeVisible();
@@ -18,9 +18,9 @@ test('preserva a rota de fallback', async ({ page }) => {
   await expect(page.getByRole('heading', { name: /página não encontrada/i })).toBeVisible();
 });
 
-test('o catálogo de imagens cabe na tela do celular', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+test('o catálogo mostra os modelos de imagem compatíveis', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 844 });
+  await page.goto('/comparar');
   await page.getByLabel('Tarefa').selectOption('Geração de imagem');
   await expect(page.getByRole('checkbox', { name: /flux/ })).toBeDisabled();
   await page.getByRole('checkbox', { name: /lucid-origin/ }).check();
@@ -28,7 +28,7 @@ test('o catálogo de imagens cabe na tela do celular', async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test('visitante reabre benchmark parcial em duas larguras e navega pelos pareceres', async ({
+test('visitante reabre benchmark parcial e inspeciona modelos e pareceres pelo teclado', async ({
   page,
 }) => {
   const id = 'a'.repeat(64);
@@ -76,32 +76,19 @@ test('visitante reabre benchmark parcial em duas larguras e navega pelos parecer
   await expect(page.getByRole('alert')).toBeVisible();
   await page.getByRole('button', { name: 'Tentar novamente' }).click();
   await page.getByRole('link', { name: 'Ensaio de exemplo' }).click();
-  await expect(page.getByRole('heading', { name: 'Classificação parcial' })).toBeVisible();
-  const cards = page.getByRole('article');
-  for (const width of [1280, 390]) {
-    await page.setViewportSize({ width, height: 844 });
-    const boxes = await cards.evaluateAll((elements) =>
-      elements.map((e) => {
-        const r = e.getBoundingClientRect();
-        return { x: r.x, y: r.y };
-      }),
-    );
-    expect(boxes).toHaveLength(3);
-    if (width === 1280) {
-      expect(new Set(boxes.map((b) => b.y)).size).toBe(1);
-    } else {
-      expect(new Set(boxes.map((b) => b.x)).size).toBe(1);
-      expect(boxes[2].y).toBeGreaterThan(boxes[1].y);
-    }
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
-  }
+  await expect(page.getByText('Classificação parcial', { exact: true })).toBeVisible();
+  const row = page.getByRole('row').filter({ hasText: 'Beta' });
+  await row.getByRole('button').focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('complementary').getByText('Saída Beta')).toBeVisible();
+  await page.getByRole('button', { name: 'Pareceres', exact: true }).click();
   const summary = page.locator('summary').filter({ hasText: 'juiz B · Parecer ausente' });
   await summary.focus();
   await page.keyboard.press('Enter');
   await expect(summary.locator('..')).toHaveAttribute('open', '');
-  await page.goto('/');
+  await page.getByRole('link', { name: 'Usar este prompt' }).click();
+  await expect(page.getByText('Descreva o ensaio.')).toBeVisible();
+  await page.goto('/comparar');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Pular para o conteúdo' })).toBeFocused();
   await page.keyboard.press('Enter');

@@ -59,6 +59,7 @@ interface Round {
   };
 }
 export interface Execution {
+  task?: string;
   reference?: string;
   criterion?: string;
   title?: string;

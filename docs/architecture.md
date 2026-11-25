@@ -17,7 +17,7 @@ O [PRD da primeira versão](prd.md) registra o escopo aprovado e seus critérios
 
 ### Fronteiras e distribuição
 
-O Firebase Hosting servirá o bundle estático produzido pelo Vite. O navegador apresentará o comparador em português do Brasil, com resultados lado a lado no desktop e empilhados no celular. A navegação, a seleção dos modelos e a leitura dos pareceres devem funcionar por teclado. A publicação por GitHub Pages descrita no fim deste documento pertence à base do template. O destino do produto é o Firebase Hosting.
+O Firebase Hosting servirá o bundle estático produzido pelo Vite. O comparador atende ao desktop em português do Brasil. A raiz consulta a galeria e abre um benchmark publicado. Tabela e diagrama compartilham o índice da tentativa selecionada com o painel de resposta e pareceres. A navegação, a seleção dos modelos e a leitura dos pareceres devem funcionar por teclado. A publicação por GitHub Pages descrita no fim deste documento pertence à base do template. O destino do produto é o Firebase Hosting.
 
 As Cloud Functions formarão a fronteira de servidor aprovada para o produto. Receberão o ID token do Firebase Authentication obtido pelo popup Google, verificarão a assinatura, a audiência e o provedor de login com o Firebase Admin SDK e consultarão a autorização do usuário antes de aceitar uma execução. A decisão de acesso, as reservas, o histórico e as publicações terão persistência controlada pelo servidor. As credenciais do gateway e dos provedores permanecem fora do bundle. O navegador consultará os serviços da aplicação. As funções encaminharão gerações e julgamentos pelo Cloudflare AI Gateway.
 

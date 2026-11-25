@@ -75,11 +75,11 @@ O Google identifica a pessoa. Se o login falhar, ela mantém acesso à parte pú
 
 ## 10. Plataformas e distribuição
 
-Aplicação web acessada por URL em navegadores de desktop e celular, publicada no Firebase Hosting. As execuções dependem de conexão com as Cloud Functions e o gateway.
+Aplicação web acessada por URL em navegadores de desktop, publicada no Firebase Hosting. As execuções dependem de conexão com as Cloud Functions e o gateway.
 
 ## 11. Restrições e qualidade
 
-Interface em português do Brasil, com navegação completa por teclado, foco visível e estados identificados por texto. Os resultados aparecem lado a lado no desktop e empilhados no celular. A duração é medida para cada geração e para o julgamento. O escopo aprovado não estabelece um prazo máximo de resposta dos provedores.
+Interface em português do Brasil, com navegação completa por teclado, foco visível e estados identificados por texto. Os resultados aparecem lado a lado no desktop. A duração é medida para cada geração e para o julgamento. O escopo aprovado não estabelece um prazo máximo de resposta dos provedores.
 
 ## 12. Critérios de sucesso
 
@@ -95,7 +95,7 @@ Na aceitação da versão, um visitante consegue examinar os três benchmarks se
 - **CA-06.** Se faltar um parecer ou um critério for não verificável, as avaliações disponíveis ficam visíveis com a razão do ranking parcial. Se uma geração falhar, só a tentativa escolhida é repetida e o usuário vê o novo custo previsto.
 - **CA-07.** Duas chamadas idênticas da demo de cache mostram as origens efetivas e seus tempos. A demo de fallback mostra a falha preparada e a versão que respondeu.
 - **CA-08.** O autor reabre um resultado sem consumo adicional. Ao excluí-lo, o item desaparece e o consumo permanece. Após 30 dias, o teste privado expira e sua eventual cópia pública continua acessível até retirada.
-- **CA-09.** A jornada de seleção, execução e consulta de pareceres funciona por teclado. A mesma comparação apresenta as gerações lado a lado no desktop e empilhadas no celular.
+- **CA-09.** A jornada de seleção, execução e consulta de pareceres funciona por teclado. A mesma comparação apresenta as gerações lado a lado no desktop.
 
 ## 14. Não escopo
 

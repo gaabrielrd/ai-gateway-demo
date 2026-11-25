@@ -69,6 +69,7 @@ test('solicitante envia pedido e acompanha a aprovação decidida em outra sess�
   await page.getByRole('button', { name: 'Atualizar situação' }).click();
   await expect(page.getByText('Aprovado', { exact: true })).toBeVisible();
   await page.route('**/api/executions', (r) => r.fulfill({ json: [] }));
+  await page.locator('summary').filter({ hasText: 'Conta' }).click();
   await page.getByRole('link', { name: 'Meu histórico' }).click();
   await expect(page.getByText('Seu histórico está vazio.')).toBeVisible();
   await page.route('**/api/demos/cache', async (r) => {
@@ -95,6 +96,7 @@ test('solicitante envia pedido e acompanha a aprovação decidida em outra sess�
       },
     }),
   );
+  await page.locator('summary').filter({ hasText: 'Gateway' }).click();
   await page.getByRole('link', { name: 'Cache', exact: true }).click();
   await page.getByRole('button', { name: 'Consultar previsão' }).click();
   await page.getByRole('button', { name: 'Confirmar e executar duas chamadas' }).click();
@@ -108,7 +110,7 @@ test('usuário aprovado confirma a previsão e recebe as saídas dos três model
   await page.route('**/api/access', (r) => r.fulfill({ json: { status: 'approved' } }));
   await page.route('**/api/admin/access', (r) => r.fulfill({ status: 403, json: {} }));
   await login(page, 'aprovada');
-  await page.getByRole('link', { name: 'Comparar modelos' }).click();
+  await page.getByRole('link', { name: 'Comparar', exact: true }).click();
   const options = page.getByRole('checkbox');
   await expect(options.nth(2)).toBeVisible();
   for (const choice of (await options.all()).slice(0, 3)) await choice.check();

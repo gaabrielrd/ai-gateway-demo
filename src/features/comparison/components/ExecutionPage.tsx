@@ -1,3 +1,4 @@
+import { BenchmarkConsole } from './BenchmarkConsole';
 import { PublishBenchmark } from './GalleryPage';
 import { readBenchmark } from '../services/gallery';
 import { Fragment, useEffect, useState } from 'react';
@@ -118,7 +119,8 @@ function Results({ id, published = false }: { id: string; published?: boolean })
         </div>
       )}
       {!record && !error && <p role="status">Carregando execução…</p>}
-      {record && (
+      {record && published && <BenchmarkConsole record={record} />}
+      {record && !published && (
         <>
           {record.title && <h2>{record.title}</h2>}
           <details>
@@ -167,18 +169,7 @@ function Results({ id, published = false }: { id: string; published?: boolean })
                     {a.output?.type === 'text' && (
                       <GenerationOutput model={a.modelId} content={a.output} />
                     )}
-                    {a.output?.type === 'image' &&
-                      (published ? (
-                        <GenerationOutput
-                          model={a.modelId}
-                          content={{
-                            type: 'image',
-                            url: '/api/gallery/' + id + '/media/' + a.index,
-                          }}
-                        />
-                      ) : (
-                        <PrivateImage id={id} attempt={a} />
-                      ))}
+                    {a.output?.type === 'image' && <PrivateImage id={id} attempt={a} />}
                     {['completed', 'failed'].includes(a.status) && (
                       <dl className={styles.metrics}>
                         {metrics.map(([label, value]) => (
@@ -213,8 +204,8 @@ export function ExecutionPage({ published = false }: { published?: boolean }) {
   const { id = '' } = useParams();
   const { state } = useAuth();
   return (
-    <section className={styles.page}>
-      <PageHeader title={published ? 'Benchmark publicado' : 'Resultados da comparação'} />
+    <section className={published ? undefined : styles.page}>
+      {!published && <PageHeader title="Resultados da comparação" />}
       {published ? (
         <Results key={id} id={id} published />
       ) : state.status === 'autenticada' ? (
@@ -222,7 +213,7 @@ export function ExecutionPage({ published = false }: { published?: boolean }) {
       ) : (
         <p>Entre com Google para ver esta execução privada.</p>
       )}
-      <Link to="/">Nova comparação</Link>
+      {!published && <Link to="/comparar">Nova comparação</Link>}
     </section>
   );
 }

@@ -1,6 +1,6 @@
 # AI Gateway Demo
 
-Comparador de modelos do Cloudflare AI Gateway com React, TypeScript, Firebase Hosting e Cloud Functions. A página inicial permite explorar o catálogo público. Usuários aprovados podem consultar o orçamento, confirmar o prompt e acompanhar cada geração em uma URL privada. A execução depende de um painel de juízes configurado para a tarefa.
+Comparador de modelos do Cloudflare AI Gateway com React, TypeScript, Firebase Hosting e Cloud Functions. A página inicial abre um benchmark público em destaque. Em **Comparar**, o desenvolvedor escolhe as versões para seu próprio teste. Usuários aprovados podem consultar o orçamento, confirmar o prompt e acompanhar cada geração em uma URL privada. A execução depende de um painel de juízes configurado para a tarefa.
 
 [Abrir o comparador](https://cf-ai-gateway.web.app) · [Consultar os benchmarks](https://cf-ai-gateway.web.app/galeria) · [Guia de publicação](docs/deployment.md)
 
@@ -21,7 +21,7 @@ npm ci --prefix functions
 npm run dev
 ```
 
-Abra o endereço informado pelo Vite. A demonstração funciona sem configurar variáveis de ambiente.
+Abra o endereço informado pelo Vite. O catálogo em `/comparar` pode ser explorado sem credenciais. A galeria e os resultados consultam a API do Firebase; o servidor Vite encaminha `/api` ao Hosting local na porta 5500.
 
 ## Autenticação
 

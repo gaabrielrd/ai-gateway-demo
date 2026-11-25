@@ -54,3 +54,12 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.card,
+.metrics {
+  font-family: var(--font-mono);
+}
+.card h2,
+.card h3 {
+  font-family: var(--font-display);
+}

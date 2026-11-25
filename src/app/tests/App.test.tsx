@@ -28,8 +28,10 @@ describe('composicao da aplicacao', () => {
       initialEntries: ['/template-ia-web/'],
     });
     render(<RouterProvider router={router} />);
-    expect(await screen.findByRole('heading', { name: 'Comparar modelos' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Início' })).toHaveAttribute(
+    expect(
+      await screen.findByRole('heading', { name: 'Galeria de benchmarks' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'AI Gateway Demo' })).toHaveAttribute(
       'href',
       '/template-ia-web/',
     );

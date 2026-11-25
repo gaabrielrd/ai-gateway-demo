@@ -4,7 +4,7 @@ import { App } from '@/app/App';
 import { AuthCallbackRoute, AuthGate } from '@/app/components/AuthGate';
 import { NotFound, RouteErrorFallback } from '@/app/components/RouteErrorFallback';
 import { GoogleAccountButton } from '@/features/auth';
-import { CatalogPage } from '@/features/catalog';
+import { CatalogRoute } from '@/features/catalog';
 import { PanelsPage } from '@/features/judges';
 import { AccessPage } from '@/features/access';
 import { ExecutionPage, GalleryPage, HistoryPage } from '@/features/comparison';
@@ -29,7 +29,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <CatalogPage />,
+        element: <GalleryPage featured />,
       },
       {
         // Retorno do provedor de identidade (`redirect_uri`).
@@ -43,7 +43,7 @@ export const routes: RouteObject[] = [
       { path: 'admin/galeria', element: <GalleryPage manage /> },
       { path: 'historico', element: <HistoryPage /> },
       { path: 'execucoes/:id', element: <ExecutionPage /> },
-      { path: 'comparar', element: <CatalogPage /> },
+      { path: 'comparar', element: <CatalogRoute /> },
       { path: 'admin/juizes', element: <PanelsPage /> },
       { path: 'acesso', element: <AccessPage /> },
       {
