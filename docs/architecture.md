@@ -214,3 +214,9 @@ workflow estão descritos em [deployment.md](deployment.md).
 As reservas ficam em `users/{uid}/reservations/{executionId}`. Uma transação cria a reserva e atualiza o total retido do mês. Cada tentativa guarda seu teto e passa de reservada a despachada antes da chamada externa. O reenvio com o mesmo ID e hash recupera a operação. A liquidação registra o gasto apurado e libera o teto daquela tentativa no mês original. Tentativas sem confirmação de cobrança continuam retidas para reconciliação.
 
 O cliente de geração em `functions/gateway.mjs` usa `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_GATEWAY_ID` e o segredo `CLOUDFLARE_API_TOKEN`. Envia texto ao endpoint de chat e imagens ao endpoint do modelo no Workers AI. O retorno de imagem contém bytes e tipo de mídia para armazenamento privado. A interface usa o componente `GenerationOutput` para exibir texto literal ou a URL privada da imagem. O conector mede a duração até a leitura do corpo completo. Somente os metadados efetivamente recebidos identificam o modelo que respondeu e o uso.
+
+### Execução do comparador
+
+`POST /api/executions` aceita uma chave de execução, tarefa, modelos, prompt, referência, critério e teto confirmado em milionésimos de USD. A Function verifica o acesso, recalcula o plano e grava a reserva, o documento de execução e os documentos de geração juntos. O gatilho de criação de cada tentativa obtém o direito de despacho em uma transação, atualiza o resultado e liquida o custo conhecido. A ausência de informação suficiente para contabilizar mantém a reserva daquela tentativa.
+
+`GET /api/executions/{id}` devolve o estado de cada tentativa da conta autenticada. A imagem fica no Storage e é servida por `GET /api/executions/{id}/media/{index}` após verificar autor e expiração. A referência e o critério ficam disponíveis ao julgamento. Os três modelos candidatos recebem o mesmo prompt.

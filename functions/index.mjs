@@ -7,13 +7,38 @@ import { ownAccess, adminAccess, isAdministrator } from './access.mjs';
 
 import { quoteBudget } from './quote.mjs';
 
+import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { getFirestore } from 'firebase-admin/firestore';
+import { executionApi, executionPath, processAttempt } from './executions.mjs';
+
+export const generateAttempt = onDocumentCreated(
+  {
+    document: executionPath,
+    database: 'cf-ai-gateway',
+    secrets: ['CLOUDFLARE_API_TOKEN'],
+    timeoutSeconds: 180,
+    retry: true,
+  },
+  (event) =>
+    processAttempt(getFirestore('cf-ai-gateway'), {
+      ...event.params,
+      index: Number(event.params.index),
+    }),
+);
+
 const auth = getAuth(initializeApp());
 
 export const aiGatewayApi = onRequest(async (request, response) => {
   response.set('Cache-Control', 'no-store');
+  const createRoute = request.path === '/api/executions';
+  const detailRoute = /^\/api\/executions\/[A-Za-z0-9_-]{1,128}(?:\/media\/\d+)?$/.test(
+    request.path,
+  );
   const accessRoute = ['/api/access', '/api/admin/access'].includes(request.path);
   const quoteRoute = request.path === '/api/budget/quote';
   if (
+    !createRoute &&
+    !detailRoute &&
     !quoteRoute &&
     !['/api/health', '/api/session', '/api/access', '/api/admin/access'].includes(request.path)
   ) {
@@ -21,12 +46,12 @@ export const aiGatewayApi = onRequest(async (request, response) => {
     return;
   }
   if (
-    quoteRoute
+    quoteRoute || createRoute
       ? request.method !== 'POST'
       : request.method !== 'GET' && !(accessRoute && request.method === 'POST')
   ) {
     response
-      .set('Allow', quoteRoute ? 'POST' : accessRoute ? 'GET, POST' : 'GET')
+      .set('Allow', quoteRoute || createRoute ? 'POST' : accessRoute ? 'GET, POST' : 'GET')
       .status(405)
       .end();
     return;
@@ -40,6 +65,14 @@ export const aiGatewayApi = onRequest(async (request, response) => {
       if (identity.firebase.sign_in_provider !== 'google.com') throw new Error('Provedor inválido');
     } catch {
       response.status(401).json({ error: 'Entre com Google para continuar' });
+      return;
+    }
+    if (createRoute || detailRoute) {
+      try {
+        await executionApi(request, response, identity);
+      } catch {
+        response.status(503).json({ error: 'Execução indisponível.' });
+      }
       return;
     }
     if (accessRoute || quoteRoute) {

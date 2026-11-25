@@ -15,7 +15,11 @@ function validAmount(n) {
 }
 
 // O chamador fornece o plano calculado nas Functions e o hash do pedido original.
-export async function reserveBudget(db, { uid, executionId, requestHash, plan }, now = new Date()) {
+export async function reserveBudget(
+  db,
+  { uid, executionId, requestHash, plan, createExecution },
+  now = new Date(),
+) {
   const operation = operationRef(db, uid, executionId);
   if (typeof requestHash !== 'string' || !/^[a-f0-9]{64}$/.test(requestHash))
     throw new BudgetError('Identificação do pedido inválida.');
@@ -50,12 +54,13 @@ export async function reserveBudget(db, { uid, executionId, requestHash, plan },
     };
     tx.set(ref, { ...balance, reservedMicroUsd: balance.reservedMicroUsd + plan.ceilingMicroUsd });
     tx.create(operation, reservation);
+    createExecution?.(tx, reservation);
     return reservation;
   });
 }
 
 // Somente quem recebe true pode despachar a tentativa. Um timeout no provedor mantém a reserva.
-export async function claimAttempt(db, uid, executionId, index) {
+export async function claimAttempt(db, uid, executionId, index, onClaim) {
   const ref = operationRef(db, uid, executionId);
   return db.runTransaction(async (tx) => {
     const reservation = (await tx.get(ref)).data();
@@ -63,6 +68,7 @@ export async function claimAttempt(db, uid, executionId, index) {
     if (attempt.status !== 'reserved') return false;
     attempt.status = 'dispatched';
     tx.update(ref, { attempts: reservation.attempts, status: 'pending' });
+    onClaim?.(tx);
     return true;
   });
 }
