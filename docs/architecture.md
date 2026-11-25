@@ -210,3 +210,5 @@ workflow estão descritos em [deployment.md](deployment.md).
 ### Previsão de custo
 
 `POST /api/budget/quote` consulta o painel em `judgePanels/{task}` e o orçamento em `users/{uid}/budgets/{AAAA-MM}` no banco dedicado. O documento mensal mantém `spentMicroUsd` e `reservedMicroUsd`. Cada unidade equivale a um milionésimo de USD. O servidor escolhe as tarifas e os limites de cada tentativa. A consulta informa saldo, teto e eventual bloqueio. Os critérios e as fontes dos limites usados na homologação estão na [entrega T09](entregas/2026-11-25-t09-orcamento.md).
+
+As reservas ficam em `users/{uid}/reservations/{executionId}`. Uma transação cria a reserva e atualiza o total retido do mês. Cada tentativa guarda seu teto e passa de reservada a despachada antes da chamada externa. O reenvio com o mesmo ID e hash recupera a operação. A liquidação registra o gasto apurado e libera o teto daquela tentativa no mês original. Tentativas sem confirmação de cobrança continuam retidas para reconciliação.

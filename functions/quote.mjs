@@ -1,4 +1,5 @@
 import { getFirestore } from 'firebase-admin/firestore';
+import { monthlyBudgetRef } from './reservations.mjs';
 import { isAdministrator } from './access.mjs';
 import { availableBudget, billingMonth, BudgetError, planBudget, taskOutputs } from './budget.mjs';
 
@@ -16,7 +17,7 @@ export async function quoteBudget(request, response, identity) {
     return response.status(400).json({ error: 'Tarefa inválida.' });
   const month = billingMonth();
   const [budget, panel] = await db.getAll(
-    db.collection('users').doc(identity.uid).collection('budgets').doc(month),
+    monthlyBudgetRef(db, identity.uid, month),
     db.collection('judgePanels').doc(task),
   );
   const availableMicroUsd = availableBudget(budget.data());
