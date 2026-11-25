@@ -31,7 +31,7 @@ test('preço, limites, compatibilidade e painel precisam ser conhecidos', () => 
     () => planBudget({ ...request, modelIds: [ids[0], ids[0], ids[0]] }, ids),
     /Seleção/,
   );
-  const image = catalog.models.at(-1);
+  const image = catalog.models.find((m) => m.id.endsWith('/flux-1-schnell'));
   assert.throws(() => priceAttempt(image, 'generation', {}), /limite/);
   assert.equal(
     priceAttempt(image, 'generation', { width: 513, height: 512, steps: 2 }).ceilingMicroUsd,

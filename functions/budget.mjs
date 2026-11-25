@@ -70,7 +70,9 @@ export function planBudget(
     !['comparison', 'retry', 'cache', 'fallback'].includes(kind)
   )
     throw new BudgetError('Operação desconhecida.');
-  const compatible = models.filter((m) => m.input === 'text' && m.output === taskOutputs[task]);
+  const compatible = models.filter(
+    (m) => m.input === 'text' && m.output === taskOutputs[task] && !m.budgetRestriction,
+  );
   const demo = ['cache', 'fallback'].includes(kind);
   const required = { comparison: Math.min(3, compatible.length), retry: 1, cache: 1, fallback: 2 }[
     kind

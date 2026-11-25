@@ -41,6 +41,22 @@
       "price": {
         "per512x512Tile": 5.28e-5,
         "perStep": 0.0001056
+      },
+      "budgetRestriction": "A API não permite fixar as dimensões para prever o custo máximo."
+    },
+    {
+      "id": "@cf/leonardo/lucid-origin",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "image",
+      "imageLimits": {
+        "width": 512,
+        "height": 512,
+        "steps": 4
+      },
+      "price": {
+        "per512x512Tile": 0.006996,
+        "perStep": 0.000132
       }
     }
   ]

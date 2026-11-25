@@ -30,7 +30,7 @@ export function ModelSelector({ catalog }: { catalog: Catalog }) {
   const compatible = catalog.models.filter(
     (model) => model.input === 'text' && model.output === task.output,
   );
-  const required = Math.min(3, compatible.length);
+  const required = Math.min(3, compatible.filter((model) => !model.budgetRestriction).length);
   return (
     <section className={styles.page}>
       <label className={styles.task}>
@@ -50,7 +50,10 @@ export function ModelSelector({ catalog }: { catalog: Catalog }) {
       <fieldset className={styles.choices}>
         <legend>Versões para comparar</legend>
         {required === 0 ? (
-          <p>Nenhum modelo habilitado aceita a entrada e a saída desta tarefa.</p>
+          <p>
+            Nenhum modelo habilitado tem modalidade compatível e teto de custo verificável para esta
+            tarefa.
+          </p>
         ) : required === 1 ? (
           <p>Apenas uma versão é compatível. Você pode testar esse modelo individualmente.</p>
         ) : required === 2 ? (
@@ -64,7 +67,10 @@ export function ModelSelector({ catalog }: { catalog: Catalog }) {
               type="checkbox"
               id={model.id}
               checked={selected.includes(model.id)}
-              disabled={selected.length === required && !selected.includes(model.id)}
+              disabled={
+                Boolean(model.budgetRestriction) ||
+                (selected.length === required && !selected.includes(model.id))
+              }
               onChange={(event) =>
                 setSelected(
                   event.target.checked
@@ -77,6 +83,7 @@ export function ModelSelector({ catalog }: { catalog: Catalog }) {
               <strong>{model.id}</strong>
               <small>
                 {model.provider} · {tariff(model)}
+                {model.budgetRestriction && <> · Indisponível. {model.budgetRestriction}</>}
               </small>
             </span>
           </label>

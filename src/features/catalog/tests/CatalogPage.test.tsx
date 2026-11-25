@@ -35,7 +35,9 @@ it('troca para imagem e remove as versões de texto da seleção', async () => {
   render(<ModelSelector catalog={catalog} />);
   await user.click(screen.getAllByRole('checkbox')[0]!);
   await user.selectOptions(screen.getByRole('combobox'), 'Geração de imagem');
-  expect(screen.getAllByRole('checkbox')).toHaveLength(1);
+  expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+  expect(screen.getByRole('checkbox', { name: /lucid-origin/ })).toBeEnabled();
+  expect(screen.getByRole('checkbox', { name: /flux/ })).toBeDisabled();
   expect(screen.getByRole('checkbox', { name: /flux/ })).not.toBeChecked();
   expect(screen.getByRole('status')).toHaveTextContent('0 de 1');
 });
