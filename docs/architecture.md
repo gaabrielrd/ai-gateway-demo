@@ -245,3 +245,7 @@ Em `/historico`, a conta autenticada lista e exclui execuções pelo próprio UI
 O administrador revisa a rodada finalizada em sua execução e confirma a autoria do material. A Function verifica o UID, a validade da origem e a revisão. Ela copia as imagens e grava um instantâneo JSON em um prefixo independente do Storage. Uma transação no Firestore torna a cópia visível depois de conferir a origem novamente. Cada tentativa usa um prefixo próprio e descarta a cópia incompleta se houver falha. O identificador da publicação deriva do autor, da execução e da revisão.
 
 A galeria lê o catálogo de publicações e serve o instantâneo e as imagens por rotas públicas com verificação de visibilidade. A retirada desativa a publicação antes de limpar seu prefixo. A limpeza do histórico privado atua somente nos caminhos do autor.
+
+### Demonstração de cache
+
+A página `/demos/cache` consulta a previsão e pede confirmação para duas chamadas pelo mesmo destino. A Function confere aprovação e reserva o teto mensal. Um evento do Firestore dispara as chamadas em sequência com o mesmo corpo e TTL de 300 segundos. A chave da reserva e o registro de despacho evitam repetir uma chamada após um reenvio. Cada resultado registra o indicador de cache, o tempo, os tokens e o identificador do log retornados pelo gateway. Um HIT liquida a parcela por zero. Um MISS com uso conhecido liquida o custo estimado. Uma origem ausente deixa o custo em reconciliação.

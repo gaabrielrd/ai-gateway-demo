@@ -1,3 +1,4 @@
+import { cacheApi, runCacheDemo } from './cache-demo.mjs';
 import { galleryApi } from './gallery.mjs';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { purgeExpired } from './history.mjs';
@@ -55,10 +56,22 @@ export const purgePrivateHistory = onSchedule(
   () => purgeExpired(getFirestore('cf-ai-gateway')),
 );
 
+export const repeatCacheDemo = onDocumentCreated(
+  {
+    document: 'users/{uid}/cacheDemos/{runId}',
+    database: 'cf-ai-gateway',
+    secrets: ['CLOUDFLARE_API_TOKEN'],
+    timeoutSeconds: 240,
+    retry: true,
+  },
+  (event) => runCacheDemo(getFirestore('cf-ai-gateway'), event.params),
+);
+
 const auth = getAuth(initializeApp());
 
 export const aiGatewayApi = onRequest(async (request, response) => {
   response.set('Cache-Control', 'no-store');
+  const cacheRoute = /^\/api\/demos\/cache(?:\/[a-f0-9-]{36})?$/.test(request.path);
   const publicGallery = /^\/api\/gallery(?:\/[a-f0-9]{64}(?:\/media\/\d+)?)?$/.test(request.path);
   const adminGallery = /^\/api\/admin\/gallery(?:\/[a-f0-9]{64})?$/.test(request.path);
   const retryRoute = /^\/api\/executions\/[A-Za-z0-9_-]{1,128}\/attempts\/\d+\/(quote|retry)$/.test(
@@ -73,6 +86,7 @@ export const aiGatewayApi = onRequest(async (request, response) => {
   );
   const quoteRoute = request.path === '/api/budget/quote';
   if (
+    !cacheRoute &&
     !publicGallery &&
     !adminGallery &&
     !retryRoute &&
@@ -90,6 +104,7 @@ export const aiGatewayApi = onRequest(async (request, response) => {
   if (quoteRoute || retryRoute) methods = ['POST'];
   if (detailRoute && !request.path.includes('/media/')) methods = ['GET', 'DELETE'];
   if (adminGallery) methods = request.path === '/api/admin/gallery' ? ['GET', 'POST'] : ['DELETE'];
+  if (request.path === '/api/demos/cache') methods = ['GET', 'POST'];
   if (!methods.includes(request.method)) {
     response.set('Allow', methods.join(', ')).status(405).end();
     return;
@@ -105,6 +120,13 @@ export const aiGatewayApi = onRequest(async (request, response) => {
     } catch {
       response.status(401).json({ error: 'Entre com Google para continuar' });
       return;
+    }
+    if (cacheRoute) {
+      try {
+        return await cacheApi(getFirestore('cf-ai-gateway'), request, response, identity);
+      } catch {
+        return response.status(503).json({ error: 'Demonstração indisponível.' });
+      }
     }
     if (adminGallery) return galleryApi(getFirestore('cf-ai-gateway'), request, response, identity);
     if (createRoute || detailRoute || retryRoute) {
