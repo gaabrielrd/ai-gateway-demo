@@ -20,4 +20,4 @@ Login comprova identidade. A aprovação precisa ser consultada nas funções in
 
 ## Homologação da T04
 
-O cliente Google habilitado em `timekeeper-d9a0a` respondeu `redirect_uri_mismatch` para o callback local do Hosting em 25/11/2026. O fluxo com PKCE, a troca na Function, a guarda em memória e a validação da identidade já têm implementação. Os testes locais passaram. A homologação com conta real aguarda o cadastro de `http://127.0.0.1:5500/auth/callback` no cliente OAuth e a configuração do segredo no ambiente das Functions. O site do app é `cf-ai-gateway`.
+O login do aplicativo usa o popup Google gerenciado pelo Firebase e a sessão em memória. O passo manual com `client_secret` e o cadastro do callback OAuth foram substituídos pelo uso dos domínios autorizados do Firebase Authentication. O teste com conta Google real depende da interação da pessoa no popup.

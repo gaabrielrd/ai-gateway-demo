@@ -41,10 +41,7 @@ export function removeAuth(root, log = () => {}) {
       file,
     );
     next = next.replace("import { GoogleAccountButton } from '@/features/auth';\n", '');
-    next = next.replace(
-      /<App\s+account=\{env\.auth\?\.issuer === 'https:\/\/accounts\.google\.com' && <GoogleAccountButton \/>\}\s*\/>/,
-      '<App />',
-    );
+    next = next.replace('<App account={<GoogleAccountButton />} />', '<App />');
     next = replaceExact(
       next,
       `    // O provedor de autenticacao envolve o layout: as telas protegidas e o

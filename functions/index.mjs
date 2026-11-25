@@ -1,20 +1,9 @@
 import { onRequest } from 'firebase-functions/v2/https';
 
-import { defineSecret } from 'firebase-functions/params';
-import { tokenHandler, verifyGoogleIdentity } from './google-auth.mjs';
+import { initializeApp } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
 
-const googleClientSecret = defineSecret('GOOGLE_OAUTH_CLIENT_SECRET');
-
-export const aiGatewayGoogleToken = onRequest(
-  { secrets: [googleClientSecret] },
-  tokenHandler({
-    configuration: () => ({
-      clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
-      redirectUri: process.env.GOOGLE_OAUTH_REDIRECT_URI,
-      secret: googleClientSecret.value(),
-    }),
-  }),
-);
+const auth = getAuth(initializeApp());
 
 export const aiGatewayApi = onRequest(async (request, response) => {
   response.set('Cache-Control', 'no-store');
@@ -29,8 +18,10 @@ export const aiGatewayApi = onRequest(async (request, response) => {
   if (request.path === '/api/session') {
     const bearer = /^Bearer ([^ ]+)$/.exec(request.get('Authorization') ?? '');
     try {
-      const identity = await verifyGoogleIdentity(bearer?.[1], process.env.GOOGLE_OAUTH_CLIENT_ID);
-      response.json({ subject: identity.subject });
+      if (!bearer) throw new Error('Token ausente');
+      const identity = await auth.verifyIdToken(bearer[1]);
+      if (identity.firebase.sign_in_provider !== 'google.com') throw new Error('Provedor inválido');
+      response.json({ subject: identity.uid });
     } catch {
       response.status(401).json({ error: 'Entre com Google para continuar' });
     }

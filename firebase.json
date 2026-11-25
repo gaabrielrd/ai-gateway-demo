@@ -9,12 +9,12 @@
     "site": "cf-ai-gateway",
     "public": "dist",
     "rewrites": [
-      { "source": "/api/auth/google/token", "function": "aiGatewayGoogleToken" },
       { "source": "/api/**", "function": "aiGatewayApi" },
       { "source": "**", "destination": "/index.html" }
     ]
   },
   "emulators": {
+    "auth": { "host": "127.0.0.1", "port": 9599 },
     "hosting": { "host": "127.0.0.1", "port": 5500 },
     "functions": { "host": "127.0.0.1", "port": 5501 },
     "ui": { "enabled": false }

@@ -18,9 +18,7 @@ export const routes: RouteObject[] = [
     // retorno do provedor precisam do mesmo estado de sessao.
     element: (
       <AuthGate>
-        <App
-          account={env.auth?.issuer === 'https://accounts.google.com' && <GoogleAccountButton />}
-        />
+        <App account={<GoogleAccountButton />} />
       </AuthGate>
     ),
     // Captura erros do layout e de qualquer rota filha sem errorElement proprio.

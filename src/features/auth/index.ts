@@ -25,3 +25,4 @@ export {
 } from './model/session';
 
 export { GoogleAccountButton } from './components/GoogleAccountButton';
+export { FirebaseAuthProvider } from './components/FirebaseAuthProvider';

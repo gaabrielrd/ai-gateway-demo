@@ -23,7 +23,7 @@ Abra o endereço informado pelo Vite. A demonstração funciona sem configurar v
 
 ## Autenticação
 
-Para habilitar o login OIDC, configure o emissor, o identificador público do cliente e a URI de retorno em `.env.local`, conforme [.env.example](.env.example).
+O botão **Entrar com Google** abre o popup do Firebase Authentication. A sessão fica em memória, e as Functions verificam o ID token Firebase de cada chamada autenticada.
 
 ## Validação
 
@@ -61,10 +61,6 @@ firebase emulators:start --only hosting,functions --project demo-ai-gateway
 
 Abra `http://127.0.0.1:5500/`. O caminho `/api/health` verifica a função sem chamar provedores. Os segredos de funções que integram serviços externos devem ser vinculados à função consumidora pelo Secret Manager. O emulador aceita valores de desenvolvimento em `functions/.secret.local`, ignorado pelo Git. O endpoint de saúde dispensa segredos.
 
-### Login Google no Hosting local
+### Login no ambiente local
 
-O alias Firebase `homologacao` identifica o projeto `timekeeper-d9a0a`; o site de Hosting e o grupo de Functions do app são `cf-ai-gateway`.
-
-Use um cliente OAuth do tipo **Aplicativo da Web** no projeto de homologação e cadastre exatamente o retorno `http://127.0.0.1:5500/auth/callback`. Na raiz, preencha `.env.local` a partir de `.env.example` com o emissor Google, Client ID e retorno. Em `functions/.env.local`, configure `GOOGLE_OAUTH_CLIENT_ID` e `GOOGLE_OAUTH_REDIRECT_URI` com os mesmos valores. Em `functions/.secret.local`, configure `GOOGLE_OAUTH_CLIENT_SECRET`. Guarde o segredo de deploy no Secret Manager.
-
-Gere o bundle após configurar os valores públicos e abra o endereço do Hosting local. O botão **Entrar com Google** inicia o fluxo. O retorno verifica o estado e envia o código e o verificador PKCE à função de troca. O token de identidade verificado permanece em memória até sair ou expirar. Após a expiração, entre novamente. [Fluxo OpenID Connect do Google](https://developers.google.com/identity/openid-connect/openid-connect).
+Use o projeto Firebase `timekeeper-d9a0a` e o site `cf-ai-gateway` na homologação. Em **Authentication → Settings → Authorized domains**, autorize o hostname usado para abrir o app, por exemplo `localhost` para desenvolvimento. O provedor Google deve estar habilitado. O SDK usa os identificadores públicos do aplicativo Web e gerencia a janela de login. [Login Google pelo Firebase](https://firebase.google.com/docs/auth/web/google-signin).

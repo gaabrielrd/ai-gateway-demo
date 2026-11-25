@@ -81,7 +81,7 @@ entendimento do projeto, não para toda edição.
 Aplicável quando a capacidade `auth` está ligada. Regras completas na
 [ADR 0015](docs/decisions/0015-authentication.md).
 
-- O fluxo é Authorization Code + PKCE contra um provedor OIDC existente.
+- O aplicativo usa o popup Google do Firebase Authentication com persistência em memória. O servidor verifica o ID token com o Firebase Admin SDK. A ADR 0015 descreve a implementação OIDC original do template.
 - Token de acesso vive **em memória**. Nunca grave token em `localStorage` nem
   em `sessionStorage`.
 - Nunca coloque `client_secret` no projeto: o cliente é público e tudo que vai
