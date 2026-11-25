@@ -6,7 +6,7 @@ function tokens(value) {
 
 // Credenciais e parâmetros de conexão são fornecidos somente pelo servidor.
 export async function generate(
-  { modelId, prompt, limits, cacheTtl },
+  { modelId, prompt, limits, cacheTtl, judgeContent },
   {
     accountId = process.env.CLOUDFLARE_ACCOUNT_ID,
     gatewayId = process.env.CLOUDFLARE_GATEWAY_ID,
@@ -18,7 +18,12 @@ export async function generate(
   if (!/^[a-f0-9]{32}$/.test(accountId) || !gatewayId || !token)
     throw new Error('Gateway sem configuração.');
   const model = models.find((m) => m.id === modelId);
-  if (!model || typeof prompt !== 'string' || !prompt.trim())
+  if (
+    !model ||
+    typeof prompt !== 'string' ||
+    !prompt.trim() ||
+    (judgeContent && model.output !== 'text')
+  )
     throw new Error('Modelo ou prompt inválido.');
   const image = model.output === 'image';
   const headers = {
@@ -57,7 +62,12 @@ export async function generate(
       throw new Error('Limite de saída inválido.');
     body = {
       model: modelId,
-      messages: [{ role: 'user', content: prompt }],
+      messages: judgeContent
+        ? [
+            { role: 'system', content: prompt },
+            { role: 'user', content: judgeContent },
+          ]
+        : [{ role: 'user', content: prompt }],
       max_tokens: limits.outputTokens,
     };
   }
@@ -88,8 +98,9 @@ export async function generate(
     output = { type: 'image', contentType: jpeg ? 'image/jpeg' : 'image/png', bytes };
   } else {
     const text = data.choices?.[0]?.message?.content;
-    if (typeof text !== 'string' || !text.trim()) throw new Error('Resposta de texto incompleta.');
-    output = { type: 'text', text };
+    if (!judgeContent && (typeof text !== 'string' || !text.trim()))
+      throw new Error('Resposta de texto incompleta.');
+    output = { type: 'text', text: typeof text === 'string' ? text : '' };
   }
   return {
     requestedModel: modelId,

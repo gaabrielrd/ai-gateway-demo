@@ -65,3 +65,20 @@ test('falha do provedor e corpo incompleto não viram sucesso', async () => {
   );
   await assert.rejects(generate({ ...text, modelId: 'desconhecido' }, conn), /inválido/);
 });
+
+test('juiz com resposta vazia preserva o uso para liquidação antes da validação do parecer', async () => {
+  const result = await generate(
+    { ...text, judgeContent: 'Candidato A' },
+    {
+      ...conn,
+      fetchImpl: () =>
+        Response.json({
+          choices: [{ message: { content: null } }],
+          usage: { prompt_tokens: 30, completion_tokens: 5 },
+        }),
+    },
+  );
+  assert.equal(result.output.text, '');
+  assert.equal(result.inputTokens, 30);
+  assert.equal(result.outputTokens, 5);
+});

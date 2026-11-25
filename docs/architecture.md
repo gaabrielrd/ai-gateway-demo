@@ -225,3 +225,9 @@ O trabalhador tem limite de 180 segundos. Se uma tentativa despachada continuar 
 ### Configuração dos juízes
 
 A administração em `/admin/juizes` usa `GET` e `POST /api/admin/panels`. A Function verifica o papel administrativo e aceita três IDs distintos e compatíveis por tarefa. O catálogo registra janela de contexto e capacidade de inspecionar imagens verificada no gateway. A previsão identifica os juízes e os critérios. O comparador envia os IDs confirmados e, se eles mudarem, o servidor pede uma nova previsão. Cada execução preserva as versões dos juízes e a lista de critérios, inclusive o critério próprio informado pelo autor.
+
+### Rodadas de julgamento
+
+Cada reserva cria uma rodada com os índices das gerações incluídas. Uma repetição substitui somente o índice do modelo repetido na composição da nova rodada. O gatilho de atualização de tentativas espera todas as gerações da rodada terminarem e distribui as concluídas aos três juízes. O payload contém identificadores anônimos, prompt, referência, critérios e o conteúdo das respostas. Imagens privadas seguem diretamente do Storage para o juiz visual.
+
+Os pareceres são persistidos separadamente em `rounds/{reserva}/reviews/{slot}`. A tomada de cada slot usa a reserva antes do despacho. Um erro de formato preserva os outros pareceres e contabiliza o uso informado. Uma falha de leitura anterior ao despacho libera a parcela. A consulta privada retorna a rodada mais recente com pareceres e a conferência campo a campo quando o gabarito de extração é um objeto JSON.

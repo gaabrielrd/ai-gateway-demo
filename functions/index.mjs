@@ -7,9 +7,10 @@ import { ownAccess, adminAccess, isAdministrator } from './access.mjs';
 
 import { quoteBudget } from './quote.mjs';
 
-import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { onDocumentCreated, onDocumentUpdated } from 'firebase-functions/v2/firestore';
 import { getFirestore } from 'firebase-admin/firestore';
 import { panelsApi } from './panels.mjs';
+import { judgeAfterGeneration } from './judging.mjs';
 import { retryApi } from './retries.mjs';
 import { executionApi, executionPath, processAttempt } from './executions.mjs';
 
@@ -26,6 +27,24 @@ export const generateAttempt = onDocumentCreated(
       ...event.params,
       index: Number(event.params.index),
     }),
+);
+
+export const judgeGenerations = onDocumentUpdated(
+  {
+    document: executionPath,
+    database: 'cf-ai-gateway',
+    secrets: ['CLOUDFLARE_API_TOKEN'],
+    timeoutSeconds: 240,
+    retry: true,
+  },
+  (event) => {
+    const after = event.data?.after.data();
+    if (after && ['completed', 'failed'].includes(after.status))
+      return judgeAfterGeneration(getFirestore('cf-ai-gateway'), {
+        ...event.params,
+        index: Number(event.params.index),
+      });
+  },
 );
 
 const auth = getAuth(initializeApp());

@@ -73,11 +73,20 @@ export async function retryGeneration(db, identity, executionId, index, confirma
         !retryable(failed.data())
       )
         throw new BudgetError('Tentativa indisponível.');
-      return current.get('nextAttemptIndex') ?? current.get('modelIds').length;
+      const nextIndex = current.get('nextAttemptIndex') ?? current.get('modelIds').length;
+      const indices = current.get('activeIndices') ?? current.get('modelIds').map((_, i) => i);
+      const slot = current.get('modelIds').indexOf(attempt.modelId);
+      indices[slot] = nextIndex;
+      return { nextIndex, indices };
     },
-    createExecution(tx, _reservation, nextIndex) {
+    createExecution(tx, _reservation, { nextIndex, indices }) {
       const generation = plan.attempts[0];
-      tx.update(execution, { nextAttemptIndex: nextIndex + 1 });
+      tx.update(execution, { nextAttemptIndex: nextIndex + 1, activeIndices: indices });
+      tx.create(execution.collection('rounds').doc(reservationId), {
+        indices,
+        status: 'pending',
+        revision: nextIndex,
+      });
       tx.update(source, {
         retryIndex: nextIndex,
         status: 'failed',

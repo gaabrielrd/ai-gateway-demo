@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getStorage } from 'firebase-admin/storage';
 import catalog from './catalog.json' with { type: 'json' };
-import { BudgetError, planBudget, taskOutputs } from './budget.mjs';
+import { BudgetError, attemptCost, planBudget, taskOutputs } from './budget.mjs';
 import { isAdministrator } from './access.mjs';
 import { reserveBudget, claimAttempt, settleAttempt } from './reservations.mjs';
 import { criteriaFor } from './panels.mjs';
@@ -91,8 +91,15 @@ export async function createExecution(db, identity, body, now = new Date()) {
       requestHash,
       plan,
       createExecution(tx) {
+        const indices = modelIds.map((_, i) => i);
+        tx.create(ref.collection('rounds').doc(executionId), {
+          indices,
+          status: 'pending',
+          revision: 0,
+        });
         tx.create(ref, {
           ...request,
+          activeIndices: indices,
           requestHash,
           createdAt: now,
           expiresAt: new Date(+now + 30 * 86400000),
@@ -114,17 +121,6 @@ export async function createExecution(db, identity, body, now = new Date()) {
     now,
   );
   return executionId;
-}
-
-function cost(result, attempt) {
-  if (result.cacheStatus === 'HIT') return 0;
-  if (result.effectiveModel && result.effectiveModel !== attempt.modelId) return null;
-  if (result.output.type === 'image') return attempt.ceilingMicroUsd;
-  if (result.inputTokens === null || result.outputTokens === null) return null;
-  return Math.ceil(
-    result.inputTokens * attempt.price.perMillionInputTokens +
-      result.outputTokens * attempt.price.perMillionOutputTokens,
-  );
 }
 
 export async function processAttempt(
@@ -168,7 +164,7 @@ export async function processAttempt(
     return;
   }
   const { output, ...metrics } = result;
-  const amount = cost(result, attempt);
+  const amount = attemptCost(result, attempt);
   const costMicroUsd =
     Number.isSafeInteger(amount) && amount >= 0 && amount <= attempt.ceilingMicroUsd
       ? amount
@@ -226,10 +222,21 @@ export async function executionApi(request, response, identity) {
       .download();
     return response.type(output.contentType).send(bytes);
   }
-  const attempts = await ref.collection('attempts').orderBy('index').get();
+  const [attempts, rounds] = await Promise.all([
+    ref.collection('attempts').orderBy('index').get(),
+    ref.collection('rounds').orderBy('revision', 'desc').limit(1).get(),
+  ]);
+  const round = rounds.docs[0];
+  const evaluation = round
+    ? {
+        ...round.data(),
+        reviews: (await round.ref.collection('reviews').get()).docs.map((d) => d.data()),
+      }
+    : null;
   const { requestHash: _hash, ...record } = execution.data();
   return response.json({
     ...record,
+    evaluation,
     executionId: id,
     createdAt: record.createdAt.toDate().toISOString(),
     expiresAt: record.expiresAt.toDate().toISOString(),

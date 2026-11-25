@@ -7,7 +7,7 @@ Explicar a qualidade de cada geração por critério e produzir uma classificaç
 ## Tarefas
 
 - [x] **T15 — Configurar e identificar o painel.** Permitir ao administrador escolher três juízes compatíveis por tarefa. Validar capacidade de inspecionar imagens e registrar versões e critérios na execução, inclusive para orçar antes de gerar.
-- [ ] **T16 — Executar o julgamento.** Enviar saídas com identificadores anônimos, prompt, referência e critérios. Validar notas de 0 a 4, justificativas e marcações de não verificável. Avaliar uma resposta isolada ou comparar as concluídas. Conferir os campos de gabaritos verificáveis.
+- [x] **T16 — Executar o julgamento.** Enviar saídas com identificadores anônimos, prompt, referência e critérios. Validar notas de 0 a 4, justificativas e marcações de não verificável. Avaliar uma resposta isolada ou comparar as concluídas. Conferir os campos de gabaritos verificáveis.
 - [ ] **T17 — Entregar classificação e pareceres.** Calcular mediana por critério e média com pesos iguais, incluindo o critério próprio quando presente. Mostrar empates, divergências e motivos de resultado parcial. Exibir custo e tempo dos juízes em separado e incluir eventual reavaliação na previsão de repetição.
 
 ## Critério de conclusão

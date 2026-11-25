@@ -58,7 +58,7 @@ export function priceAttempt(model, role, limits) {
   }
   const ceilingMicroUsd = Math.ceil(cost);
   if (!Number.isSafeInteger(ceilingMicroUsd)) throw new BudgetError('Teto inválido.');
-  return { modelId: model.id, role, limits, ceilingMicroUsd };
+  return { modelId: model.id, role, limits, price, ceilingMicroUsd };
 }
 
 export function planBudget(
@@ -111,4 +111,15 @@ export function planBudget(
     attempts,
     ceilingMicroUsd: attempts.reduce((sum, call) => sum + call.ceilingMicroUsd, 0),
   };
+}
+
+export function attemptCost(result, attempt) {
+  if (result.cacheStatus === 'HIT') return 0;
+  if (result.effectiveModel && result.effectiveModel !== attempt.modelId) return null;
+  if (result.output.type === 'image') return attempt.ceilingMicroUsd;
+  if (result.inputTokens === null || result.outputTokens === null) return null;
+  return Math.ceil(
+    result.inputTokens * attempt.price.perMillionInputTokens +
+      result.outputTokens * attempt.price.perMillionOutputTokens,
+  );
 }
