@@ -106,6 +106,11 @@ Aplicável quando a capacidade `auth` está ligada. Regras completas na
 - Não reintroduza suporte ou jobs de CI para Node 22.
 - Mantenha `engines.node`, `.nvmrc`, lockfile, CI e documentação coerentes.
 
+## Servidor Firebase
+
+- O pacote de Cloud Functions fica em `functions/`. Instale suas dependências com `npm ci --prefix functions`. O gate completo roda os testes HTTP desse pacote.
+- Use o projeto local `demo-ai-gateway` para testes com emuladores. Segredos usados pelas Functions ficam no servidor.
+
 ## Dependências
 
 - Não adicione dependências sem explicar a necessidade.

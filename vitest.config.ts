@@ -16,7 +16,7 @@ export default mergeConfig(
       execArgv: ['--no-experimental-webstorage'],
       globals: true,
       setupFiles: './src/test/setup.ts',
-      exclude: [...configDefaults.exclude, 'scripts/**/*.test.mjs', 'e2e/**'],
+      exclude: [...configDefaults.exclude, 'scripts/**/*.test.mjs', 'functions/**', 'e2e/**'],
       css: true,
       typecheck: {
         tsconfig: './tsconfig.app.json',

@@ -10,6 +10,7 @@ Use Node.js 24 LTS e npm 11.16.0. Com o nvm instalado, execute na raiz do reposi
 nvm use
 npm install --global npm@11.16.0
 npm ci
+npm ci --prefix functions
 ```
 
 ## Execução
@@ -48,3 +49,14 @@ Para a primeira execução dos testes de navegador, instale o Chromium com `npx 
 - `src/shared/ui` reúne os componentes da identidade própria. Os tokens visuais ficam em `src/styles/tokens.css`.
 
 Consulte a [arquitetura](docs/architecture.md), o [guia visual](docs/styleguide.md) e o [processo de desenvolvimento](docs/development-process.md) para criar funcionalidades e registrar decisões. As instruções para trabalhar com agentes ficam no [guia de skills](docs/skills-guide.md).
+
+## Firebase local
+
+Com o Firebase CLI instalado, gere o bundle e inicie Hosting e Functions em um projeto de demonstração local:
+
+```bash
+npm run build
+firebase emulators:start --only hosting,functions --project demo-ai-gateway
+```
+
+Abra `http://127.0.0.1:5500/`. O caminho `/api/health` verifica a função sem chamar provedores. Os segredos de funções que integram serviços externos devem ser vinculados à função consumidora pelo Secret Manager. O emulador aceita valores de desenvolvimento em `functions/.secret.local`, ignorado pelo Git. O endpoint de saúde dispensa segredos.

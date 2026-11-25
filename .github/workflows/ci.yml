@@ -40,7 +40,9 @@ jobs:
           npm run check:toolchain
 
       - name: Instalar dependências
-        run: npm ci
+        run: |
+          npm ci
+          npm ci --prefix functions
 
       - name: Validar
         run: npm run validate

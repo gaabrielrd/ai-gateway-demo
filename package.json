@@ -19,7 +19,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc -b",
-    "test": "npm run test:coverage && npm run test:setup",
+    "test": "npm run test:coverage && npm run test:setup && npm run test:functions",
     "test:unit": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:setup": "node --test scripts/*.test.mjs",
@@ -38,7 +38,8 @@
     "build:pages": "npm run typecheck && node scripts/build-pages.mjs",
     "validate:quick": "node scripts/validate.mjs --quick",
     "validate:changed": "node scripts/validate.mjs --changed",
-    "audit": "npm audit --audit-level=high"
+    "audit": "npm audit --audit-level=high",
+    "test:functions": "node --test functions/*.test.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.61.0",

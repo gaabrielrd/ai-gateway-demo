@@ -138,7 +138,7 @@ function triggersFor(paths) {
     if (path.startsWith('docs/') || DOC_FILES.has(path)) triggers.add('docs');
     if (path.endsWith('.css')) triggers.add('styles');
     if (path.startsWith('src/')) triggers.add('src');
-    if (path.startsWith('scripts/')) triggers.add('scripts');
+    if (path.startsWith('scripts/') || path.startsWith('functions/')) triggers.add('scripts');
     if (path.startsWith('e2e/')) triggers.add('e2e');
   }
   return triggers;
@@ -156,7 +156,8 @@ function testCommands({ config, affectedTests, scoped, includeSetup, quick }) {
   } else {
     commands.push(['npx', 'vitest', 'run', '--coverage']);
   }
-  if (includeSetup && !quick) commands.push(['node', '--test', 'scripts/*.test.mjs']);
+  if (includeSetup && !quick)
+    commands.push(['node', '--test', 'scripts/*.test.mjs', 'functions/*.test.mjs']);
   return commands;
 }
 

@@ -29,3 +29,9 @@ Thumbs.db
 # IDEs
 .vscode/
 .idea/
+
+# Firebase local
+.firebase/
+*-debug.log
+.secret.local
+functions/.env*
