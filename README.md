@@ -2,6 +2,8 @@
 
 Comparador de modelos do Cloudflare AI Gateway com React, TypeScript, Firebase Hosting e Cloud Functions. A página inicial permite explorar o catálogo público. Usuários aprovados podem consultar o orçamento, confirmar o prompt e acompanhar cada geração em uma URL privada. A execução depende de um painel de juízes configurado para a tarefa.
 
+[Abrir o comparador](https://cf-ai-gateway.web.app) · [Consultar os benchmarks](https://cf-ai-gateway.web.app/galeria) · [Guia de publicação](docs/deployment.md)
+
 ## Instalação
 
 Use Node.js 24 LTS e npm 11.16.0. Com o nvm instalado, execute na raiz do repositório:

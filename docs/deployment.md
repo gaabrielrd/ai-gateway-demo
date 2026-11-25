@@ -1,10 +1,32 @@
-# Publicação no GitHub Pages
+# Publicação do AI Gateway Demo
+
+O projeto Firebase `timekeeper-d9a0a` compartilha infraestrutura com outros aplicativos. O site Hosting, o codebase das Functions e o banco Firestore deste aplicativo têm o nome `cf-ai-gateway`. O banco fica em `southamerica-east1`. A API HTTP recebe as chamadas encaminhadas por `/api/**`. Os demais caminhos abrem a SPA. [Site do comparador](https://cf-ai-gateway.web.app)
+
+## Configuração do servidor
+
+Configure `CLOUDFLARE_ACCOUNT_ID` e `CLOUDFLARE_GATEWAY_ID` em `functions/.env.timekeeper-d9a0a`. O Secret Manager fornece `CLOUDFLARE_API_TOKEN` aos quatro trabalhadores que chamam modelos. A versão local do segredo fica em `functions/.secret.local`. O Firebase Authentication precisa ter o provedor Google ativo e o domínio publicado autorizado. As regras do bucket compartilhado protegem os objetos privados do comparador. As Functions leem as imagens com a identidade de serviço.
+
+## Publicar uma atualização
+
+Com as dependências da raiz e de `functions` instaladas, execute a validação com o Firestore Emulator e os testes de navegador. A validação gera o bundle em `dist`.
+
+```bash
+firebase emulators:exec --only firestore --project demo-ai-gateway 'npm run validate'
+npm run test:e2e
+firebase deploy --project timekeeper-d9a0a --only firestore:cf-ai-gateway,functions:cf-ai-gateway,hosting
+```
+
+Confira o site especificado em `firebase.json` antes da publicação. Na primeira instalação a CLI solicita confirmação para ativar repetição das quatro Functions de eventos. As repetições podem gerar cobranças de infraestrutura. A administração escolhe três juízes compatíveis por tarefa e publica, na galeria, as execuções próprias revisadas.
+
+Abra a rota direta de um benchmark, confira o retorno do login Google e a previsão mensal de uma conta aprovada. Em uma janela anônima, confira os detalhes da galeria e a imagem pública. A consulta de saúde está em `/api/health`.
+
+## GitHub Pages do template
 
 O Pages hospeda os arquivos estáticos gerados pelo Vite. A publicação inclui
 a página inicial e o styleguide, sem backend. O exemplo de notas continua
 salvando dados apenas no navegador.
 
-## Publicação automática
+### Publicação automática
 
 1. No repositório, abra **Settings → Pages**.
 2. Em **Build and deployment**, selecione **GitHub Actions** como Source.
@@ -22,7 +44,7 @@ Neste repositório, a página inicial fica em
 e o styleguide em
 [https://devedtech.github.io/template-ia-web/styleguide/](https://devedtech.github.io/template-ia-web/styleguide/).
 
-## Como o roteamento funciona
+### Como o roteamento funciona
 
 O build usa a mesma base para assets, favicon e `basename` do React Router.
 A leitura de `BASE_URL` fica centralizada em `src/shared/config/env.ts`.
@@ -38,7 +60,7 @@ Ao adicionar uma nova rota pública que precisa de acesso direto, acrescente
 sua entrada em `scripts/prepare-pages.mjs`. Rotas com parâmetros podem exigir
 outra estratégia de hospedagem ou geração estática.
 
-## Build local para o Pages
+### Build local para o Pages
 
 Em um terminal POSIX, execute:
 
@@ -54,7 +76,7 @@ Para conferir o artefato, sirva `dist/` sob o mesmo prefixo, sem fallback de
 SPA, e abra a página inicial e `/template-ia-web/styleguide/` diretamente.
 Verifique também o favicon, as fontes e a navegação entre as páginas.
 
-## Referências
+### Referências
 
 - [Vite: GitHub Pages](https://vite.dev/guide/static-deploy.html#github-pages)
 - [GitHub: configurar a origem da publicação](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
