@@ -185,14 +185,9 @@ Detalhes em [testing.md](testing.md).
 
 O template começa simples de propósito. Adicione estrutura, bibliotecas ou camadas apenas quando um problema real aparecer, e registre a mudança em um ADR (`docs/decisions/`).
 
-## Página de onboarding
+## Página inicial e resultados
 
-A feature `home` orienta os primeiros passos e recebe a demonstração como
-conteúdo opcional. A rota compõe `HomePage` e a API pública de `notes`; a página
-não importa a demonstração. Assim `setup --remove-example` pode remover apenas
-as notas e sua composição sem quebrar imports nem substituir um layout
-personalizado. As rotas participam do rollback do setup. A orientação permanece
-acessível mesmo sem a demonstração. Veja [onboarding.md](onboarding.md).
+As rotas `/` e `/comparar` abrem o catálogo e o formulário de comparação. A seleção completa permite consultar o saldo e o teto. Após a confirmação, a página `/execucoes/:id` consulta a API autenticada enquanto houver gerações em andamento. Cada resposta concluída é exibida imediatamente. A consulta é cancelada ao sair da página ou trocar de conta. As imagens são buscadas com o token de sessão e suas URLs locais são liberadas ao desmontar a tela.
 
 O header compartilhado ocupa a largura disponível. O limite `--layout-max`
 fica no conteúdo das páginas comuns, preservando a largura da página inicial.

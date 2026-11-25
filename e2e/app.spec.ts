@@ -1,22 +1,16 @@
-import { existsSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 
-const hasNotesExample = existsSync('src/features/notes');
-
-test('executa o fluxo de notas e preserva os dados ao recarregar', async ({ page }) => {
-  test.skip(!hasNotesExample, 'Demonstração removida pelo setup.');
+test('abre o comparador público e seleciona três modelos por teclado', async ({ page }) => {
   await page.goto('/');
-
-  await page.getByRole('textbox', { name: 'Título da nota' }).fill('Nota pelo navegador');
-  await page.getByRole('button', { name: 'Adicionar' }).click();
-  await expect(page.getByText('Nota pelo navegador')).toBeVisible();
-
-  await page.reload();
-  await expect(page.getByText('Nota pelo navegador')).toBeVisible();
-
-  await page.getByRole('button', { name: 'Remover nota: Nota pelo navegador' }).click();
-  await expect(page.getByText('Nota pelo navegador')).toBeHidden();
-  await expect(page.getByText(/Nenhuma nota ainda/)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Comparar modelos' })).toBeVisible();
+  const choices = page.getByRole('checkbox');
+  await expect(choices).toHaveCount(3);
+  for (const choice of await choices.all()) {
+    await choice.focus();
+    await choice.press('Space');
+  }
+  await expect(page.getByText('3 de 3 selecionadas')).toBeVisible();
+  await expect(page.getByText(/Entre com Google para consultar seu saldo/)).toBeVisible();
 });
 
 test('preserva a rota de fallback', async ({ page }) => {
@@ -24,21 +18,12 @@ test('preserva a rota de fallback', async ({ page }) => {
   await expect(page.getByRole('heading', { name: /pagina nao encontrada/i })).toBeVisible();
 });
 
-test('orienta o início e mantém a navegação do guia no celular', async ({ page }) => {
+test('o catálogo de imagens cabe na tela do celular', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Seu projeto começa aqui' })).toBeVisible();
-  await page.getByRole('link', { name: /Ver primeiros passos/ }).click();
-  await page.getByText('Explore o que já vem pronto').click();
-  if (hasNotesExample) {
-    await page.getByRole('link', { name: 'Experimentar as notas' }).click();
-    await expect(page.getByRole('textbox', { name: 'Título da nota' })).toBeInViewport();
-  } else {
-    await expect(page.getByRole('link', { name: 'Experimentar as notas' })).toHaveCount(0);
-  }
-  await page.getByText('Planeje sua primeira funcionalidade').click();
-  await expect(page.getByText(/Quero criar \[descreva a ideia/)).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
-    true,
-  );
+  await page.getByLabel('Tarefa').selectOption('Geração de imagem');
+  await expect(page.getByRole('checkbox', { name: /flux/ })).toBeDisabled();
+  await page.getByRole('checkbox', { name: /lucid-origin/ }).check();
+  await expect(page.getByText('1 de 1 selecionadas')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

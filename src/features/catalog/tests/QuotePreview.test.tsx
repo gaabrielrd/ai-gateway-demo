@@ -1,3 +1,4 @@
+import { MemoryRouter } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
@@ -28,7 +29,11 @@ describe('orçamento antes de executar', () => {
   ] as const)('exibe a previsão ou explica o bloqueio', async (status, body, expected) => {
     const mock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json(body, { status }));
     try {
-      render(<QuotePreview task="summary" modelIds={['x']} />);
+      render(
+        <MemoryRouter>
+          <QuotePreview task="summary" modelIds={['x']} />
+        </MemoryRouter>,
+      );
       await userEvent.click(screen.getByRole('button', { name: 'Consultar orçamento' }));
       expect(await screen.findByText(expected)).toBeVisible();
       expect(mock).toHaveBeenCalledWith(

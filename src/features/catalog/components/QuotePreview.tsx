@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '@/features/auth';
+import { ExecutionForm } from '@/features/comparison';
 import { Button } from '@/shared/ui';
 import { getQuote } from '../services/quote';
 
@@ -42,6 +43,13 @@ function QuoteForm({ task, modelIds }: { task: string; modelIds: string[] }) {
             <p>Custo máximo com julgamento: {format.format(quote.ceilingMicroUsd / 1e6)}</p>
           )}
           {quote.reason && <p>{quote.reason}</p>}
+          {!quote.reason && quote.ceilingMicroUsd !== null && (
+            <ExecutionForm
+              task={task}
+              modelIds={modelIds}
+              confirmedMicroUsd={quote.ceilingMicroUsd}
+            />
+          )}
         </div>
       )}
     </section>

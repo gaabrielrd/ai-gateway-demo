@@ -28,9 +28,7 @@ describe('composicao da aplicacao', () => {
       initialEntries: ['/template-ia-web/'],
     });
     render(<RouterProvider router={router} />);
-    expect(
-      await screen.findByRole('heading', { name: 'Seu projeto começa aqui' }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Comparar modelos' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Início' })).toHaveAttribute(
       'href',
       '/template-ia-web/',

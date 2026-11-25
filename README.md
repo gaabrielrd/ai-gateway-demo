@@ -1,6 +1,6 @@
 # AI Gateway Demo
 
-Base front-end em React, TypeScript e Vite para uma demonstração de gateway de IA. A versão inicial traz uma página de primeiros passos e uma lista de notas persistida no navegador. A integração com um gateway de IA ainda está em aberto.
+Comparador de modelos do Cloudflare AI Gateway com React, TypeScript, Firebase Hosting e Cloud Functions. A página inicial permite explorar o catálogo público. Usuários aprovados podem consultar o orçamento, confirmar o prompt e acompanhar cada geração em uma URL privada. A execução depende de um painel de juízes configurado para a tarefa.
 
 ## Instalação
 

@@ -170,11 +170,11 @@ test('suíte desconhecida falha dizendo como descobrir as válidas', () => {
 });
 
 test('--files deriva o alvo do grafo e roda só os testes que cobrem o conjunto', () => {
-  const result = runValidate('--files=src/features/notes', '--dry-run');
+  const result = runValidate('--files=src/features/catalog', '--dry-run');
 
   assert.equal(result.status, 0);
   assert.match(result.stdout, /Afetados por dependência/);
-  // O smoke da composição depende das notas e precisa entrar.
+  // O smoke da composição depende do catálogo e precisa entrar.
   assert.match(result.stdout, /src\/app\/tests\/App\.test\.tsx/);
   // Execução parcial não aplica cobertura global.
   assert.doesNotMatch(result.stdout, /vitest run --coverage/);

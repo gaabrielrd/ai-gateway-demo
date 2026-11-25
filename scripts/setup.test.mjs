@@ -101,9 +101,17 @@ test('personaliza identificadores, nome visível e organização', () => {
   }
 });
 
+function writeExampleRoutes(root, example = '<NoteList />') {
+  writeFileSync(
+    join(root, 'src/app/routes/index.tsx'),
+    `import { NoteList } from '@/features/notes';\nimport { HomePage } from '@/features/home';\nexport const page = <HomePage example={${example}} />;\n`,
+  );
+}
+
 test('remove a demonstração e deixa uma composição sem imports quebrados', () => {
   const root = copyFixture();
   try {
+    writeExampleRoutes(root);
     const customFeature = join(root, 'src/features/custom-feature/index.ts');
     mkdirSync(dirname(customFeature), { recursive: true });
     writeFileSync(customFeature, 'export const customFeature = true;\n');
@@ -262,11 +270,8 @@ test('preserva composições personalizadas e explica como remover suas referên
   const root = copyFixture();
   try {
     const routesFile = join(root, 'src/app/routes/index.tsx');
-    const before = readFileSync(routesFile, 'utf8').replace(
-      '<NoteList />',
-      '<NoteList key="custom" />',
-    );
-    writeFileSync(routesFile, before);
+    writeExampleRoutes(root, '<NoteList key="custom" />');
+    const before = readFileSync(routesFile, 'utf8');
     const result = spawnSync(
       process.execPath,
       [

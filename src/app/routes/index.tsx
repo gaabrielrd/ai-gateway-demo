@@ -5,8 +5,7 @@ import { NotFound, RouteErrorFallback } from '@/app/components/RouteErrorFallbac
 import { GoogleAccountButton } from '@/features/auth';
 import { CatalogPage } from '@/features/catalog';
 import { AccessPage } from '@/features/access';
-import { HomePage } from '@/features/home';
-import { NoteList } from '@/features/notes';
+import { ExecutionPage } from '@/features/comparison';
 import { env } from '@/shared/config/env';
 
 /**
@@ -28,13 +27,14 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <HomePage example={<NoteList />} />,
+        element: <CatalogPage />,
       },
       {
         // Retorno do provedor de identidade (`redirect_uri`).
         path: 'auth/callback',
         element: <AuthCallbackRoute />,
       },
+      { path: 'execucoes/:id', element: <ExecutionPage /> },
       { path: 'comparar', element: <CatalogPage /> },
       { path: 'acesso', element: <AccessPage /> },
       {

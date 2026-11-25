@@ -1,0 +1,56 @@
+.page,
+.form,
+.form label {
+  display: grid;
+  gap: var(--space-3);
+}
+.page {
+  max-width: var(--layout-width);
+  margin-inline: auto;
+}
+.form {
+  padding-block: var(--space-4);
+  max-width: 48rem;
+}
+.form button {
+  justify-self: start;
+}
+.form textarea,
+.form input {
+  width: 100%;
+  padding: var(--space-2);
+  font: inherit;
+  border: var(--border-width) solid var(--field-border);
+  border-radius: var(--radius-sm);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-4);
+  align-items: start;
+}
+.card {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  border: var(--border-width) solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.card h2 {
+  font-size: var(--text-lg);
+  margin: 0;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--text-sm);
+}
+.metrics dd {
+  margin: 0;
+}
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
