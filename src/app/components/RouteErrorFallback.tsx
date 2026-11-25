@@ -11,10 +11,10 @@ export function NotFound() {
     <section className={styles.container} role="alert">
       <h2 className={styles.title}>
         <FileQuestionMark className="icon" aria-hidden="true" />
-        Pagina nao encontrada
+        Página não encontrada
       </h2>
-      <p>O endereco acessado nao existe neste aplicativo.</p>
-      <Link to="/">Voltar para o inicio</Link>
+      <p>O endereço acessado não existe neste aplicativo.</p>
+      <Link to="/">Voltar para o início</Link>
     </section>
   );
 }
@@ -37,11 +37,11 @@ export function RouteErrorFallback() {
     <section className={styles.container} role="alert">
       <h2 className={styles.title}>
         <TriangleAlert className="icon" aria-hidden="true" />
-        Nao foi possivel carregar esta pagina
+        Não foi possível carregar esta página
       </h2>
-      <p>Tente novamente. Se o problema continuar, avise quem mantem o projeto.</p>
+      <p>Tente novamente. Se o problema continuar, avise quem mantém o projeto.</p>
       {detail ? <pre className={styles.detail}>{detail}</pre> : null}
-      <Link to="/">Voltar para o inicio</Link>
+      <Link to="/">Voltar para o início</Link>
     </section>
   );
 }

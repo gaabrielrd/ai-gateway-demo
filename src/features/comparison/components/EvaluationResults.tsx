@@ -81,7 +81,9 @@ export function EvaluationResults({ record }: { record: Execution }) {
                 ? 'Parecer disponível'
                 : review?.status === 'failed'
                   ? 'Falhou'
-                  : 'Aguardando'}
+                  : round.status === 'finished'
+                    ? 'Parecer ausente'
+                    : 'Aguardando'}
             </summary>
             {review?.error && <p>{review.error}</p>}
             {review && (

@@ -124,3 +124,7 @@ personalizadas e o rollback quando uma etapa posterior falha.
 Os workers do Vitest desativam o Web Storage nativo do Node com
 `--no-experimental-webstorage`, permitindo que o jsdom forneça o armazenamento
 isolado do navegador simulado. Isso mantém a suíte compatível com Node 24 e 26.
+
+## Jornadas do AI Gateway Demo
+
+`npm run test:e2e` roda o Chromium no Playwright. Os testes públicos usam o bundle de produção e verificam seleção por teclado, foco no conteúdo, recuperação de uma falha da galeria e leitura de pareceres em duas larguras. As jornadas autenticadas usam um servidor Vite local e interceptam o módulo de sessão Firebase e as rotas da API dentro do navegador de teste. Dois contextos isolados acompanham a solicitação e a aprovação. Outra jornada confirma o teto e acompanha a geração de três respostas. As verificações de autorização das Functions rodam no Firestore Emulator.

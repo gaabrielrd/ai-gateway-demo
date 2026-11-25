@@ -38,7 +38,7 @@ describe('composicao da aplicacao', () => {
   it('mostra a tela de nao encontrado para um endereco desconhecido', async () => {
     renderAt('/rota-que-nao-existe');
 
-    expect(await screen.findByRole('heading', { name: /nao encontrada/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /não encontrada/i })).toBeInTheDocument();
     // O layout continua visivel: o erro nao derruba a aplicacao inteira.
     expect(screen.getByRole('banner')).toBeInTheDocument();
   });
@@ -68,7 +68,7 @@ describe('errorElement das rotas', () => {
     ]);
 
     expect(
-      await screen.findByRole('heading', { name: /nao foi possivel carregar/i }),
+      await screen.findByRole('heading', { name: /não foi possível carregar/i }),
     ).toBeInTheDocument();
     expect(screen.getByText('falha na rota')).toBeInTheDocument();
   });
@@ -94,6 +94,6 @@ describe('errorElement das rotas', () => {
       },
     ]);
 
-    expect(await screen.findByRole('heading', { name: /nao encontrada/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /não encontrada/i })).toBeInTheDocument();
   });
 });
