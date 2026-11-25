@@ -56,10 +56,10 @@ Com o Firebase CLI instalado, gere o bundle e inicie Hosting e Functions em um p
 
 ```bash
 npm run build
-firebase emulators:start --only hosting,functions --project demo-ai-gateway
+firebase emulators:start --only hosting,functions,firestore --project demo-ai-gateway
 ```
 
-Abra `http://127.0.0.1:5500/`. O caminho `/api/health` verifica a função sem chamar provedores. Os segredos de funções que integram serviços externos devem ser vinculados à função consumidora pelo Secret Manager. O emulador aceita valores de desenvolvimento em `functions/.secret.local`, ignorado pelo Git. O endpoint de saúde dispensa segredos.
+Abra `http://127.0.0.1:5500/`. A tela **Meu acesso** usa o banco Firestore dedicado `cf-ai-gateway` pelas Functions. O emulador do Firestore requer Java 21. Para testar com login Google real e dados locais, use `--project homologacao` com os três emuladores em execução. O caminho `/api/health` verifica a função sem chamar provedores. Os segredos de funções que integram serviços externos devem ser vinculados à função consumidora pelo Secret Manager. O emulador aceita valores de desenvolvimento em `functions/.secret.local`, ignorado pelo Git. O endpoint de saúde dispensa segredos.
 
 ### Login no ambiente local
 

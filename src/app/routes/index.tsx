@@ -3,6 +3,7 @@ import { App } from '@/app/App';
 import { AuthCallbackRoute, AuthGate } from '@/app/components/AuthGate';
 import { NotFound, RouteErrorFallback } from '@/app/components/RouteErrorFallback';
 import { GoogleAccountButton } from '@/features/auth';
+import { AccessPage } from '@/features/access';
 import { HomePage } from '@/features/home';
 import { NoteList } from '@/features/notes';
 import { env } from '@/shared/config/env';
@@ -33,6 +34,7 @@ export const routes: RouteObject[] = [
         path: 'auth/callback',
         element: <AuthCallbackRoute />,
       },
+      { path: 'acesso', element: <AccessPage /> },
       {
         // Qualquer endereco desconhecido cai aqui, dentro do layout.
         path: '*',

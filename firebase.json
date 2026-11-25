@@ -5,6 +5,7 @@
     "runtime": "nodejs24",
     "ignore": ["node_modules", ".git", ".env*", ".secret*", "*.test.mjs", "*-debug.log"]
   },
+  "firestore": { "database": "cf-ai-gateway", "rules": "firestore.rules" },
   "hosting": {
     "site": "cf-ai-gateway",
     "public": "dist",
@@ -14,6 +15,7 @@
     ]
   },
   "emulators": {
+    "firestore": { "host": "127.0.0.1", "port": 8585 },
     "auth": { "host": "127.0.0.1", "port": 9599 },
     "hosting": { "host": "127.0.0.1", "port": 5500 },
     "functions": { "host": "127.0.0.1", "port": 5501 },

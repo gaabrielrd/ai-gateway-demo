@@ -24,6 +24,7 @@ function edit(root, file, mutate) {
 export function removeAuth(root, log = () => {}) {
   for (const path of [
     'src/features/auth',
+    'src/features/access',
     'src/app/components/AuthGate.tsx',
     'docs/decisions/0015-authentication.md',
   ]) {
@@ -40,6 +41,9 @@ export function removeAuth(root, log = () => {}) {
       '',
       file,
     );
+    next = next
+      .replace("import { AccessPage } from '@/features/access';\n", '')
+      .replace("      { path: 'acesso', element: <AccessPage /> },\n", '');
     next = next.replace("import { GoogleAccountButton } from '@/features/auth';\n", '');
     next = next.replace('<App account={<GoogleAccountButton />} />', '<App />');
     next = replaceExact(
@@ -68,6 +72,9 @@ export function removeAuth(root, log = () => {}) {
     return next;
   });
 
+  edit(root, 'src/app/App.tsx', (source) =>
+    source.replace('          <NavLink to="/acesso">Meu acesso</NavLink>\n', ''),
+  );
   // Configuração de ambiente: sem a feature, as variáveis não têm leitor.
   edit(root, '.env.example', (source) =>
     source.replace(/\n# --- Autenticacao \(opcional\) ---[\s\S]*$/, '\n'),

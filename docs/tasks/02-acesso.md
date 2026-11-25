@@ -7,7 +7,7 @@ Permitir leitura pública e controlar no servidor quem pode executar e administr
 ## Tarefas
 
 - [x] **T04 — Integrar login Google.** Usar a feature de autenticação existente como ponto de partida. Validar a identidade nas Functions e testar login, retorno, expiração e saída sem perder a navegação pública.
-- [ ] **T05 — Implementar solicitação e acompanhamento.** Permitir justificativa opcional. Persistir e apresentar a situação do próprio pedido. Testar envio sem texto, reenvio da mesma requisição e acesso entre duas contas.
+- [x] **T05 — Implementar solicitação e acompanhamento.** Permitir justificativa opcional. Persistir e apresentar a situação do próprio pedido. Testar envio sem texto, reenvio da mesma requisição e acesso entre duas contas.
 - [ ] **T06 — Entregar a fila administrativa.** Configurar o primeiro administrador pelo servidor. Implementar consulta, aprovação e rejeição com verificação de papel. Testar duas decisões concorrentes e tentativa de decisão por conta comum.
 
 ## Critério de conclusão
