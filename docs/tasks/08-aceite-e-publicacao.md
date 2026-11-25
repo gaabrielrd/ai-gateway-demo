@@ -7,7 +7,7 @@ Conferir a jornada real de cada papel e publicar a primeira versão no Firebase.
 ## Tarefas
 
 - [x] **T24 — Validar jornadas e acessibilidade.** Cobrir em E2E visitante, solicitante, aprovado e administrador. Exercitar carregamento, vazio, erro, resultado parcial e sucesso. Conferir português do Brasil, foco, operação por teclado e layouts desktop e celular.
-- [ ] **T25 — Homologar as integrações.** Usar ambiente controlado com provedores habilitados para comprovar texto, imagem, julgamento, cache e fallback reais. Conferir consumo por execução e privacidade. Manter os testes automatizados repetíveis com respostas controladas.
+- [x] **T25 — Homologar as integrações.** Usar ambiente controlado com provedores habilitados para comprovar texto, imagem, julgamento, cache e fallback reais. Conferir consumo por execução e privacidade. Manter os testes automatizados repetíveis com respostas controladas.
 - [ ] **T26 — Publicar e verificar a versão.** Rodar npm run validate e npm run test:e2e. Publicar Functions e Hosting com configuração do ambiente, conferir rotas diretas, login, consulta anônima, cotas e galeria de estreia. Registrar em docs/entregas os resultados reais e a versão entregue.
 
 ## Critério de conclusão
