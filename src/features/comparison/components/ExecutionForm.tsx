@@ -1,3 +1,4 @@
+import examples from '../model/examples.json';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '@/features/auth';
@@ -5,14 +6,6 @@ import { Button } from '@/shared/ui';
 import { startExecution } from '../services/executions';
 import styles from './Comparison.module.css';
 
-const examples: Record<string, string> = {
-  summary:
-    'Resuma em duas frases: o gateway atende chamadas repetidas pelo cache. Um acerto evita uma nova geração. O tempo de resposta depende do modelo e da origem da resposta.',
-  extraction:
-    'Extraia em JSON o número, a data e o total da fatura fictícia FAT-012, emitida em 15/04/2026, no valor de R$ 135,90.',
-  image:
-    'Ilustre uma bicicleta vermelha encostada em uma parede azul. Inclua um vaso amarelo à direita.',
-};
 export function ExecutionForm({
   task,
   modelIds,
@@ -78,7 +71,17 @@ export function ExecutionForm({
           onChange={(event) => setPrompt(event.target.value)}
         />
       </label>
-      <Button type="button" disabled={busy} onClick={() => setPrompt(examples[task] ?? '')}>
+      <Button
+        type="button"
+        disabled={busy}
+        onClick={() => {
+          const example = examples[task as keyof typeof examples];
+          if (example) {
+            setPrompt(example.prompt);
+            setReference(example.reference);
+          }
+        }}
+      >
         Usar exemplo
       </Button>
       <label>

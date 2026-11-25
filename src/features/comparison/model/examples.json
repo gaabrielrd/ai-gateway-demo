@@ -1,0 +1,17 @@
+{
+  "extraction": {
+    "title": "Fatura fictícia com desconto",
+    "prompt": "Extraia os campos da fatura fictícia abaixo. Responda apenas com um objeto JSON com as chaves numero, emissao, moeda, subtotal, desconto e total. Use data ISO e números JSON para valores monetários. Fatura FAT-012 da Oficina Aurora, emitida em 15/04/2026. Dois sensores a R$ 60,00 cada e frete de R$ 20,00. Subtotal com frete: R$ 140,00. Desconto: R$ 4,10. Total a pagar: R$ 135,90.",
+    "reference": "{\"numero\":\"FAT-012\",\"emissao\":\"2026-04-15\",\"moeda\":\"BRL\",\"subtotal\":140,\"desconto\":4.1,\"total\":135.9}"
+  },
+  "summary": {
+    "title": "Resumo de um ensaio de cache",
+    "prompt": "Resuma o relato técnico fictício em duas frases para um desenvolvedor. Em um ensaio com cache vazio, uma equipe enviou dez pedidos idênticos em sequência a um gateway. O primeiro consultou o provedor e levou 860 ms. Os nove seguintes vieram do cache, com mediana de 94 ms. O ensaio mediu somente esse prompt em uma região e não avaliou a qualidade das respostas.",
+    "reference": "Preservar os dez pedidos idênticos, a primeira chamada ao provedor (860 ms), os nove acertos de cache (mediana de 94 ms) e os limites do ensaio: um prompt, uma região e nenhuma avaliação de qualidade."
+  },
+  "image": {
+    "title": "Bicicleta vermelha diante de uma parede azul",
+    "prompt": "Crie uma ilustração em formato quadrado de uma bicicleta vermelha de perfil, encostada numa parede azul. À direita da bicicleta, coloque um vaso amarelo com uma planta verde. Mostre as duas rodas inteiras. Não inclua texto.",
+    "reference": "Elementos obrigatórios: bicicleta vermelha, duas rodas inteiras, parede azul, vaso amarelo à direita da bicicleta e planta verde. A imagem deve ser quadrada e sem texto."
+  }
+}
