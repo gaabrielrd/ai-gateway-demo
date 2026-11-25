@@ -1,3 +1,5 @@
+import { onSchedule } from 'firebase-functions/v2/scheduler';
+import { purgeExpired } from './history.mjs';
 import { onRequest } from 'firebase-functions/v2/https';
 
 import { initializeApp } from 'firebase-admin/app';
@@ -47,6 +49,11 @@ export const judgeGenerations = onDocumentUpdated(
   },
 );
 
+export const purgePrivateHistory = onSchedule(
+  { schedule: 'every 5 minutes', timeoutSeconds: 540, maxInstances: 1 },
+  () => purgeExpired(getFirestore('cf-ai-gateway')),
+);
+
 const auth = getAuth(initializeApp());
 
 export const aiGatewayApi = onRequest(async (request, response) => {
@@ -73,18 +80,12 @@ export const aiGatewayApi = onRequest(async (request, response) => {
     response.status(404).json({ error: 'Rota desconhecida' });
     return;
   }
-  if (
-    quoteRoute || createRoute || retryRoute
-      ? request.method !== 'POST'
-      : request.method !== 'GET' && !(accessRoute && request.method === 'POST')
-  ) {
-    response
-      .set(
-        'Allow',
-        quoteRoute || createRoute || retryRoute ? 'POST' : accessRoute ? 'GET, POST' : 'GET',
-      )
-      .status(405)
-      .end();
+  let methods = ['GET'];
+  if (createRoute || accessRoute) methods = ['GET', 'POST'];
+  if (quoteRoute || retryRoute) methods = ['POST'];
+  if (detailRoute && !request.path.includes('/media/')) methods = ['GET', 'DELETE'];
+  if (!methods.includes(request.method)) {
+    response.set('Allow', methods.join(', ')).status(405).end();
     return;
   }
   if (request.path !== '/api/health') {

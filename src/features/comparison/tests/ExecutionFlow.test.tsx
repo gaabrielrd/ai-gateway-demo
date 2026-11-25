@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { ExecutionForm } from '../components/ExecutionForm';
+import { HistoryPage } from '../components/HistoryPage';
 import { ExecutionPage } from '../components/ExecutionPage';
 
 const auth = vi.hoisted(() => ({
@@ -188,5 +189,41 @@ it('reabre a comparação e só repete após confirmar o novo teto', async () =>
     3,
     '/api/executions/original/attempts/1/retry',
     expect.objectContaining({ method: 'POST', body: '{"confirmedMicroUsd":172000}' }),
+  );
+});
+
+it('abre a comparação pelo histórico e só exclui após confirmação', async () => {
+  const fetch = vi
+    .spyOn(globalThis, 'fetch')
+    .mockResolvedValueOnce(
+      Response.json([
+        {
+          executionId: 'minha',
+          prompt: 'Comparar este resumo',
+          createdAt: '2026-01-01',
+          expiresAt: '2026-01-31',
+        },
+      ]),
+    )
+    .mockResolvedValueOnce(new Response(null, { status: 204 }));
+  render(
+    <MemoryRouter>
+      <HistoryPage />
+    </MemoryRouter>,
+  );
+  expect(await screen.findByRole('link', { name: 'Comparar este resumo' })).toHaveAttribute(
+    'href',
+    '/execucoes/minha',
+  );
+  const user = userEvent.setup();
+  await user.click(screen.getByRole('button', { name: 'Excluir' }));
+  await user.click(screen.getByRole('button', { name: 'Cancelar' }));
+  expect(fetch).toHaveBeenCalledTimes(1);
+  await user.click(screen.getByRole('button', { name: 'Excluir' }));
+  await user.click(screen.getByRole('button', { name: 'Confirmar exclusão' }));
+  expect(await screen.findByText('Seu histórico está vazio.')).toBeInTheDocument();
+  expect(fetch).toHaveBeenLastCalledWith(
+    '/api/executions/minha',
+    expect.objectContaining({ method: 'DELETE' }),
   );
 });

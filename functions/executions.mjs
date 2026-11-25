@@ -1,3 +1,4 @@
+import { listHistory, hideExecution } from './history.mjs';
 import { createHash } from 'node:crypto';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getStorage } from 'firebase-admin/storage';
@@ -121,6 +122,10 @@ export async function createExecution(db, identity, body, now = new Date()) {
     },
     now,
   );
+  // A reserva sobrevive à exclusão e impede reaproveitar o ID de uma execução apagada.
+  const saved = await ref.get();
+  if (!saved.exists || saved.get('expiresAt').toMillis() <= now.getTime())
+    throw new BudgetError('Chave de execução indisponível.');
   return executionId;
 }
 
@@ -209,7 +214,10 @@ export async function executionApi(request, response, identity) {
     }
   }
   const [, , , id, media, index] = request.path.split('/');
+  if (!id) return response.json(await listHistory(db, identity.uid));
   const ref = refFor(db, identity.uid, id);
+  if (request.method === 'DELETE')
+    return response.sendStatus((await hideExecution(ref)) ? 204 : 404);
   const execution = await ref.get();
   if (!execution.exists || execution.get('expiresAt').toMillis() <= Date.now())
     return response.sendStatus(404);

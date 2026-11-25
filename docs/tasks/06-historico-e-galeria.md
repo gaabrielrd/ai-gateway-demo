@@ -6,7 +6,7 @@ Permitir revisitar uma comparação e publicar benchmarks que sobrevivem à expi
 
 ## Tarefas
 
-- [ ] **T18 — Entregar o histórico do autor.** Listar, abrir e excluir execuções com verificação de autoria. Aplicar expiração de 30 dias para texto, mídia e pareceres. Testar a fronteira do prazo com relógio controlado e garantir que o registro mensal de gasto sobreviva.
+- [x] **T18 — Entregar o histórico do autor.** Listar, abrir e excluir execuções com verificação de autoria. Aplicar expiração de 30 dias para texto, mídia e pareceres. Testar a fronteira do prazo com relógio controlado e garantir que o registro mensal de gasto sobreviva.
 - [ ] **T19 — Publicar e retirar cópias independentes.** Permitir que um administrador revise e publique uma execução própria com material próprio. Copiar entrada, configurações, juízes, saídas, mídias e indicadores. Testar falha durante a cópia, retirada e acesso entre autores.
 - [ ] **T20 — Montar a galeria de estreia.** Preparar a fatura fictícia com gabarito, o texto técnico com fatos esperados e o briefing de imagem com elementos obrigatórios. Executar, revisar e publicar os três pelo fluxo administrativo. Verificar consulta anônima sem novas chamadas.
 

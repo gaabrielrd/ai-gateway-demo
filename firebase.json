@@ -5,7 +5,11 @@
     "runtime": "nodejs24",
     "ignore": ["node_modules", ".git", ".env*", ".secret*", "*.test.mjs", "*-debug.log"]
   },
-  "firestore": { "database": "cf-ai-gateway", "rules": "firestore.rules" },
+  "firestore": {
+    "database": "cf-ai-gateway",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
   "hosting": {
     "site": "cf-ai-gateway",
     "public": "dist",

@@ -140,3 +140,27 @@ export async function quoteRetry(session: Session, id: string, index: number) {
 export async function confirmRetry(session: Session, id: string, index: number, ceiling: number) {
   await postRetry(session, id, index, ceiling);
 }
+
+export interface HistoryEntry {
+  executionId: string;
+  prompt: string;
+  createdAt: string;
+  expiresAt: string;
+}
+
+export async function loadHistory(session: Session, signal: AbortSignal): Promise<HistoryEntry[]> {
+  const response = await fetch('/api/executions', {
+    headers: authorizationHeader(session),
+    signal,
+  });
+  if (!response.ok) throw new Error('Falha ao carregar o histórico.');
+  return response.json() as Promise<HistoryEntry[]>;
+}
+
+export async function deleteExecution(session: Session, id: string) {
+  const response = await fetch('/api/executions/' + encodeURIComponent(id), {
+    method: 'DELETE',
+    headers: authorizationHeader(session),
+  });
+  if (!response.ok && response.status !== 404) throw new Error('Falha ao excluir a execução.');
+}

@@ -6,7 +6,7 @@ import { GoogleAccountButton } from '@/features/auth';
 import { CatalogPage } from '@/features/catalog';
 import { PanelsPage } from '@/features/judges';
 import { AccessPage } from '@/features/access';
-import { ExecutionPage } from '@/features/comparison';
+import { ExecutionPage, HistoryPage } from '@/features/comparison';
 import { env } from '@/shared/config/env';
 
 /**
@@ -35,6 +35,7 @@ export const routes: RouteObject[] = [
         path: 'auth/callback',
         element: <AuthCallbackRoute />,
       },
+      { path: 'historico', element: <HistoryPage /> },
       { path: 'execucoes/:id', element: <ExecutionPage /> },
       { path: 'comparar', element: <CatalogPage /> },
       { path: 'admin/juizes', element: <PanelsPage /> },
