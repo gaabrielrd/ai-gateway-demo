@@ -1,7 +1,8 @@
+import { Check, RefreshCw, X } from 'lucide-react';
 import { Link } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/features/auth';
-import { Button } from '@/shared/ui';
+import { Empty, Button } from '@/shared/ui';
 import { listPending, decideAccess, type Decision } from '../services/admin';
 
 export function AdminQueue() {
@@ -50,7 +51,7 @@ export function AdminQueue() {
       {rows && <Link to="/admin/galeria">Gerenciar benchmarks</Link>}
       {rows && <Link to="/admin/juizes">Configurar juízes por tarefa</Link>}
       <p role="status">{busy ? 'Consultando solicitações…' : message}</p>
-      {rows?.length === 0 && <p>Nenhuma solicitação pendente.</p>}
+      {rows?.length === 0 && <Empty>Nenhuma solicitação pendente.</Empty>}
       <ul>
         {rows?.map((row) => (
           <li key={row.id}>
@@ -61,14 +62,14 @@ export function AdminQueue() {
               aria-label={'Aprovar ' + row.email}
               onClick={() => void decide(row.id, 'approved')}
             >
-              Aprovar
+              <Check className="icon icon-sm" aria-hidden="true" /> Aprovar
             </Button>
             <Button
               disabled={busy}
               aria-label={'Rejeitar ' + row.email}
               onClick={() => void decide(row.id, 'rejected')}
             >
-              Rejeitar
+              <X className="icon icon-sm" aria-hidden="true" /> Rejeitar
             </Button>
           </li>
         ))}
@@ -80,7 +81,7 @@ export function AdminQueue() {
           refresh((n) => n + 1);
         }}
       >
-        Atualizar fila
+        <RefreshCw className="icon icon-sm" aria-hidden="true" /> Atualizar fila
       </Button>
     </section>
   );

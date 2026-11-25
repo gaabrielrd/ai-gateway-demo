@@ -70,7 +70,7 @@
 .steps li:last-child {
   border-bottom: var(--border-width) solid var(--line);
 }
-.steps summary {
+.steps [data-slot='collapsible-trigger'] {
   display: flex;
   align-items: center;
   gap: var(--space-4);
@@ -80,21 +80,10 @@
   color: var(--navy);
   transition: background-color var(--transition-fast);
 }
-.steps summary::-webkit-details-marker {
-  display: none;
-}
-.steps summary::after {
-  content: '+';
-  margin-left: auto;
-  font-size: var(--text-xl);
-}
-.steps details[open] > summary::after {
-  content: '−';
-}
-.steps summary:hover {
+.steps [data-slot='collapsible-trigger']:hover {
   background-color: var(--paper-2);
 }
-.steps summary small {
+.steps [data-slot='collapsible-trigger'] small {
   display: block;
   margin-top: var(--space-1);
   font-size: var(--text-sm);
@@ -161,7 +150,7 @@
   font-size: var(--text-sm);
   color: var(--ink-soft);
 }
-.reference summary {
+.reference [data-slot='collapsible-trigger'] {
   cursor: pointer;
   color: var(--accent);
 }

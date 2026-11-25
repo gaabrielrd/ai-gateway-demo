@@ -1,8 +1,9 @@
+import { FileText, Play } from 'lucide-react';
+import { Button, ErrorMessage, Input, Label, Textarea } from '@/shared/ui';
 import examples from '../model/examples.json';
 import { useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { useAuth } from '@/features/auth';
-import { Button } from '@/shared/ui';
 import { startExecution } from '../services/executions';
 import styles from './Comparison.module.css';
 
@@ -68,16 +69,16 @@ export function ExecutionForm({
         void submit();
       }}
     >
-      <label>
+      <Label>
         Prompt
-        <textarea
+        <Textarea
           required
           rows={4}
           maxLength={task === 'image' ? 2048 : 16000}
           value={prompt}
           onChange={(event) => setPrompt(event.target.value)}
         />
-      </label>
+      </Label>
       <Button
         type="button"
         disabled={busy}
@@ -89,23 +90,24 @@ export function ExecutionForm({
           }
         }}
       >
-        Usar exemplo
+        <FileText className="icon icon-sm" aria-hidden="true" /> Usar exemplo
       </Button>
-      <label>
+      <Label>
         Referência ou gabarito (opcional)
-        <textarea
+        <Textarea
           rows={2}
           maxLength={8000}
           value={reference}
           onChange={(e) => setReference(e.target.value)}
         />
-      </label>
-      <label>
+      </Label>
+      <Label>
         Critério próprio (opcional)
-        <input maxLength={8000} value={criterion} onChange={(e) => setCriterion(e.target.value)} />
-      </label>
-      {error && <p role="alert">{error}</p>}
-      <Button variant="primary" disabled={!prompt.trim() || busy} type="submit">
+        <Input maxLength={8000} value={criterion} onChange={(e) => setCriterion(e.target.value)} />
+      </Label>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <Button variant="default" disabled={!prompt.trim() || busy} type="submit">
+        <Play className="icon icon-sm" aria-hidden="true" />{' '}
         {busy ? 'Enviando…' : 'Confirmar e executar'}
       </Button>
     </form>

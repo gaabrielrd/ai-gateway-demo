@@ -1,7 +1,8 @@
+import { Wallet } from 'lucide-react';
+import { Spinner, Button, ErrorMessage } from '@/shared/ui';
 import { useState } from 'react';
 import { useAuth } from '@/features/auth';
 import { ExecutionForm } from '@/features/comparison';
-import { Button } from '@/shared/ui';
 import { getQuote } from '../services/quote';
 
 const format = new Intl.NumberFormat('pt-BR', {
@@ -32,10 +33,14 @@ function QuoteForm({ task, modelIds }: { task: string; modelIds: string[] }) {
   return (
     <section>
       <Button onClick={() => void load()} disabled={busy}>
-        Consultar orçamento
+        <Wallet className="icon icon-sm" aria-hidden="true" /> Consultar orçamento
       </Button>
-      {busy && <p role="status">Consultando saldo e teto…</p>}
-      {error && <p role="alert">{error}</p>}
+      {busy && (
+        <p role="status">
+          <Spinner /> Consultando saldo e teto…
+        </p>
+      )}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       {quote && (
         <div aria-live="polite">
           <p>Saldo disponível no mês: {format.format(quote.availableMicroUsd / 1e6)}</p>

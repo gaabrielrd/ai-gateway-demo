@@ -81,11 +81,16 @@ test('visitante reabre benchmark parcial e inspeciona modelos e pareceres pelo t
   await row.getByRole('button').focus();
   await page.keyboard.press('Enter');
   await expect(page.getByRole('complementary').getByText('Saída Beta')).toBeVisible();
-  await page.getByRole('button', { name: 'Pareceres', exact: true }).click();
-  const summary = page.locator('summary').filter({ hasText: 'juiz B · Parecer ausente' });
+  await page.getByRole('tab', { name: 'Resposta' }).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByRole('tab', { name: 'Pareceres' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  const summary = page.getByRole('button', { name: 'juiz B · Parecer ausente' });
   await summary.focus();
   await page.keyboard.press('Enter');
-  await expect(summary.locator('..')).toHaveAttribute('open', '');
+  await expect(summary).toHaveAttribute('aria-expanded', 'true');
   await page.getByRole('link', { name: 'Usar este prompt' }).click();
   await expect(page.getByText('Descreva o ensaio.')).toBeVisible();
   await page.goto('/comparar');

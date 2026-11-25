@@ -1,6 +1,6 @@
+import { Button, ErrorMessage, Input, Label } from '@/shared/ui';
 import { Plus, Trash2 } from 'lucide-react';
 import type { FormEvent } from 'react';
-import { Button } from '@/shared/ui';
 import { useNotes } from '../hooks/useNotes';
 import styles from './NoteList.module.css';
 
@@ -15,17 +15,13 @@ export function NoteList() {
 
   return (
     <div className={styles.container}>
-      {storageError && (
-        <p className={styles.storageError} role="alert">
-          {storageError}
-        </p>
-      )}
+      {storageError && <ErrorMessage className={styles.storageError}>{storageError}</ErrorMessage>}
       <form onSubmit={handleSubmit} className={styles.form}>
-        <label className={styles.label} htmlFor="note-title">
+        <Label className={styles.label} htmlFor="note-title">
           Título da nota
-        </label>
+        </Label>
         <div className={styles.inputGroup}>
-          <input
+          <Input
             id="note-title"
             type="text"
             value={title}
@@ -61,7 +57,7 @@ export function NoteList() {
                   <p className={styles.noteDate}>{new Date(note.createdAt).toLocaleString()}</p>
                 </div>
                 <Button
-                  variant="danger"
+                  variant="destructive"
                   onClick={() => removeNote(note.id)}
                   aria-label={`Remover nota: ${note.title}`}
                 >

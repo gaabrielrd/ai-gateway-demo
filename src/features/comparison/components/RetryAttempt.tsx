@@ -1,6 +1,7 @@
+import { RotateCw, Wallet } from 'lucide-react';
+import { Button, ErrorMessage } from '@/shared/ui';
 import { useState } from 'react';
 import { useAuth } from '@/features/auth';
-import { Button } from '@/shared/ui';
 import { confirmRetry, quoteRetry } from '../services/executions';
 
 const usd = new Intl.NumberFormat('pt-BR', {
@@ -43,9 +44,9 @@ export function RetryAttempt({
   return (
     <div>
       <Button disabled={busy} onClick={() => void submit(false)}>
-        Consultar custo de repetição
+        <Wallet className="icon icon-sm" aria-hidden="true" /> Consultar custo de repetição
       </Button>
-      {error && <p role="alert">{error}</p>}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       {quote && (
         <>
           <p>Saldo disponível: {usd.format(quote.availableMicroUsd / 1e6)}</p>
@@ -54,7 +55,7 @@ export function RetryAttempt({
             <p>{quote.reason}</p>
           ) : (
             <Button disabled={busy} onClick={() => void submit(true)}>
-              Confirmar repetição
+              <RotateCw className="icon icon-sm" aria-hidden="true" /> Confirmar repetição
             </Button>
           )}
         </>

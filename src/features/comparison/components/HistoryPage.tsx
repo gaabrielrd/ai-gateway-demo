@@ -1,7 +1,8 @@
+import { RefreshCw, Trash2, X } from 'lucide-react';
+import { Empty, Spinner, Button, ErrorMessage, PageHeader } from '@/shared/ui';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { useAuth } from '@/features/auth';
-import { Button, PageHeader } from '@/shared/ui';
 import { deleteExecution, loadHistory, type HistoryEntry } from '../services/executions';
 
 function PrivateHistory() {
@@ -42,7 +43,7 @@ function PrivateHistory() {
   return (
     <>
       {error && (
-        <p role="alert">
+        <ErrorMessage>
           {error}{' '}
           <Button
             onClick={() => {
@@ -50,12 +51,16 @@ function PrivateHistory() {
               setRevision((n) => n + 1);
             }}
           >
-            Tentar novamente
+            <RefreshCw className="icon icon-sm" aria-hidden="true" /> Tentar novamente
           </Button>
+        </ErrorMessage>
+      )}
+      {!entries && !error && (
+        <p role="status">
+          <Spinner /> Carregando histórico…
         </p>
       )}
-      {!entries && !error && <p role="status">Carregando histórico…</p>}
-      {entries?.length === 0 && <p>Seu histórico está vazio.</p>}
+      {entries?.length === 0 && <Empty>Seu histórico está vazio.</Empty>}
       <ul>
         {entries?.map((entry) => (
           <li key={entry.executionId}>
@@ -68,15 +73,15 @@ function PrivateHistory() {
               <>
                 <p>Excluir esta execução e seus pareceres? O gasto continua na cota mensal.</p>
                 <Button disabled={busy} onClick={() => void remove(entry.executionId)}>
-                  Confirmar exclusão
+                  <Trash2 className="icon icon-sm" aria-hidden="true" /> Confirmar exclusão
                 </Button>
                 <Button disabled={busy} onClick={() => setConfirm('')}>
-                  Cancelar
+                  <X className="icon icon-sm" aria-hidden="true" /> Cancelar
                 </Button>
               </>
             ) : (
               <Button disabled={busy} onClick={() => setConfirm(entry.executionId)}>
-                Excluir
+                <Trash2 className="icon icon-sm" aria-hidden="true" /> Excluir
               </Button>
             )}
           </li>

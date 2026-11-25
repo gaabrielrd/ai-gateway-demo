@@ -1,7 +1,8 @@
+import { Calculator, Play, RefreshCw } from 'lucide-react';
+import { Spinner, Button, ErrorMessage, PageHeader } from '@/shared/ui';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import { useAuth } from '@/features/auth';
-import { Button, PageHeader } from '@/shared/ui';
 import {
   quoteDemo,
   startDemo,
@@ -84,7 +85,7 @@ function Demo({ kind }: { kind: DemoKind }) {
   return (
     <>
       {error && (
-        <p role="alert">
+        <ErrorMessage>
           {error}{' '}
           {active && (
             <Button
@@ -93,16 +94,17 @@ function Demo({ kind }: { kind: DemoKind }) {
                 setRefresh((n) => n + 1);
               }}
             >
-              Consultar resultado novamente
+              <RefreshCw className="icon icon-sm" aria-hidden="true" /> Consultar resultado
+              novamente
             </Button>
           )}
-        </p>
+        </ErrorMessage>
       )}
       {(!quote ||
         result?.finished ||
         (!active && quote.availableMicroUsd < quote.ceilingMicroUsd)) && (
         <Button disabled={busy} onClick={() => void prepare()}>
-          Consultar previsão
+          <Calculator className="icon icon-sm" aria-hidden="true" /> Consultar previsão
         </Button>
       )}
       {quote && (
@@ -119,15 +121,20 @@ function Demo({ kind }: { kind: DemoKind }) {
               <p>Saldo insuficiente.</p>
             ) : (
               <Button disabled={busy} onClick={() => void start()}>
+                <Play className="icon icon-sm" aria-hidden="true" />{' '}
                 {fallback ? 'Confirmar e executar fallback' : 'Confirmar e executar duas chamadas'}
               </Button>
             ))}
         </section>
       )}
-      {active && !result?.finished && !error && <p role="status">Executando a demonstração…</p>}
+      {active && !result?.finished && !error && (
+        <p role="status">
+          <Spinner /> Executando a demonstração…
+        </p>
+      )}
       {fallback && result?.finished && (
         <>
-          {result.error && <p role="alert">{result.error}</p>}
+          {result.error && <ErrorMessage>{result.error}</ErrorMessage>}
           <p>Modelo final: {result.finalModel ?? 'Não informado'}</p>
           <p>
             Tempo total da rota:{' '}

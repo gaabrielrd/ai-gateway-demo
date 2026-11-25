@@ -1,6 +1,15 @@
-// Base visual do projeto: o contrato que as features consomem.
-//
-// Começou como substituto mínimo do kit compartilhado. Cresça por necessidade
-// demonstrada e mantenha o estilo de cada componente no seu CSS Module.
-export { Button } from './Button';
-export { PageHeader, SectionHeading } from './PageHeader';
+export * from './button';
+export * from './PageHeader';
+export * from './input';
+export * from './label';
+export * from './textarea';
+export * from './native-select';
+export * from './table';
+export * from './card';
+export * from './checkbox';
+export * from './Disclosure';
+export * from './ErrorMessage';
+export * from './tabs';
+export * from './badge';
+export * from './spinner';
+export * from './empty';

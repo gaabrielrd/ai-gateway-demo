@@ -1,5 +1,5 @@
+import { Disclosure, PageHeader, SectionHeading } from '@/shared/ui';
 import type { ReactNode } from 'react';
-import { PageHeader, SectionHeading } from '@/shared/ui';
 import { ArrowRight, BookOpen, NotebookPen, Terminal } from 'lucide-react';
 import { CopyBlock } from './CopyBlock';
 import styles from './HomePage.module.css';
@@ -35,15 +35,19 @@ export function HomePage({ example }: { example?: ReactNode }) {
         </p>
         <ol className={styles.steps}>
           <li>
-            <details open>
-              <summary>
-                <span className={styles.stepNumber} aria-hidden="true">
-                  01
-                </span>
-                <span>
-                  Personalize o projeto<small>Nome, descrição e ponto de partida</small>
-                </span>
-              </summary>
+            <Disclosure
+              defaultOpen
+              title={
+                <>
+                  <span className={styles.stepNumber} aria-hidden="true">
+                    01
+                  </span>
+                  <span>
+                    Personalize o projeto<small>Nome, descrição e ponto de partida</small>
+                  </span>
+                </>
+              }
+            >
               <div className={styles.stepContent}>
                 <p>
                   Troque os nomes de exemplo pelos do seu produto. O setup atualiza o nome no app,
@@ -57,19 +61,22 @@ export function HomePage({ example }: { example?: ReactNode }) {
                   criou.
                 </p>
               </div>
-            </details>
+            </Disclosure>
           </li>
           <li>
-            <details>
-              <summary>
-                <span className={styles.stepNumber} aria-hidden="true">
-                  02
-                </span>
-                <span>
-                  Explore o que já vem pronto
-                  <small>Um exemplo funcional e o kit de interface</small>
-                </span>
-              </summary>
+            <Disclosure
+              title={
+                <>
+                  <span className={styles.stepNumber} aria-hidden="true">
+                    02
+                  </span>
+                  <span>
+                    Explore o que já vem pronto
+                    <small>Um exemplo funcional e o kit de interface</small>
+                  </span>
+                </>
+              }
+            >
               <div className={styles.stepContent}>
                 <p>Conheça a base visual antes de construir sua primeira tela.</p>
                 <div className={styles.links}>
@@ -85,18 +92,22 @@ export function HomePage({ example }: { example?: ReactNode }) {
                   <code>src/shared/ui</code>.
                 </p>
               </div>
-            </details>
+            </Disclosure>
           </li>
           <li>
-            <details>
-              <summary>
-                <span className={styles.stepNumber} aria-hidden="true">
-                  03
-                </span>
-                <span>
-                  Planeje sua primeira funcionalidade<small>Descreva sua ideia para o agente</small>
-                </span>
-              </summary>
+            <Disclosure
+              title={
+                <>
+                  <span className={styles.stepNumber} aria-hidden="true">
+                    03
+                  </span>
+                  <span>
+                    Planeje sua primeira funcionalidade
+                    <small>Descreva sua ideia para o agente</small>
+                  </span>
+                </>
+              }
+            >
               <div className={styles.stepContent}>
                 <p>
                   Preencha o trecho entre colchetes e cole o texto no seu agente de código. Primeiro
@@ -108,7 +119,7 @@ export function HomePage({ example }: { example?: ReactNode }) {
                   <code>plan-feature</code> com a funcionalidade desejada.
                 </p>
               </div>
-            </details>
+            </Disclosure>
           </li>
         </ol>
       </section>
@@ -121,8 +132,7 @@ export function HomePage({ example }: { example?: ReactNode }) {
             navegador, sem conta ou servidor.
           </p>
           <div className={styles.example}>{example}</div>
-          <details className={styles.reference}>
-            <summary>Como usar este exemplo no seu projeto</summary>
+          <Disclosure className={styles.reference} title="Como usar este exemplo no seu projeto">
             <p>
               Peça ao agente para explorar <code>src/features/notes</code>: ali estão a interface, a
               validação, a persistência e os testes.
@@ -132,7 +142,7 @@ export function HomePage({ example }: { example?: ReactNode }) {
               acrescente <code>--remove-example --keep-tasks</code>. Isso remove as notas do código;
               não apaga dados já salvos no navegador.
             </p>
-          </details>
+          </Disclosure>
         </section>
       )}
 

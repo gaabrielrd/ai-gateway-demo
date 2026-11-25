@@ -1,3 +1,5 @@
+import { RefreshCw } from 'lucide-react';
+import { Button, ErrorMessage } from '@/shared/ui';
 import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router';
@@ -31,13 +33,13 @@ export function RequireAuth({ children, scopes = [] }: RequireAuthProps) {
   if (state.status === 'autenticada') {
     if (!hasScopes(state.session, scopes)) {
       return (
-        <div className={styles.block} role="alert">
+        <ErrorMessage className={styles.block}>
           <h2>Acesso insuficiente</h2>
           <p>
             Esta area exige {scopes.join(', ')}. Sua sessao atual nao tem essa permissao — fale com
             quem administra o acesso.
           </p>
-        </div>
+        </ErrorMessage>
       );
     }
     return <>{children}</>;
@@ -45,13 +47,13 @@ export function RequireAuth({ children, scopes = [] }: RequireAuthProps) {
 
   if (state.status === 'erro') {
     return (
-      <div className={styles.block} role="alert">
+      <ErrorMessage className={styles.block}>
         <h2>Nao foi possivel entrar</h2>
         <p>{state.message}</p>
-        <button type="button" onClick={() => void login(location.pathname)}>
-          Tentar novamente
-        </button>
-      </div>
+        <Button type="button" onClick={() => void login(location.pathname)}>
+          <RefreshCw className="icon icon-sm" aria-hidden="true" /> Tentar novamente
+        </Button>
+      </ErrorMessage>
     );
   }
 

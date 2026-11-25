@@ -69,7 +69,7 @@ test('solicitante envia pedido e acompanha a aprovação decidida em outra sess�
   await page.getByRole('button', { name: 'Atualizar situação' }).click();
   await expect(page.getByText('Aprovado', { exact: true })).toBeVisible();
   await page.route('**/api/executions', (r) => r.fulfill({ json: [] }));
-  await page.locator('summary').filter({ hasText: 'Conta' }).click();
+  await page.getByRole('button', { name: 'Conta' }).click();
   await page.getByRole('link', { name: 'Meu histórico' }).click();
   await expect(page.getByText('Seu histórico está vazio.')).toBeVisible();
   await page.route('**/api/demos/cache', async (r) => {
@@ -96,7 +96,7 @@ test('solicitante envia pedido e acompanha a aprovação decidida em outra sess�
       },
     }),
   );
-  await page.locator('summary').filter({ hasText: 'Gateway' }).click();
+  await page.getByRole('button', { name: 'Gateway' }).click();
   await page.getByRole('link', { name: 'Cache', exact: true }).click();
   await page.getByRole('button', { name: 'Consultar previsão' }).click();
   await page.getByRole('button', { name: 'Confirmar e executar duas chamadas' }).click();

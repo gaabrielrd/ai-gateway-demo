@@ -1,7 +1,6 @@
 # Base visual
 
-Este projeto **não usa** o kit `@vitru/styleguide`. A base visual é local e
-pertence ao projeto.
+A aplicação usa shadcn/ui com tema próprio e ícones de `lucide-react`. Os componentes do registro oficial ficam versionados em `src/shared/ui` e as features os importam de `@/shared/ui`.
 
 A direção desktop usa fundo grafite, destaque âmbar, títulos em serifa e IBM Plex Mono local nas tabelas e nos dados dos cards. A [referência visual](../DESIGN.md) descreve a composição.
 
@@ -10,7 +9,8 @@ A direção desktop usa fundo grafite, destaque âmbar, títulos em serifa e IBM
 - **Tokens** (cor, tipografia, espaçamento, forma, movimento):
   `src/styles/tokens.css`
 - **Primitivos reutilizáveis**: `src/shared/ui`
-- **Estilo de um componente**: CSS Module ao lado do próprio componente
+- **Tema shadcn/ui**: `src/styles/shadcn.css` conecta as cores semânticas aos tokens locais.
+- **Layout de uma feature**: CSS Module ao lado do próprio componente
 
 ## Regras
 
@@ -40,5 +40,4 @@ lint, o typecheck e os testes:
 npm run validate
 ```
 
-Se um dia o projeto adotar um kit compartilhado, ligue a capacidade de volta e
-a verificação volta com ela.
+Para adicionar componentes, use o registro do shadcn/ui com as configurações de `components.json`, revise as dependências e exporte o componente em `src/shared/ui/index.ts`. Para links de ação, use `Button asChild` com o link do roteador. A navegação por teclado e os nomes acessíveis são verificados no Chromium.

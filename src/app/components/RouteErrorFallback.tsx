@@ -1,3 +1,4 @@
+import { Button } from '@/shared/ui';
 import { FileQuestionMark, TriangleAlert } from 'lucide-react';
 import { Link, isRouteErrorResponse, useRouteError } from 'react-router';
 import styles from './RouteErrorFallback.module.css';
@@ -14,7 +15,9 @@ export function NotFound() {
         Página não encontrada
       </h2>
       <p>O endereço acessado não existe neste aplicativo.</p>
-      <Link to="/">Voltar para o início</Link>
+      <Button asChild>
+        <Link to="/">Voltar para o início</Link>
+      </Button>
     </section>
   );
 }
@@ -41,7 +44,9 @@ export function RouteErrorFallback() {
       </h2>
       <p>Tente novamente. Se o problema continuar, avise quem mantém o projeto.</p>
       {detail ? <pre className={styles.detail}>{detail}</pre> : null}
-      <Link to="/">Voltar para o início</Link>
+      <Button asChild>
+        <Link to="/">Voltar para o início</Link>
+      </Button>
     </section>
   );
 }

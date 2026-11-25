@@ -14,7 +14,7 @@
   padding-right: 2rem;
 }
 .header a,
-.header summary {
+.header [data-slot='collapsible-trigger'] {
   color: var(--ink);
   text-decoration: none;
 }
@@ -25,7 +25,7 @@
   gap: 1.8rem;
 }
 .nav > a,
-.header summary {
+.header [data-slot='collapsible-trigger'] {
   padding: 1rem 0;
   font-size: 1.15rem;
 }
@@ -36,10 +36,10 @@
 .account {
   margin-left: auto;
 }
-.header details {
+.header [data-slot='collapsible'] {
   position: relative;
 }
-.header details div {
+.header [data-slot='collapsible-content'] {
   position: absolute;
   z-index: 3;
   top: 100%;
@@ -49,12 +49,12 @@
   min-width: max-content;
   border-radius: var(--radius-md);
 }
-.header details a {
+.header [data-slot='collapsible'] a {
   display: block;
   padding: 0.4rem 0.7rem;
 }
 .header a:hover,
-.header summary:hover {
+.header [data-slot='collapsible-trigger']:hover {
   color: var(--accent);
 }
 .content {
@@ -72,4 +72,32 @@
 }
 .skipLink:focus {
   transform: none;
+}
+
+.header [data-slot='collapsible-trigger']:hover {
+  background: var(--paper-2);
+}
+
+@media (max-width: 48rem) {
+  .header {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+  }
+  .brand {
+    padding-right: var(--space-2);
+    border-right: 0;
+  }
+  .nav {
+    order: 1;
+    width: 100%;
+    gap: var(--space-4);
+  }
+  .account {
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .account [data-slot='collapsible-content'] {
+    right: 0;
+  }
 }

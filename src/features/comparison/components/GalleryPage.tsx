@@ -1,7 +1,17 @@
+import { Archive, RefreshCw, Upload, X } from 'lucide-react';
+import {
+  Empty,
+  Spinner,
+  Button,
+  Checkbox,
+  ErrorMessage,
+  Input,
+  Label,
+  PageHeader,
+} from '@/shared/ui';
 import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router';
 import { useAuth } from '@/features/auth';
-import { Button, PageHeader } from '@/shared/ui';
 import { listBenchmarks, publishBenchmark, withdrawBenchmark } from '../services/gallery';
 
 export function PublishBenchmark({ id, revision }: { id: string; revision: number }) {
@@ -33,24 +43,23 @@ export function PublishBenchmark({ id, revision }: { id: string; revision: numbe
       }}
     >
       <h2>Publicar benchmark</h2>
-      <label>
+      <Label>
         Título do benchmark{' '}
-        <input required maxLength={120} value={title} onChange={(e) => setTitle(e.target.value)} />
-      </label>
-      <label>
-        <input
-          type="checkbox"
+        <Input required maxLength={120} value={title} onChange={(e) => setTitle(e.target.value)} />
+      </Label>
+      <Label>
+        <Checkbox
           required
           checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
+          onCheckedChange={(checked) => setChecked(checked === true)}
         />{' '}
         Revisei as entradas, saídas e pareceres e confirmo que o material é próprio e pode ser
         publicado.
-      </label>
+      </Label>
       <Button type="submit" disabled={busy || !title.trim() || !checked}>
-        Publicar na galeria
+        <Upload className="icon icon-sm" aria-hidden="true" /> Publicar na galeria
       </Button>
-      {error && <p role="alert">{error}</p>}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </form>
   );
 }
@@ -108,7 +117,7 @@ export function GalleryPage({
     <section>
       <PageHeader title={manage ? 'Gerenciar benchmarks' : 'Galeria de benchmarks'} />
       {error && (
-        <p role="alert">
+        <ErrorMessage>
           {error}{' '}
           <Button
             onClick={() => {
@@ -116,12 +125,16 @@ export function GalleryPage({
               setRevision((n) => n + 1);
             }}
           >
-            Tentar novamente
+            <RefreshCw className="icon icon-sm" aria-hidden="true" /> Tentar novamente
           </Button>
+        </ErrorMessage>
+      )}
+      {!items && !error && (
+        <p role="status">
+          <Spinner /> Carregando benchmarks…
         </p>
       )}
-      {!items && !error && <p role="status">Carregando benchmarks…</p>}
-      {items?.length === 0 && <p>A galeria ainda está vazia.</p>}
+      {items?.length === 0 && <Empty>A galeria ainda está vazia.</Empty>}
       <ul>
         {items?.map((item) => (
           <li key={item.id}>
@@ -131,15 +144,15 @@ export function GalleryPage({
                 <>
                   <p>Retirar este benchmark e suas imagens da galeria pública?</p>
                   <Button disabled={busy} onClick={() => void withdraw(item.id)}>
-                    Confirmar retirada
+                    <Archive className="icon icon-sm" aria-hidden="true" /> Confirmar retirada
                   </Button>
                   <Button disabled={busy} onClick={() => setConfirm('')}>
-                    Cancelar
+                    <X className="icon icon-sm" aria-hidden="true" /> Cancelar
                   </Button>
                 </>
               ) : (
                 <Button disabled={busy} onClick={() => setConfirm(item.id)}>
-                  Retirar
+                  <Archive className="icon icon-sm" aria-hidden="true" /> Retirar
                 </Button>
               ))}
           </li>

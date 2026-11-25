@@ -1,7 +1,17 @@
+import { RefreshCw } from 'lucide-react';
+import {
+  Spinner,
+  Button,
+  Checkbox,
+  Disclosure,
+  ErrorMessage,
+  Label,
+  NativeSelect,
+  PageHeader,
+} from '@/shared/ui';
 import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 import { loadCatalog, type Catalog } from '../services/catalog';
-import { PageHeader } from '@/shared/ui';
 import { QuotePreview } from './QuotePreview';
 import styles from './CatalogPage.module.css';
 
@@ -54,14 +64,13 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
   return (
     <section className={styles.page}>
       {draft?.prompt && (
-        <details open>
-          <summary>Prompt do benchmark</summary>
+        <Disclosure defaultOpen title="Prompt do benchmark">
           <p>{draft.prompt}</p>
-        </details>
+        </Disclosure>
       )}
-      <label className={styles.task}>
+      <Label className={styles.task}>
         Tarefa
-        <select
+        <NativeSelect
           value={task.label}
           onChange={(event) => {
             setTask(tasks.find((item) => item.label === event.target.value)!);
@@ -71,8 +80,8 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
           {tasks.map((item) => (
             <option key={item.label}>{item.label}</option>
           ))}
-        </select>
-      </label>
+        </NativeSelect>
+      </Label>
       <fieldset className={styles.choices}>
         <legend>Versões para comparar</legend>
         {required === 0 ? (
@@ -88,18 +97,17 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
           <p>Selecione três versões compatíveis.</p>
         )}
         {compatible.map((model) => (
-          <label className={styles.row} key={model.id} htmlFor={model.id} aria-label={model.id}>
-            <input
-              type="checkbox"
+          <Label className={styles.row} key={model.id} htmlFor={model.id} aria-label={model.id}>
+            <Checkbox
               id={model.id}
               checked={selected.includes(model.id)}
               disabled={
                 Boolean(model.budgetRestriction) ||
                 (selected.length === required && !selected.includes(model.id))
               }
-              onChange={(event) =>
+              onCheckedChange={(checked) =>
                 setSelected(
-                  event.target.checked
+                  checked === true
                     ? [...selected, model.id]
                     : selected.filter((id) => id !== model.id),
                 )
@@ -112,7 +120,7 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
                 {model.budgetRestriction && <> · Indisponível. {model.budgetRestriction}</>}
               </small>
             </span>
-          </label>
+          </Label>
         ))}
       </fieldset>
       {required > 0 && (
@@ -149,19 +157,21 @@ export function CatalogPage({ draft }: { draft?: BenchmarkDraft } = {}) {
       {catalog ? (
         <ModelSelector catalog={catalog} draft={draft} />
       ) : error ? (
-        <div role="alert">
+        <ErrorMessage>
           <p>Falha ao carregar o catálogo.</p>
-          <button
+          <Button
             onClick={() => {
               setError(false);
               setAttempt(attempt + 1);
             }}
           >
-            Tentar novamente
-          </button>
-        </div>
+            <RefreshCw className="icon icon-sm" aria-hidden="true" /> Tentar novamente
+          </Button>
+        </ErrorMessage>
       ) : (
-        <p role="status">Carregando versões…</p>
+        <p role="status">
+          <Spinner /> Carregando versões…
+        </p>
       )}
     </section>
   );

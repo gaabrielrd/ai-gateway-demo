@@ -1,3 +1,4 @@
+import { Disclosure } from '@/shared/ui';
 import { Link, NavLink, Outlet, useLocation } from 'react-router';
 import type { ReactNode } from 'react';
 import styles from './App.module.css';
@@ -18,22 +19,20 @@ export function App({ account }: { account?: ReactNode }) {
         <nav className={styles.nav} aria-label="Navegação principal">
           <NavLink to="/galeria">Benchmarks</NavLink>
           <NavLink to="/comparar">Comparar</NavLink>
-          <details key={'gateway' + pathname}>
-            <summary>Gateway</summary>
+          <Disclosure key={'gateway' + pathname} title="Gateway">
             <div>
               <Link to="/demos/cache">Cache</Link>
               <Link to="/demos/fallback">Fallback</Link>
             </div>
-          </details>
+          </Disclosure>
         </nav>
         <div className={styles.account}>
-          <details key={pathname}>
-            <summary>Conta</summary>
+          <Disclosure key={pathname} title="Conta">
             <div>
               <Link to="/historico">Meu histórico</Link>
               <Link to="/acesso">Meu acesso</Link>
             </div>
-          </details>
+          </Disclosure>
           {account}
         </div>
       </header>

@@ -1,3 +1,5 @@
+import { ArrowLeft } from 'lucide-react';
+import { Button, ErrorMessage } from '@/shared/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import type { AuthEnv } from '@/shared/config/env';
@@ -52,13 +54,13 @@ export function CallbackPage({ config, onSession, now = Date.now }: CallbackPage
 
   if (falha !== null) {
     return (
-      <div className={styles.block} role="alert">
+      <ErrorMessage className={styles.block}>
         <h2>Login nao concluido</h2>
         <p>{falha}</p>
-        <button type="button" onClick={() => void navigate('/', { replace: true })}>
-          Voltar ao início
-        </button>
-      </div>
+        <Button type="button" onClick={() => void navigate('/', { replace: true })}>
+          <ArrowLeft className="icon icon-sm" aria-hidden="true" /> Voltar ao início
+        </Button>
+      </ErrorMessage>
     );
   }
 

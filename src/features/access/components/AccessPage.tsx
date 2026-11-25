@@ -1,7 +1,8 @@
+import { KeyRound, RefreshCw } from 'lucide-react';
+import { Button, ErrorMessage, Label, Textarea } from '@/shared/ui';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/features/auth';
 import { AdminQueue } from './AdminQueue';
-import { Button } from '@/shared/ui';
 import { accessLabels, ownAccess, type AccessStatus } from '../services/access';
 
 function RequestForm() {
@@ -49,7 +50,7 @@ function RequestForm() {
   return (
     <>
       <p role="status">{busy ? 'Aguarde…' : status && accessLabels[status]}</p>
-      {error && <p role="alert">{error}</p>}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       {status === 'none' && (
         <form
           onSubmit={(event) => {
@@ -57,21 +58,21 @@ function RequestForm() {
             void submit();
           }}
         >
-          <label htmlFor="reason">Justificativa (opcional)</label>
-          <textarea
+          <Label htmlFor="reason">Justificativa (opcional)</Label>
+          <Textarea
             id="reason"
             maxLength={2000}
             value={reason}
             onChange={(event) => setReason(event.target.value)}
           />
           <Button disabled={busy} type="submit">
-            Solicitar acesso
+            <KeyRound className="icon icon-sm" aria-hidden="true" /> Solicitar acesso
           </Button>
         </form>
       )}
       {(status !== 'none' || error) && (
         <Button disabled={busy} onClick={() => setRevision((n) => n + 1)}>
-          Atualizar situação
+          <RefreshCw className="icon icon-sm" aria-hidden="true" /> Atualizar situação
         </Button>
       )}
     </>

@@ -15,14 +15,6 @@
 .form button {
   justify-self: start;
 }
-.form textarea,
-.form input {
-  width: 100%;
-  padding: var(--space-2);
-  font: inherit;
-  border: var(--border-width) solid var(--field-border);
-  border-radius: var(--radius-sm);
-}
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));

@@ -63,13 +63,14 @@ entendimento do projeto, não para toda edição.
 
 ## Estilo e interface
 
-- A base visual é local: tokens em `src/styles/tokens.css` e primitivos em
+- Use os componentes do shadcn/ui em formulários, ações, navegação, tabelas e estados de tela. Importe de `@/shared/ui`.
+- A base visual usa tokens em `src/styles/tokens.css` e primitivos em
   `src/shared/ui`. Este projeto não usa o kit `@vitru/styleguide`.
 - Cor, espaçamento, tipografia, raio e transição vêm dos tokens. Não escreva
   cor literal em CSS de componente.
 - Ícones somente de `lucide-react`, com a classe `icon`; acrescente
   `icon-sm` para o tamanho menor.
-- Estilo de componente fica no CSS Module do próprio componente.
+- Os primitivos shadcn/ui usam Tailwind com o tema local. Layout específico de tela fica no CSS Module da feature.
 - Reutilize os primitivos de `src/shared/ui` antes de criar componente novo;
   quando criar, deixe-o lá se mais de uma feature for usá-lo.
 - Campo de formulário tem `label` associado e mensagem de erro programática.

@@ -49,14 +49,13 @@ O E2E escolhe uma porta efêmera, gera o bundle e serve a aplicação localmente
 
 ## Identidade visual
 
-Este projeto usa base visual local, sem pacote compartilhado e sem página de
+Este projeto usa componentes shadcn/ui versionados localmente, sem página de
 referência, então não há contrato de estilo nem regressão visual a proteger. O
 que cobre a aparência é o teste de comportamento dos componentes: nome
 acessível, estado visível e os quatro estados de tela (carregando, vazio, erro
 e sucesso).
 
-Se o projeto adotar um kit compartilhado, ligue a capacidade `styleguide` em
-`.template-state.json` e traga de volta o gate correspondente.
+Os testes no Chromium verificam seleção de modelos, alternância de abas por setas e expansão de pareceres com Enter.
 
 ## Cobertura
 

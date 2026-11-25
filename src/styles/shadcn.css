@@ -1,0 +1,39 @@
+@layer theme, base, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities) source('../');
+
+@theme inline {
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--paper-2);
+  --color-card-foreground: var(--ink);
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--on-accent);
+  --color-secondary: var(--paper-2);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--paper-2);
+  --color-muted-foreground: var(--ink-soft);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--on-accent);
+  --color-input: var(--field-border);
+  --color-border: var(--line);
+  --color-ring: var(--accent);
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: var(--danger-bg);
+}
+
+/* Base restrita aos componentes para preservar a tipografia do documento. */
+@layer base {
+  [data-slot] {
+    border: 0 solid var(--line);
+  }
+  :is(button, input, textarea, select)[data-slot] {
+    font-family: inherit;
+  }
+  button[data-slot] {
+    background-color: transparent;
+  }
+  a[data-slot='button'] {
+    text-decoration: none;
+  }
+}

@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router';
+import './styles/shadcn.css';
 import './styles/tokens.css';
 import { router } from './app/routes';
 // Valida as variaveis de ambiente antes de montar a aplicacao: uma

@@ -1,6 +1,7 @@
+import { RefreshCw, Save } from 'lucide-react';
+import { Spinner, Button, Checkbox, ErrorMessage, Label, PageHeader } from '@/shared/ui';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/features/auth';
-import { Button, PageHeader } from '@/shared/ui';
 import { type Panel, readPanels, savePanel } from '../services/panels';
 
 const names: Record<string, string> = {
@@ -33,25 +34,24 @@ function Editor({ panel }: { panel: Panel }) {
       <p>{panel.criteria.map((c) => c.label).join(' · ')}</p>
       {panel.options.map((id) => (
         <div key={id}>
-          <label>
-            <input
-              type="checkbox"
+          <Label>
+            <Checkbox
               checked={ids.includes(id)}
               disabled={!ids.includes(id) && ids.length >= 3}
-              onChange={(e) => {
+              onCheckedChange={(checked) => {
                 setMessage('');
-                setIds(e.target.checked ? [...ids, id] : ids.filter((old) => old !== id));
+                setIds(checked === true ? [...ids, id] : ids.filter((old) => old !== id));
               }}
             />
             {id}
-          </label>
+          </Label>
         </div>
       ))}
       {panel.options.length < 3 && (
         <p>São necessárias três versões compatíveis para avaliar esta tarefa.</p>
       )}
       <Button disabled={ids.length !== 3} onClick={() => void save()}>
-        Salvar painel
+        <Save className="icon icon-sm" aria-hidden="true" /> Salvar painel
       </Button>
       <p role="status">{message}</p>
     </fieldset>
@@ -79,7 +79,7 @@ function Panels() {
   }, [ensureSession, rev]);
   if (error)
     return (
-      <div role="alert">
+      <ErrorMessage>
         {error}{' '}
         <Button
           onClick={() => {
@@ -87,11 +87,16 @@ function Panels() {
             setRev((n) => n + 1);
           }}
         >
-          Tentar novamente
+          <RefreshCw className="icon icon-sm" aria-hidden="true" /> Tentar novamente
         </Button>
-      </div>
+      </ErrorMessage>
     );
-  if (!panels) return <p role="status">Carregando painéis…</p>;
+  if (!panels)
+    return (
+      <p role="status">
+        <Spinner /> Carregando painéis…
+      </p>
+    );
   return (
     <>
       {panels.map((panel) => (

@@ -48,7 +48,7 @@ Para a primeira execução dos testes de navegador, instale o Chromium com `npx 
 
 - `src/app` reúne rotas, composição e layout.
 - `src/features` contém a página inicial, as notas e as demais funcionalidades do projeto.
-- `src/shared/ui` reúne os componentes da identidade própria. Os tokens visuais ficam em `src/styles/tokens.css`.
+- `src/shared/ui` reúne os componentes shadcn/ui da aplicação, com ícones Lucide React e tema próprio. Os tokens visuais ficam em `src/styles/tokens.css`.
 
 Consulte a [arquitetura](docs/architecture.md), o [guia visual](docs/styleguide.md) e o [processo de desenvolvimento](docs/development-process.md) para criar funcionalidades e registrar decisões. As instruções para trabalhar com agentes ficam no [guia de skills](docs/skills-guide.md).
 

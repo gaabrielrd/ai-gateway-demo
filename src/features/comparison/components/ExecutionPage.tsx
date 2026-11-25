@@ -1,10 +1,11 @@
+import { RefreshCw } from 'lucide-react';
+import { Card, Badge, Spinner, Button, Disclosure, ErrorMessage, PageHeader } from '@/shared/ui';
 import { BenchmarkConsole } from './BenchmarkConsole';
 import { PublishBenchmark } from './GalleryPage';
 import { readBenchmark } from '../services/gallery';
 import { Fragment, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { useAuth } from '@/features/auth';
-import { Button, PageHeader } from '@/shared/ui';
 import { readExecution, readImage, type Attempt, type Execution } from '../services/executions';
 import { EvaluationResults } from './EvaluationResults';
 import { RetryAttempt } from './RetryAttempt';
@@ -55,7 +56,7 @@ function PrivateImage({ id, attempt }: { id: string; attempt: Attempt }) {
           setRevision((n) => n + 1);
         }}
       >
-        Tentar carregar a imagem novamente
+        <RefreshCw className="icon icon-sm" aria-hidden="true" /> Tentar carregar a imagem novamente
       </Button>
     );
   return url ? (
@@ -106,7 +107,7 @@ function Results({ id, published = false }: { id: string; published?: boolean })
   return (
     <>
       {error && (
-        <div role="alert">
+        <ErrorMessage>
           {error}{' '}
           <Button
             onClick={() => {
@@ -114,21 +115,24 @@ function Results({ id, published = false }: { id: string; published?: boolean })
               setRevision((n) => n + 1);
             }}
           >
-            Tentar novamente
+            <RefreshCw className="icon icon-sm" aria-hidden="true" /> Tentar novamente
           </Button>
-        </div>
+        </ErrorMessage>
       )}
-      {!record && !error && <p role="status">Carregando execução…</p>}
+      {!record && !error && (
+        <p role="status">
+          <Spinner /> Carregando execução…
+        </p>
+      )}
       {record && published && <BenchmarkConsole record={record} />}
       {record && !published && (
         <>
           {record.title && <h2>{record.title}</h2>}
-          <details>
-            <summary>Prompt enviado</summary>
+          <Disclosure title="Prompt enviado">
             <p>{record.prompt}</p>
             {record.reference && <p>Referência: {record.reference}</p>}
             {record.criterion && <p>Critério adicional: {record.criterion}</p>}
-          </details>
+          </Disclosure>
           <section className={styles.grid} aria-label="Resultados por modelo">
             {record.attempts
               .filter((a) => a.retryIndex === undefined)
@@ -154,33 +158,37 @@ function Results({ id, published = false }: { id: string; published?: boolean })
                   ['Cache', a.cacheStatus],
                 ];
                 return (
-                  <article className={styles.card} key={a.index}>
-                    <h2>{a.modelId}</h2>
-                    {a.retryOf !== undefined && <p>Repetição da tentativa {a.retryOf + 1}</p>}
-                    <p role="status">{labels[a.status]}</p>
-                    {a.error && <p>{a.error}</p>}
-                    {!published && a.status === 'failed' && (
-                      <RetryAttempt
-                        id={id}
-                        index={a.index}
-                        refresh={() => setRevision((n) => n + 1)}
-                      />
-                    )}
-                    {a.output?.type === 'text' && (
-                      <GenerationOutput model={a.modelId} content={a.output} />
-                    )}
-                    {a.output?.type === 'image' && <PrivateImage id={id} attempt={a} />}
-                    {['completed', 'failed'].includes(a.status) && (
-                      <dl className={styles.metrics}>
-                        {metrics.map(([label, value]) => (
-                          <Fragment key={label}>
-                            <dt>{label}</dt>
-                            <dd>{value ?? 'Não informado'}</dd>
-                          </Fragment>
-                        ))}
-                      </dl>
-                    )}
-                  </article>
+                  <Card asChild key={a.index}>
+                    <article className={styles.card}>
+                      <h2>{a.modelId}</h2>
+                      {a.retryOf !== undefined && <p>Repetição da tentativa {a.retryOf + 1}</p>}
+                      <Badge role="status" variant="outline">
+                        {labels[a.status]}
+                      </Badge>
+                      {a.error && <p>{a.error}</p>}
+                      {!published && a.status === 'failed' && (
+                        <RetryAttempt
+                          id={id}
+                          index={a.index}
+                          refresh={() => setRevision((n) => n + 1)}
+                        />
+                      )}
+                      {a.output?.type === 'text' && (
+                        <GenerationOutput model={a.modelId} content={a.output} />
+                      )}
+                      {a.output?.type === 'image' && <PrivateImage id={id} attempt={a} />}
+                      {['completed', 'failed'].includes(a.status) && (
+                        <dl className={styles.metrics}>
+                          {metrics.map(([label, value]) => (
+                            <Fragment key={label}>
+                              <dt>{label}</dt>
+                              <dd>{value ?? 'Não informado'}</dd>
+                            </Fragment>
+                          ))}
+                        </dl>
+                      )}
+                    </article>
+                  </Card>
                 );
               })}
           </section>

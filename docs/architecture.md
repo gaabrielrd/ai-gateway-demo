@@ -159,7 +159,7 @@ Toda leitura de `import.meta.env` passa por `shared/config/env.ts`. As variávei
 
 ## Estilo e identidade visual
 
-Estilização por CSS Modules ([ADR 0005](decisions/0005-css-modules.md)), com os
+Primitivos shadcn/ui usam Tailwind e Radix conforme a [ADR 0018](decisions/0018-shadcn-ui.md). A composição de telas usa CSS Modules ([ADR 0005](decisions/0005-css-modules.md)), com os
 valores vindos de `src/styles/tokens.css`. Cor, tipografia, espaçamento,
 raio, sombra e movimento vêm de tokens; nenhum CSS de componente declara cor
 literal.

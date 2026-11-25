@@ -1,3 +1,21 @@
+import { ArrowRight } from 'lucide-react';
+import {
+  Empty,
+  Tabs,
+  TabsList,
+  TabsContent,
+  TabsTrigger,
+  Button,
+  Card,
+  Disclosure,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/shared/ui';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import type { Execution } from '../services/executions';
@@ -48,12 +66,11 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
     };
   });
   const [index, setIndex] = useState<number>();
-  const [reviews, setReviews] = useState(false);
   const active =
     rows.find((r) => r.a.index === index) ??
     rows.find((r) => r.fields?.some((f) => !f.correct)) ??
     rows[0];
-  if (!active) return <p>Este benchmark ainda não tem resultados.</p>;
+  if (!active) return <Empty>Este benchmark ainda não tem resultados.</Empty>;
   const { a } = active;
   const output = a.output?.type === 'text' ? a.output.text : undefined;
   const received = jsonObject(output),
@@ -72,74 +89,77 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
           <h1>{record.title ?? 'Benchmark publicado'}</h1>
           <p>{conclusion}</p>
         </div>
-        <Link
-          className={styles.action}
-          to="/comparar"
-          state={{
-            task: record.task,
-            prompt: record.prompt,
-            reference: record.reference,
-            criterion: record.criterion,
-            modelIds: attempts.map((item) => item.modelId),
-          }}
-        >
-          Usar este prompt
-        </Link>
+        <Button asChild variant="default">
+          <Link
+            className={styles.action}
+            to="/comparar"
+            state={{
+              task: record.task,
+              prompt: record.prompt,
+              reference: record.reference,
+              criterion: record.criterion,
+              modelIds: attempts.map((item) => item.modelId),
+            }}
+          >
+            <ArrowRight className="icon icon-sm" aria-hidden="true" /> Usar este prompt
+          </Link>
+        </Button>
       </header>
       <div className={styles.workspace}>
         <div className={styles.left}>
-          <div className={styles.panel}>
-            <table>
-              <caption className={styles.sr}>Resultados por modelo</caption>
-              <thead>
-                <tr>
+          <Card className={styles.panel}>
+            <Table>
+              <TableCaption className={styles.sr}>Resultados por modelo</TableCaption>
+              <TableHeader>
+                <TableRow>
                   {['Modelo', 'Campos', 'Nota', 'Tempo', 'Tokens¹', 'US$'].map((h) => (
-                    <th key={h}>{h}</th>
+                    <TableHead key={h}>{h}</TableHead>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {rows.map((r) => (
-                  <tr
+                  <TableRow
                     key={r.a.index}
                     data-active={r === active}
                     onClick={() => setIndex(r.a.index)}
                   >
-                    <th scope="row">
-                      <button
+                    <TableHead scope="row">
+                      <Button
                         aria-pressed={r === active}
                         onClick={() => setIndex(r.a.index)}
                         title={r.a.modelId}
                       >
                         {r.name}
-                      </button>
-                    </th>
-                    <td>{r.result ?? '—'}</td>
-                    <td>{r.score}</td>
-                    <td>
+                      </Button>
+                    </TableHead>
+                    <TableCell>{r.result ?? '—'}</TableCell>
+                    <TableCell>{r.score}</TableCell>
+                    <TableCell>
                       {r.a.durationMs == null ? '—' : seconds.format(r.a.durationMs / 1000) + ' s'}
-                    </td>
-                    <td>
+                    </TableCell>
+                    <TableCell>
                       {r.a.inputTokens == null || r.a.outputTokens == null
                         ? '—'
                         : r.a.inputTokens + r.a.outputTokens}
-                    </td>
-                    <td>{r.a.costMicroUsd == null ? '—' : cost.format(r.a.costMicroUsd / 1e6)}</td>
-                  </tr>
+                    </TableCell>
+                    <TableCell>
+                      {r.a.costMicroUsd == null ? '—' : cost.format(r.a.costMicroUsd / 1e6)}
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
             <footer>¹ Entrada + saída · — Não informado</footer>
-          </div>
+          </Card>
           <div className={styles.flow} aria-label="Percurso do prompt">
-            <details>
-              <summary>Prompt</summary>
+            <Disclosure title="Prompt">
               <div className={styles.source}>
                 <p>{record.prompt}</p>
                 {record.reference && <p>Referência: {record.reference}</p>}
                 {record.criterion && <p>Critério: {record.criterion}</p>}
               </div>
-            </details>
+            </Disclosure>
             <div className={styles.branches}>
               {rows.map((r, i) => (
                 <div key={r.a.index} className={styles.branch} data-active={r === active}>
@@ -153,10 +173,10 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
                       d={`M0 50 C55 50 45 ${((i + 0.5) * 100) / rows.length} 100 ${((i + 0.5) * 100) / rows.length}`}
                     />
                   </svg>
-                  <button aria-pressed={r === active} onClick={() => setIndex(r.a.index)}>
+                  <Button aria-pressed={r === active} onClick={() => setIndex(r.a.index)}>
                     {r.name}
-                  </button>
-                  <span className={styles.arrow} aria-hidden="true" />
+                  </Button>
+                  <ArrowRight className={`icon ${styles.arrow}`} aria-hidden="true" />
                   <b>{r.result ?? r.score}</b>
                 </div>
               ))}
@@ -165,21 +185,15 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
         </div>
         <aside className={styles.inspector} aria-label="Detalhe do modelo">
           <h2>{active.name}</h2>
-          <div className={styles.tabs}>
-            {['Resposta', 'Pareceres'].map((tab, i) => (
-              <button
-                key={tab}
-                aria-pressed={reviews === Boolean(i)}
-                onClick={() => setReviews(Boolean(i))}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-          {reviews ? (
-            <EvaluationResults record={record} selectedIndex={a.index} />
-          ) : (
-            <>
+          <Tabs defaultValue="response">
+            <TabsList aria-label="Detalhes do modelo" variant="line">
+              <TabsTrigger value="response">Resposta</TabsTrigger>
+              <TabsTrigger value="reviews">Pareceres</TabsTrigger>
+            </TabsList>
+            <TabsContent value="reviews">
+              <EvaluationResults record={record} selectedIndex={a.index} />
+            </TabsContent>
+            <TabsContent value="response">
               {active.fields
                 ?.filter((f) => !f.correct)
                 .map((f) => (
@@ -203,8 +217,7 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
                 />
               )}
               {a.error && <p role="status">{a.error}</p>}
-              <details>
-                <summary>Detalhes da geração</summary>
+              <Disclosure title="Detalhes da geração">
                 <p>
                   {a.provider} · {a.effectiveModel ?? a.modelId}
                 </p>
@@ -213,15 +226,14 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
                   {a.outputTokens ?? 'Não informado'}
                 </p>
                 {received && (
-                  <details>
-                    <summary>Saída original</summary>
+                  <Disclosure title="Saída original">
                     <pre>{output}</pre>
-                  </details>
+                  </Disclosure>
                 )}
                 <p>Cache: {a.cacheStatus ?? 'Não informado'}</p>
-              </details>
-            </>
-          )}
+              </Disclosure>
+            </TabsContent>
+          </Tabs>
         </aside>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import { Disclosure } from '@/shared/ui';
 import type { Execution } from '../services/executions';
 import styles from './Comparison.module.css';
 
@@ -82,17 +83,21 @@ export function EvaluationResults({
       {record.judges?.map((id) => {
         const review = round.reviews.find((r) => r.modelId === id);
         return (
-          <details key={id}>
-            <summary>
-              {id} ·{' '}
-              {review?.status === 'completed'
-                ? 'Parecer disponível'
-                : review?.status === 'failed'
-                  ? 'Falhou'
-                  : round.status === 'finished'
-                    ? 'Parecer ausente'
-                    : 'Aguardando'}
-            </summary>
+          <Disclosure
+            key={id}
+            title={
+              <>
+                {id} ·{' '}
+                {review?.status === 'completed'
+                  ? 'Parecer disponível'
+                  : review?.status === 'failed'
+                    ? 'Falhou'
+                    : round.status === 'finished'
+                      ? 'Parecer ausente'
+                      : 'Aguardando'}
+              </>
+            }
+          >
             {review?.error && <p>{review.error}</p>}
             {review && (
               <p>
@@ -118,7 +123,7 @@ export function EvaluationResults({
                   </ul>
                 </div>
               ))}
-          </details>
+          </Disclosure>
         );
       })}
     </section>

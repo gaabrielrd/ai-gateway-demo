@@ -5,7 +5,19 @@
 // `toBeInTheDocument` sem tipo no Vitest 5.
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
-import { afterEach } from 'vitest';
+import { afterEach, beforeEach, vi } from 'vitest';
+
+// O jsdom não calcula layout. O Radix observa o tamanho do checkbox dentro de forms.
+beforeEach(() =>
+  vi.stubGlobal(
+    'ResizeObserver',
+    class {
+      observe = vi.fn();
+      unobserve = vi.fn();
+      disconnect = vi.fn();
+    },
+  ),
+);
 
 // Desmonta a arvore, limpa o DOM e o localStorage apos cada teste.
 afterEach(() => {
