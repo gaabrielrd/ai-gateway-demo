@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/features/auth';
+import { AdminQueue } from './AdminQueue';
 import { Button } from '@/shared/ui';
 import { accessLabels, ownAccess, type AccessStatus } from '../services/access';
 
@@ -83,7 +84,10 @@ export function AccessPage() {
     <section>
       <h2>Meu acesso</h2>
       {state.status === 'autenticada' ? (
-        <RequestForm key={state.session.subject} />
+        <div key={state.session.subject}>
+          <RequestForm />
+          <AdminQueue />
+        </div>
       ) : (
         <p>Entre com Google para solicitar acesso e acompanhar a decisão.</p>
       )}

@@ -7,6 +7,7 @@ vi.mock('@/features/auth', async (load) => ({
   ...(await load<typeof import('@/features/auth')>()),
   useAuth: vi.fn(),
 }));
+vi.mock('../components/AdminQueue', () => ({ AdminQueue: () => null }));
 const session = {
   accessToken: 'id',
   subject: 'one',
