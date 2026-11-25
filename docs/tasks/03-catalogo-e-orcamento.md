@@ -18,3 +18,9 @@ Com US$ 1 livre, duas reservas simultâneas de US$ 0,70 permitem uma execução.
 ## Risco principal
 
 Preço estimado para exibição e teto para autorização têm usos diferentes. Sem teto verificável, bloquear a execução. Em falhas com cobrança incerta, reconciliar a tentativa antes de liberar seu valor.
+
+## Inventário da homologação — T07 em andamento
+
+O gateway de homologação é `ai-gateway-demo`. O token local de execução está em `functions/.secret.local` sob a variável `CLOUDFLARE_API_TOKEN`. Em 25/11/2026 a verificação do token retornou HTTP 200 e estado `active`. A consulta `GET /accounts/{account_id}/ai/models/search` retornou HTTP 403, código Cloudflare `10000`, com a permissão `AI Gateway: Run`. O endpoint de catálogo requer acesso a Workers AI. O painel mostrou US$ 0,00 de créditos pré-pagos e cobrança padrão para Workers AI.
+
+Os modelos destacados pelo painel ainda não foram verificados como executáveis na conta. A próxima verificação é consultar o catálogo com `Workers AI: Read` e cruzar os identificadores e modalidades com as evidências de resposta e preço. A API REST aceita essa permissão para inferência. [Autenticação da API REST da Cloudflare](https://developers.cloudflare.com/ai-gateway/usage/rest-api/#authentication).
