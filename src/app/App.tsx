@@ -34,6 +34,7 @@ export function App({ account }: { account?: ReactNode }) {
             <Home className="icon icon-sm" aria-hidden="true" />
             Início
           </NavLink>
+          <NavLink to="/comparar">Comparar modelos</NavLink>
           <NavLink to="/acesso">Meu acesso</NavLink>
           {account}
         </nav>
