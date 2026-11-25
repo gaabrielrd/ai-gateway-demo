@@ -111,7 +111,7 @@ test('usuário aprovado confirma a previsão e recebe as saídas dos três model
   await page.route('**/api/admin/access', (r) => r.fulfill({ status: 403, json: {} }));
   await login(page, 'aprovada');
   await page.getByRole('link', { name: 'Comparar', exact: true }).click();
-  const options = page.getByRole('checkbox');
+  const options = page.getByRole('checkbox', { disabled: false });
   await expect(options.nth(2)).toBeVisible();
   for (const choice of (await options.all()).slice(0, 3)) await choice.check();
   let models: string[] = [];

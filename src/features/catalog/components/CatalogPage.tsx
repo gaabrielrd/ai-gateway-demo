@@ -32,6 +32,7 @@ function tariff({ price }: Model) {
   if (price.perMillionInputTokens !== undefined) {
     return `${usd.format(price.perMillionInputTokens)} por milhão de tokens de entrada · ${usd.format(price.perMillionOutputTokens)} por milhão de saída`;
   }
+  if (price.per512x512Tile === undefined) return 'Tarifa por execução indisponível';
   return `${usd.format(price.per512x512Tile)} por bloco de 512 × 512 px · ${usd.format(price.perStep)} por passo`;
 }
 
@@ -61,6 +62,20 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
       .slice(0, required)
       .map((m) => m.id),
   );
+  const providers = [...new Set(catalog.models.map((m) => m.provider))].sort();
+  const [provider, setProvider] = useState(
+    () =>
+      catalog.models.find((m) => selected.includes(m.id))?.provider ??
+      (providers.includes('workers-ai') ? 'workers-ai' : (providers[0] ?? '')),
+  );
+  const [sort, setSort] = useState('recent');
+  const byOrder = (a: Model, b: Model) =>
+    (sort === 'recent' ? (b.createdAt ?? '').localeCompare(a.createdAt ?? '') : 0) ||
+    a.id.localeCompare(b.id);
+  const visible = compatible.filter((m) => m.provider === provider).sort(byOrder);
+  const other = catalog.models
+    .filter((m) => m.provider === provider && !compatible.includes(m))
+    .sort(byOrder);
   return (
     <section className={styles.page}>
       {draft?.prompt && (
@@ -96,7 +111,25 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
         ) : (
           <p>Selecione três versões compatíveis.</p>
         )}
-        {compatible.map((model) => (
+        <Label className={styles.task}>
+          Provedor
+          <NativeSelect value={provider} onChange={(e) => setProvider(e.target.value)}>
+            {providers.map((p) => (
+              <option key={p} value={p}>
+                {p === 'workers-ai' ? 'Workers AI' : p}
+              </option>
+            ))}
+          </NativeSelect>
+        </Label>
+        <Label className={styles.task}>
+          Ordenar modelos
+          <NativeSelect value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value="recent">Mais recentes no catálogo</option>
+            <option value="name">Nome (A–Z)</option>
+          </NativeSelect>
+        </Label>
+        {visible.length === 0 && <p>Este provedor não possui modelos para a tarefa selecionada.</p>}
+        {visible.map((model) => (
           <Label className={styles.row} key={model.id} htmlFor={model.id} aria-label={model.id}>
             <Checkbox
               id={model.id}
@@ -122,7 +155,34 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
             </span>
           </Label>
         ))}
+        {other.length > 0 && (
+          <Disclosure title={`Modelos para outras tarefas (${other.length})`}>
+            <ul>
+              {other.map((m) => (
+                <li key={m.id}>
+                  {m.id} · {m.output}
+                </li>
+              ))}
+            </ul>
+          </Disclosure>
+        )}
       </fieldset>
+      {selected.length > 0 && (
+        <ul aria-label="Modelos selecionados">
+          {selected.map((id) => (
+            <li key={id}>
+              {id}{' '}
+              <Button
+                variant="ghost"
+                aria-label={`Remover ${id}`}
+                onClick={() => setSelected(selected.filter((item) => item !== id))}
+              >
+                Remover
+              </Button>
+            </li>
+          ))}
+        </ul>
+      )}
       {required > 0 && (
         <output aria-live="polite">
           {selected.length} de {required} selecionadas

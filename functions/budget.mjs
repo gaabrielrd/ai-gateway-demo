@@ -6,6 +6,7 @@ export const taskOutputs = Object.freeze({ summary: 'text', extraction: 'text', 
 // A janela publicada limita toda a entrada, incluindo a serialização de mensagens e o painel.
 export function compatibleJudge(model, task) {
   return (
+    !model.budgetRestriction &&
     model.output === 'text' &&
     Number.isSafeInteger(model.contextTokens) &&
     (task !== 'image' || model.acceptsImages === true)

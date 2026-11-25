@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test('abre o comparador público e seleciona três modelos por teclado', async ({ page }) => {
   await page.goto('/comparar');
   await expect(page.getByRole('heading', { name: 'Comparar modelos' })).toBeVisible();
-  const choices = page.getByRole('checkbox');
+  const choices = page.getByRole('checkbox', { disabled: false });
   await expect(choices.nth(2)).toBeVisible();
   for (const choice of (await choices.all()).slice(0, 3)) {
     await choice.focus();
@@ -22,7 +22,7 @@ test('o catálogo mostra os modelos de imagem compatíveis', async ({ page }) =>
   await page.setViewportSize({ width: 1280, height: 844 });
   await page.goto('/comparar');
   await page.getByLabel('Tarefa').selectOption('Geração de imagem');
-  await expect(page.getByRole('checkbox', { name: /flux/ })).toBeDisabled();
+  await expect(page.getByRole('checkbox', { name: /flux-1-schnell/ })).toBeDisabled();
   await page.getByRole('checkbox', { name: /lucid-origin/ }).check();
   await expect(page.getByText('1 de 1 selecionadas')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
