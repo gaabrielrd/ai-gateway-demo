@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { initializeApp, deleteApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { createExecution, processAttempt, executionApi } from './executions.mjs';
+import { retryGeneration } from './retries.mjs';
 import { reserveBudget } from './reservations.mjs';
 import catalog from './catalog.json' with { type: 'json' };
 
@@ -85,6 +86,37 @@ test(
     const reservation = (await base.collection('reservations').doc(executionId).get()).data();
     assert.equal(reservation.attempts[0].spentMicroUsd, 8);
     assert.equal(reservation.attempts[1].status, 'dispatched');
+    const previsao = await retryGeneration(db, identity, executionId, 1);
+    assert.ok(previsao.ceilingMicroUsd > reservation.attempts[1].ceilingMicroUsd);
+    await assert.rejects(retryGeneration(db, identity, executionId, 0), /falha/);
+    await assert.rejects(retryGeneration(db, identity, executionId, 2), /falha/);
+    await assert.rejects(retryGeneration(db, identity, executionId, 1, 1), /teto mudou/);
+    const retries = await Promise.all(
+      [1, 2].map(() => retryGeneration(db, identity, executionId, 1, previsao.ceilingMicroUsd)),
+    );
+    assert.deepEqual(retries, [{ index: 3 }, { index: 3 }]);
+    await processAttempt(db, { ...params, index: 3 }, run);
+    await executionApi(req, res, identity);
+    assert.equal(res.body.attempts.length, 4);
+    assert.equal(res.body.attempts[0].output.text, 'Resposta');
+    assert.equal(res.body.attempts[1].retryIndex, 3);
+    assert.equal(res.body.attempts[3].modelId, modelIds[1]);
+    assert.equal(res.body.attempts[3].status, 'completed');
+    const retryReserve = (
+      await base.collection('reservations').doc(res.body.attempts[3].reservationId).get()
+    ).data();
+    assert.equal(retryReserve.attempts[0].status, 'settled');
+    assert.equal(retryReserve.attempts.filter((a) => a.role === 'judge').length, 3);
+    assert.equal(
+      (await base.collection('reservations').doc(executionId).get()).get('attempts')[1].status,
+      'dispatched',
+    );
+    await attempts.doc('2').update({ status: 'running', startedAt: new Date() });
+    await assert.rejects(retryGeneration(db, identity, executionId, 2), /falha/);
+    await attempts.doc('2').update({ startedAt: new Date(Date.now() - 360000) });
+    await executionApi(req, res, identity);
+    assert.equal(res.body.attempts[2].status, 'failed');
+    assert.ok((await retryGeneration(db, identity, executionId, 2)).ceilingMicroUsd > 0);
     // O painel visual será homologado na T15. Aqui a reserva de teste isola a persistência da mídia.
     const imageId = randomUUID();
     const imageRef = base.collection('executions').doc(imageId);

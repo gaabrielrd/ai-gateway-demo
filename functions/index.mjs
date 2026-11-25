@@ -9,6 +9,7 @@ import { quoteBudget } from './quote.mjs';
 
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
 import { getFirestore } from 'firebase-admin/firestore';
+import { retryApi } from './retries.mjs';
 import { executionApi, executionPath, processAttempt } from './executions.mjs';
 
 export const generateAttempt = onDocumentCreated(
@@ -30,6 +31,9 @@ const auth = getAuth(initializeApp());
 
 export const aiGatewayApi = onRequest(async (request, response) => {
   response.set('Cache-Control', 'no-store');
+  const retryRoute = /^\/api\/executions\/[A-Za-z0-9_-]{1,128}\/attempts\/\d+\/(quote|retry)$/.test(
+    request.path,
+  );
   const createRoute = request.path === '/api/executions';
   const detailRoute = /^\/api\/executions\/[A-Za-z0-9_-]{1,128}(?:\/media\/\d+)?$/.test(
     request.path,
@@ -37,6 +41,7 @@ export const aiGatewayApi = onRequest(async (request, response) => {
   const accessRoute = ['/api/access', '/api/admin/access'].includes(request.path);
   const quoteRoute = request.path === '/api/budget/quote';
   if (
+    !retryRoute &&
     !createRoute &&
     !detailRoute &&
     !quoteRoute &&
@@ -46,12 +51,15 @@ export const aiGatewayApi = onRequest(async (request, response) => {
     return;
   }
   if (
-    quoteRoute || createRoute
+    quoteRoute || createRoute || retryRoute
       ? request.method !== 'POST'
       : request.method !== 'GET' && !(accessRoute && request.method === 'POST')
   ) {
     response
-      .set('Allow', quoteRoute || createRoute ? 'POST' : accessRoute ? 'GET, POST' : 'GET')
+      .set(
+        'Allow',
+        quoteRoute || createRoute || retryRoute ? 'POST' : accessRoute ? 'GET, POST' : 'GET',
+      )
       .status(405)
       .end();
     return;
@@ -67,9 +75,10 @@ export const aiGatewayApi = onRequest(async (request, response) => {
       response.status(401).json({ error: 'Entre com Google para continuar' });
       return;
     }
-    if (createRoute || detailRoute) {
+    if (createRoute || detailRoute || retryRoute) {
       try {
-        await executionApi(request, response, identity);
+        const handler = retryRoute ? retryApi : executionApi;
+        await handler(request, response, identity);
       } catch {
         response.status(503).json({ error: 'Execução indisponível.' });
       }

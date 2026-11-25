@@ -5,6 +5,7 @@ import catalog from './catalog.json' with { type: 'json' };
 import { BudgetError, planBudget, taskOutputs } from './budget.mjs';
 import { isAdministrator } from './access.mjs';
 import { reserveBudget, claimAttempt, settleAttempt } from './reservations.mjs';
+import { interrupted } from './retries.mjs';
 import { generate } from './gateway.mjs';
 
 const keyPattern = /^[A-Za-z0-9_-]{1,128}$/;
@@ -117,13 +118,15 @@ export async function processAttempt(
   const [execution, attemptSnap] = await db.getAll(ref, attemptRef);
   if (!execution.exists || !attemptSnap.exists) return;
   const attempt = attemptSnap.data();
+  const reservationId = attempt.reservationId ?? executionId;
+  const reservationIndex = attempt.reservationIndex ?? index;
   if (['completed', 'failed'].includes(attempt.status)) {
     if (attempt.costMicroUsd !== null)
-      await settleAttempt(db, uid, executionId, index, attempt.costMicroUsd);
+      await settleAttempt(db, uid, reservationId, reservationIndex, attempt.costMicroUsd);
     return;
   }
   if (execution.get('expiresAt').toMillis() <= Date.now()) return;
-  const claimed = await claimAttempt(db, uid, executionId, index, (tx) =>
+  const claimed = await claimAttempt(db, uid, reservationId, reservationIndex, (tx) =>
     tx.update(attemptRef, { status: 'running', startedAt: new Date() }),
   );
   if (!claimed) return;
@@ -171,7 +174,8 @@ export async function processAttempt(
     }
   } else outcome.output = output;
   await attemptRef.update(outcome);
-  if (costMicroUsd !== null) await settleAttempt(db, uid, executionId, index, costMicroUsd);
+  if (costMicroUsd !== null)
+    await settleAttempt(db, uid, reservationId, reservationIndex, costMicroUsd);
 }
 
 export async function executionApi(request, response, identity) {
@@ -209,6 +213,11 @@ export async function executionApi(request, response, identity) {
     executionId: id,
     createdAt: record.createdAt.toDate().toISOString(),
     expiresAt: record.expiresAt.toDate().toISOString(),
-    attempts: attempts.docs.map((d) => d.data()),
+    attempts: attempts.docs.map((d) => {
+      const a = d.data();
+      return interrupted(a)
+        ? { ...a, status: 'failed', error: 'Execução interrompida. Custo em reconciliação.' }
+        : a;
+    }),
   });
 }

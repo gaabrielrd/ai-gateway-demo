@@ -11,6 +11,8 @@ export interface NewExecution {
 }
 
 export interface Attempt {
+  retryIndex?: number;
+  retryOf?: number;
   index: number;
   modelId: string;
   status: 'queued' | 'running' | 'completed' | 'failed';
@@ -70,4 +72,38 @@ export async function readImage(session: Session, id: string, index: number, sig
   });
   if (!r.ok) throw new Error('Falha ao carregar a imagem.');
   return r.blob();
+}
+
+interface RetryQuote {
+  availableMicroUsd: number;
+  ceilingMicroUsd: number;
+  reason: string | null;
+}
+
+async function postRetry(session: Session, id: string, index: number, ceiling?: number) {
+  const action = ceiling === undefined ? 'quote' : 'retry';
+  const response = await fetch(
+    `/api/executions/${encodeURIComponent(id)}/attempts/${index}/${action}`,
+    {
+      method: 'POST',
+      headers: { ...authorizationHeader(session), 'Content-Type': 'application/json' },
+      body: JSON.stringify(ceiling === undefined ? {} : { confirmedMicroUsd: ceiling }),
+    },
+  );
+  if (!response.ok) {
+    const data = (await response.json().catch(() => null)) as { error?: string } | null;
+    throw new Error(data?.error ?? 'Falha ao consultar a repetição.');
+  }
+  return response;
+}
+
+export async function quoteRetry(session: Session, id: string, index: number) {
+  const data = (await (await postRetry(session, id, index)).json()) as RetryQuote;
+  if (!Number.isSafeInteger(data.ceilingMicroUsd) || !Number.isSafeInteger(data.availableMicroUsd))
+    throw new Error('Previsão indisponível.');
+  return data;
+}
+
+export async function confirmRetry(session: Session, id: string, index: number, ceiling: number) {
+  await postRetry(session, id, index, ceiling);
 }

@@ -215,3 +215,9 @@ O cliente de geração em `functions/gateway.mjs` usa `CLOUDFLARE_ACCOUNT_ID`, `
 `POST /api/executions` aceita uma chave de execução, tarefa, modelos, prompt, referência, critério e teto confirmado em milionésimos de USD. A Function verifica o acesso, recalcula o plano e grava a reserva, o documento de execução e os documentos de geração juntos. O gatilho de criação de cada tentativa obtém o direito de despacho em uma transação, atualiza o resultado e liquida o custo conhecido. A ausência de informação suficiente para contabilizar mantém a reserva daquela tentativa.
 
 `GET /api/executions/{id}` devolve o estado de cada tentativa da conta autenticada. A imagem fica no Storage e é servida por `GET /api/executions/{id}/media/{index}` após verificar autor e expiração. A referência e o critério ficam disponíveis ao julgamento. Os três modelos candidatos recebem o mesmo prompt.
+
+### Repetição individual
+
+Na execução privada, cada tentativa com falha oferece uma nova previsão. `POST /api/executions/{id}/attempts/{index}/quote` consulta o saldo atual e calcula o teto de uma geração com o painel da execução. A confirmação em `/retry` grava a nova reserva, a ligação entre as tentativas e o próximo índice em uma transação. Reenviar a confirmação para a mesma tentativa devolve o índice já criado. A URL da comparação e os resultados dos demais modelos são preservados.
+
+O trabalhador tem limite de 180 segundos. Se uma tentativa despachada continuar em andamento após cinco minutos, a consulta a apresenta como interrompida. A cobrança anterior permanece em reconciliação. O usuário pode confirmar uma nova tentativa com orçamento próprio.

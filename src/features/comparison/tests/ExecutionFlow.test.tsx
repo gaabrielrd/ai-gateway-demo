@@ -136,3 +136,57 @@ it('recupera a consulta privada e carrega a imagem com o token da sessão', asyn
     vi.unstubAllGlobals();
   }
 });
+
+it('reabre a comparação e só repete após confirmar o novo teto', async () => {
+  const failed = { index: 1, modelId: 'B', status: 'failed' };
+  const first = {
+    index: 0,
+    modelId: 'A',
+    status: 'completed',
+    output: { type: 'text', text: 'Resultado preservado' },
+  };
+  const original = { executionId: 'original', prompt: 'Pedido', attempts: [first, failed] };
+  const requests = vi
+    .spyOn(globalThis, 'fetch')
+    .mockResolvedValueOnce(Response.json(original))
+    .mockResolvedValueOnce(
+      Response.json({ availableMicroUsd: 1000000, ceilingMicroUsd: 172000, reason: null }),
+    )
+    .mockResolvedValueOnce(Response.json({ index: 2 }, { status: 202 }))
+    .mockResolvedValueOnce(
+      Response.json({
+        ...original,
+        attempts: [
+          first,
+          { ...failed, retryIndex: 2 },
+          {
+            ...first,
+            index: 2,
+            retryOf: 1,
+            modelId: 'B',
+            output: { type: 'text', text: 'Resposta recuperada' },
+          },
+        ],
+      }),
+    );
+  render(
+    <MemoryRouter initialEntries={['/execucoes/original']}>
+      <Routes>
+        <Route path="/execucoes/:id" element={<ExecutionPage />} />
+      </Routes>
+    </MemoryRouter>,
+  );
+  await userEvent.click(
+    await screen.findByRole('button', { name: 'Consultar custo de repetição' }),
+  );
+  expect(await screen.findByText(/Novo teto com reavaliação/)).toHaveTextContent('0,172');
+  expect(requests).toHaveBeenCalledTimes(2);
+  await userEvent.click(screen.getByRole('button', { name: 'Confirmar repetição' }));
+  expect(await screen.findByText('Resposta recuperada')).toBeVisible();
+  expect(screen.getByText('Resultado preservado')).toBeVisible();
+  expect(requests).toHaveBeenNthCalledWith(
+    3,
+    '/api/executions/original/attempts/1/retry',
+    expect.objectContaining({ method: 'POST', body: '{"confirmedMicroUsd":172000}' }),
+  );
+});

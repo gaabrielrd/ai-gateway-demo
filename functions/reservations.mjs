@@ -1,7 +1,10 @@
 import { availableBudget, billingMonth, BudgetError } from './budget.mjs';
 
 function operationRef(db, uid, executionId) {
-  if (typeof executionId !== 'string' || !/^[a-zA-Z0-9_-]{1,128}$/.test(executionId))
+  if (
+    typeof executionId !== 'string' ||
+    !/^(?:[a-zA-Z0-9_-]{1,128}|retry\.[a-f0-9]{64})$/.test(executionId)
+  )
     throw new BudgetError('Identificador de execução inválido.');
   return db.collection('users').doc(uid).collection('reservations').doc(executionId);
 }
@@ -17,7 +20,7 @@ function validAmount(n) {
 // O chamador fornece o plano calculado nas Functions e o hash do pedido original.
 export async function reserveBudget(
   db,
-  { uid, executionId, requestHash, plan, createExecution },
+  { uid, executionId, requestHash, plan, prepare, createExecution },
   now = new Date(),
 ) {
   const operation = operationRef(db, uid, executionId);
@@ -44,6 +47,7 @@ export async function reserveBudget(
     const balance = (await tx.get(ref)).data() ?? { spentMicroUsd: 0, reservedMicroUsd: 0 };
     if (availableBudget(balance) < plan.ceilingMicroUsd)
       throw new BudgetError('Saldo insuficiente.');
+    const context = await prepare?.(tx);
     const reservation = {
       executionId,
       requestHash,
@@ -54,7 +58,7 @@ export async function reserveBudget(
     };
     tx.set(ref, { ...balance, reservedMicroUsd: balance.reservedMicroUsd + plan.ceilingMicroUsd });
     tx.create(operation, reservation);
-    createExecution?.(tx, reservation);
+    createExecution?.(tx, reservation, context);
     return reservation;
   });
 }

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router';
 import { useAuth } from '@/features/auth';
 import { Button, PageHeader } from '@/shared/ui';
 import { readExecution, readImage, type Attempt, type Execution } from '../services/executions';
+import { RetryAttempt } from './RetryAttempt';
 import { GenerationOutput } from './GenerationOutput';
 import styles from './Comparison.module.css';
 
@@ -114,49 +115,59 @@ function Results({ id }: { id: string }) {
             <p>{record.prompt}</p>
           </details>
           <section className={styles.grid} aria-label="Resultados por modelo">
-            {record.attempts.map((a) => {
-              const metrics = [
-                ['Provedor', a.provider],
-                ['Versão efetiva', a.effectiveModel],
-                ['Tempo de resposta', a.durationMs == null ? null : a.durationMs + ' ms'],
-                ['Tokens de entrada', a.inputTokens],
-                ['Tokens de saída', a.outputTokens],
-                [
-                  'Custo estimado',
-                  a.costMicroUsd == null ? null : usd.format(a.costMicroUsd / 1e6),
-                ],
-                [
-                  'Unidade de cobrança',
-                  a.unit === 'tokens'
-                    ? 'tokens'
-                    : a.unit === 'tiles-and-steps'
-                      ? 'blocos de imagem e passos'
-                      : null,
-                ],
-                ['Cache', a.cacheStatus],
-              ];
-              return (
-                <article className={styles.card} key={a.index}>
-                  <h2>{a.modelId}</h2>
-                  <p role="status">{labels[a.status]}</p>
-                  {a.error && <p>{a.error}</p>}
-                  {a.output?.type === 'text' && (
-                    <GenerationOutput model={a.modelId} content={a.output} />
-                  )}
-                  {a.output?.type === 'image' && <PrivateImage id={id} attempt={a} />}
-                  {['completed', 'failed'].includes(a.status) && (
-                    <dl className={styles.metrics}>
-                      {metrics.map(([label, value]) => (
-                        <Fragment key={label}>
-                          <dt>{label}</dt>
-                          <dd>{value ?? 'Não informado'}</dd>
-                        </Fragment>
-                      ))}
-                    </dl>
-                  )}
-                </article>
-              );
-            })}
+            {record.attempts
+              .filter((a) => a.retryIndex === undefined)
+              .map((a) => {
+                const metrics = [
+                  ['Provedor', a.provider],
+                  ['Versão efetiva', a.effectiveModel],
+                  ['Tempo de resposta', a.durationMs == null ? null : a.durationMs + ' ms'],
+                  ['Tokens de entrada', a.inputTokens],
+                  ['Tokens de saída', a.outputTokens],
+                  [
+                    'Custo estimado',
+                    a.costMicroUsd == null ? null : usd.format(a.costMicroUsd / 1e6),
+                  ],
+                  [
+                    'Unidade de cobrança',
+                    a.unit === 'tokens'
+                      ? 'tokens'
+                      : a.unit === 'tiles-and-steps'
+                        ? 'blocos de imagem e passos'
+                        : null,
+                  ],
+                  ['Cache', a.cacheStatus],
+                ];
+                return (
+                  <article className={styles.card} key={a.index}>
+                    <h2>{a.modelId}</h2>
+                    {a.retryOf !== undefined && <p>Repetição da tentativa {a.retryOf + 1}</p>}
+                    <p role="status">{labels[a.status]}</p>
+                    {a.error && <p>{a.error}</p>}
+                    {a.status === 'failed' && (
+                      <RetryAttempt
+                        id={id}
+                        index={a.index}
+                        refresh={() => setRevision((n) => n + 1)}
+                      />
+                    )}
+                    {a.output?.type === 'text' && (
+                      <GenerationOutput model={a.modelId} content={a.output} />
+                    )}
+                    {a.output?.type === 'image' && <PrivateImage id={id} attempt={a} />}
+                    {['completed', 'failed'].includes(a.status) && (
+                      <dl className={styles.metrics}>
+                        {metrics.map(([label, value]) => (
+                          <Fragment key={label}>
+                            <dt>{label}</dt>
+                            <dd>{value ?? 'Não informado'}</dd>
+                          </Fragment>
+                        ))}
+                      </dl>
+                    )}
+                  </article>
+                );
+              })}
           </section>
           <section>
             <h2>Pareceres dos juízes</h2>
