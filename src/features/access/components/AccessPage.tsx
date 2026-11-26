@@ -1,7 +1,9 @@
+import styles from './AccessPage.module.css';
+import { Link } from 'react-router';
 import { KeyRound, RefreshCw } from 'lucide-react';
-import { Button, ErrorMessage, Label, Textarea } from '@/shared/ui';
+import { Button, ErrorMessage, Label, Textarea, WorkPage } from '@/shared/ui';
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/features/auth';
+import { SignInPrompt, useAuth } from '@/features/auth';
 import { AdminQueue } from './AdminQueue';
 import { accessLabels, ownAccess, type AccessStatus } from '../services/access';
 
@@ -53,6 +55,7 @@ function RequestForm() {
       {error && <ErrorMessage>{error}</ErrorMessage>}
       {status === 'none' && (
         <form
+          className={styles.form}
           onSubmit={(event) => {
             event.preventDefault();
             void submit();
@@ -65,11 +68,17 @@ function RequestForm() {
             value={reason}
             onChange={(event) => setReason(event.target.value)}
           />
-          <Button disabled={busy} type="submit">
+          <Button variant="default" disabled={busy} type="submit">
             <KeyRound className="icon icon-sm" aria-hidden="true" /> Solicitar acesso
           </Button>
         </form>
       )}
+      {status === 'approved' && (
+        <Button asChild variant="default">
+          <Link to="/comparar">Comparar modelos</Link>
+        </Button>
+      )}
+      {status === 'pending' && <p>Sua solicitação aguarda a decisão da administração.</p>}
       {(status !== 'none' || error) && (
         <Button disabled={busy} onClick={() => setRevision((n) => n + 1)}>
           <RefreshCw className="icon icon-sm" aria-hidden="true" /> Atualizar situação
@@ -82,16 +91,20 @@ function RequestForm() {
 export function AccessPage() {
   const { state } = useAuth();
   return (
-    <section>
-      <h2>Meu acesso</h2>
+    <WorkPage
+      title="Meu acesso"
+      description="Consulte sua autorização para executar comparações e demonstrações do gateway."
+    >
       {state.status === 'autenticada' ? (
-        <div key={state.session.subject}>
-          <RequestForm />
+        <div className={styles.body} key={state.session.subject}>
+          <section aria-label="Situação do acesso">
+            <RequestForm />
+          </section>
           <AdminQueue />
         </div>
       ) : (
-        <p>Entre com Google para solicitar acesso e acompanhar a decisão.</p>
+        <SignInPrompt>Entre com Google para solicitar acesso e acompanhar a decisão.</SignInPrompt>
       )}
-    </section>
+    </WorkPage>
   );
 }

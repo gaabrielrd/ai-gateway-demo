@@ -1,0 +1,91 @@
+{
+  "verifiedOn": "2026-11-25",
+  "currency": "USD",
+  "priceSource": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+  "models": [
+    {
+      "id": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "price": {
+        "perMillionInputTokens": 0.293,
+        "perMillionOutputTokens": 2.253
+      },
+      "contextTokens": 24000
+    },
+    {
+      "id": "@cf/mistralai/mistral-small-3.1-24b-instruct",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "price": {
+        "perMillionInputTokens": 0.351,
+        "perMillionOutputTokens": 0.555
+      },
+      "acceptsImages": true,
+      "contextTokens": 128000
+    },
+    {
+      "id": "@cf/qwen/qwen2.5-coder-32b-instruct",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "price": {
+        "perMillionInputTokens": 0.66,
+        "perMillionOutputTokens": 1.0
+      },
+      "contextTokens": 32768
+    },
+    {
+      "id": "@cf/black-forest-labs/flux-1-schnell",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "image",
+      "price": {
+        "per512x512Tile": 5.28e-5,
+        "perStep": 0.0001056
+      },
+      "budgetRestriction": "A API não permite fixar as dimensões para prever o custo máximo."
+    },
+    {
+      "id": "@cf/leonardo/lucid-origin",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "image",
+      "imageLimits": {
+        "width": 512,
+        "height": 512,
+        "steps": 4
+      },
+      "price": {
+        "per512x512Tile": 0.006996,
+        "perStep": 0.000132
+      }
+    },
+    {
+      "id": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "contextTokens": 131000,
+      "acceptsImages": true,
+      "price": {
+        "perMillionInputTokens": 0.27,
+        "perMillionOutputTokens": 0.85
+      }
+    },
+    {
+      "id": "@cf/google/gemma-4-26b-a4b-it",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "contextTokens": 256000,
+      "acceptsImages": true,
+      "price": {
+        "perMillionInputTokens": 0.1,
+        "perMillionOutputTokens": 0.3
+      }
+    }
+  ]
+}

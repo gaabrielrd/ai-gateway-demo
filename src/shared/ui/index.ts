@@ -13,3 +13,5 @@ export * from './tabs';
 export * from './badge';
 export * from './spinner';
 export * from './empty';
+export * from './WorkPage';
+export * from './popover';

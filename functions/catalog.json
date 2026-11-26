@@ -1,7 +1,7 @@
 {
   "verifiedOn": "2026-11-25",
   "currency": "USD",
-  "priceSource": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+  "priceSource": "https://developers.cloudflare.com/ai/models/",
   "models": [
     {
       "id": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
@@ -12,7 +12,8 @@
         "perMillionInputTokens": 0.293,
         "perMillionOutputTokens": 2.253
       },
-      "contextTokens": 24000
+      "contextTokens": 24000,
+      "createdAt": "2024-12-06 17:09:18.338"
     },
     {
       "id": "@cf/mistralai/mistral-small-3.1-24b-instruct",
@@ -24,7 +25,8 @@
         "perMillionOutputTokens": 0.555
       },
       "acceptsImages": true,
-      "contextTokens": 128000
+      "contextTokens": 128000,
+      "createdAt": "2025-03-18 03:28:37.890"
     },
     {
       "id": "@cf/qwen/qwen2.5-coder-32b-instruct",
@@ -33,9 +35,10 @@
       "output": "text",
       "price": {
         "perMillionInputTokens": 0.66,
-        "perMillionOutputTokens": 1.0
+        "perMillionOutputTokens": 1
       },
-      "contextTokens": 32768
+      "contextTokens": 32768,
+      "createdAt": "2025-02-27 00:31:43.829"
     },
     {
       "id": "@cf/black-forest-labs/flux-1-schnell",
@@ -43,10 +46,11 @@
       "input": "text",
       "output": "image",
       "price": {
-        "per512x512Tile": 5.28e-5,
+        "per512x512Tile": 0.0000528,
         "perStep": 0.0001056
       },
-      "budgetRestriction": "A API não permite fixar as dimensões para prever o custo máximo."
+      "budgetRestriction": "A API não permite fixar as dimensões para prever o custo máximo.",
+      "createdAt": "2024-08-29 16:37:39.541"
     },
     {
       "id": "@cf/leonardo/lucid-origin",
@@ -61,7 +65,8 @@
       "price": {
         "per512x512Tile": 0.006996,
         "perStep": 0.000132
-      }
+      },
+      "createdAt": "2025-08-25 19:21:28.770"
     },
     {
       "id": "@cf/meta/llama-4-scout-17b-16e-instruct",
@@ -73,7 +78,8 @@
       "price": {
         "perMillionInputTokens": 0.27,
         "perMillionOutputTokens": 0.85
-      }
+      },
+      "createdAt": "2025-04-05 20:25:56.137"
     },
     {
       "id": "@cf/google/gemma-4-26b-a4b-it",
@@ -85,7 +91,2930 @@
       "price": {
         "perMillionInputTokens": 0.1,
         "perMillionOutputTokens": 0.3
-      }
+      },
+      "createdAt": "2026-04-02 15:05:22.642"
+    },
+    {
+      "id": "@cf/pipecat-ai/smart-turn-v2",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Voice Activity Detection",
+      "createdAt": "2025-08-04 10:08:04.219",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/thinkingmachines/inkling-2-small",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-09 23:34:25.355",
+      "price": {
+        "perMillionInputTokens": 0.3,
+        "perMillionOutputTokens": 1
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "@cf/openai/gpt-oss-120b",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2025-08-05 10:27:29.131",
+      "price": {
+        "perMillionInputTokens": 0.35,
+        "perMillionOutputTokens": 0.75
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "@cf/baai/bge-m3",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text Embeddings",
+      "createdAt": "2024-05-22 19:27:09.781",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/huggingface/distilbert-sst-2-int8",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text Classification",
+      "createdAt": "2023-09-25 19:21:11.898",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/black-forest-labs/flux-2-klein-9b",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-01-14 12:55:54.294",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/cloudflare/clairic-flash",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-29 20:16:58.443",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/meta/llama-guard-3-8b",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2025-01-22 23:26:23.495",
+      "price": {
+        "perMillionInputTokens": 0.484,
+        "perMillionOutputTokens": 0.03
+      },
+      "contextTokens": 131072
+    },
+    {
+      "id": "@cf/qwen/qwen3-embedding-0.6b",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text Embeddings",
+      "createdAt": "2025-06-18 20:23:22.086",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/mistral/mistral-7b-instruct-v0.2-lora",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2024-04-01 22:14:40.529",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/deepgram/aura-2-es",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2025-10-09 22:42:37.002",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/openai/whisper",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Automatic Speech Recognition",
+      "createdAt": "2023-09-25 19:21:11.898",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/zai-org/glm-5.3",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-08-14 12:07:32.346",
+      "price": {
+        "perMillionInputTokens": 1.4,
+        "perMillionOutputTokens": 4.4
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "@cf/utter-project/eurollm-9b-it",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-30 14:09:31.518",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/pfnet/plamo-embedding-1b",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text Embeddings",
+      "createdAt": "2025-09-24 18:42:05.576",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/deepgram/flux",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Automatic Speech Recognition",
+      "createdAt": "2025-09-29 21:07:55.114",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/deepgram/nova-3",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Automatic Speech Recognition",
+      "createdAt": "2025-06-05 16:05:15.199",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/cloudflare/clef",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-29 14:05:24.552",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/zai-org/glm-4.7-flash",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-01-28 16:04:39.346",
+      "price": {
+        "perMillionInputTokens": 0.0605,
+        "perMillionOutputTokens": 0.4
+      },
+      "contextTokens": 131072
+    },
+    {
+      "id": "@cf/microsoft/resnet-50",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Image Classification",
+      "createdAt": "2023-09-25 19:21:11.898",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/ibm-granite/granite-4.0-h-micro",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2025-10-07 18:46:29.436",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/leonardo/phoenix-1.0",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2025-08-25 18:12:18.073",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/cloudflare/clairic",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-14 05:34:04.680",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/meta/m2m100-1.2b",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Translation",
+      "createdAt": "2023-09-25 19:21:11.898",
+      "price": {
+        "perMillionInputTokens": 0.342,
+        "perMillionOutputTokens": 0.342
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/ai4bharat/indictrans2-en-indic-1B",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Translation",
+      "createdAt": "2025-09-23 18:19:17.382",
+      "price": {
+        "perMillionInputTokens": 0.342,
+        "perMillionOutputTokens": 0.342
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/black-forest-labs/flux-2-klein-4b",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-01-14 12:54:55.024",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/baai/bge-small-en-v1.5",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text Embeddings",
+      "createdAt": "2023-11-07 15:43:58.042",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/swiss-ai/apertus-v1.5-8b",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-30 14:20:40.668",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/cloudflare/clef-omni",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-09 01:37:45.295",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/baai/bge-base-en-v1.5",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text Embeddings",
+      "createdAt": "2023-09-25 19:21:11.898",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/aisingapore/gemma-sea-lion-v4-27b-it",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2025-09-23 19:27:30.468",
+      "price": {
+        "perMillionInputTokens": 0.351,
+        "perMillionOutputTokens": 0.555
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "@cf/black-forest-labs/flux-2-dev",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2025-11-24 15:44:06.050",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/meta/llama-3.2-11b-vision-instruct",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2024-09-25 05:36:04.547",
+      "price": {
+        "perMillionInputTokens": 0.0485,
+        "perMillionOutputTokens": 0.676
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "@cf/daily-co/phonellm-mini-alpha-2",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-13 09:36:59.162",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/qwen/qwen3.8-27b",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-08-17 07:13:11.641",
+      "price": {
+        "perMillionInputTokens": 0.45,
+        "perMillionOutputTokens": 3.2
+      },
+      "contextTokens": 262144
+    },
+    {
+      "id": "@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-17 03:51:20.275",
+      "price": {
+        "perMillionInputTokens": 0.3,
+        "perMillionOutputTokens": 1.2
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "@cf/openai/whisper-large-v3-turbo",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Automatic Speech Recognition",
+      "createdAt": "2024-05-22 00:02:18.656",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/deepgram/aura-1",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2025-08-27 01:18:18.880",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/openai/gpt-oss-20b",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2025-08-05 10:49:53.265",
+      "price": {
+        "perMillionInputTokens": 0.2,
+        "perMillionOutputTokens": 0.3
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "@cf/baai/bge-reranker-base",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text Classification",
+      "createdAt": "2025-02-14 12:28:19.009",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/moondream/moondream3.1-9B-A2B",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Image-to-Text",
+      "createdAt": "2026-07-07 14:39:02.726",
+      "price": {
+        "perMillionInputTokens": 0.3,
+        "perMillionOutputTokens": 1
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/cloudflare/clef-flash",
+      "provider": "workers-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-29 09:25:44.258",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/google/embeddinggemma-2",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Multimodal Embeddings",
+      "createdAt": "2026-10-08 12:39:40.122",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/baai/bge-large-en-v1.5",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text Embeddings",
+      "createdAt": "2023-11-07 15:43:58.042",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "@cf/deepgram/aura-2-en",
+      "provider": "workers-ai",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2025-10-09 22:19:34.483",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bria/ad-delayer",
+      "provider": "bria",
+      "input": "other",
+      "output": "Image-to-Document",
+      "createdAt": "2026-10-06 18:52:23",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "assemblyai/universal-3-pro",
+      "provider": "assemblyai",
+      "input": "other",
+      "output": "Automatic Speech Recognition",
+      "createdAt": "2026-05-22 17:52:58",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "assemblyai/universal-3.5-pro",
+      "provider": "assemblyai",
+      "input": "other",
+      "output": "Automatic Speech Recognition",
+      "createdAt": "2026-08-25 14:29:37",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "reflection-ai/beam-1.0-501b-a23b",
+      "provider": "reflection-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-16 13:57:23",
+      "price": {
+        "perMillionInputTokens": 0.3,
+        "perMillionOutputTokens": 1
+      },
+      "contextTokens": 262144
+    },
+    {
+      "id": "anthropic/claude-fable-5",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-06-09 22:24:20",
+      "price": {
+        "perMillionInputTokens": 10,
+        "perMillionOutputTokens": 50
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-fable-5.1",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-01 22:15:20",
+      "price": {
+        "perMillionInputTokens": 10,
+        "perMillionOutputTokens": 50
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-fable-5.2",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-10 19:22:16",
+      "price": {
+        "perMillionInputTokens": 8,
+        "perMillionOutputTokens": 40
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-haiku-4.5",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:52:52",
+      "price": {
+        "perMillionInputTokens": 1,
+        "perMillionOutputTokens": 5
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-haiku-5.5",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-12 14:30:47",
+      "price": {
+        "perMillionInputTokens": 0.5,
+        "perMillionOutputTokens": 2.5
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-opus-4.5",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:52:54",
+      "price": {
+        "perMillionInputTokens": 5,
+        "perMillionOutputTokens": 25
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-opus-4.6",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:52:55",
+      "price": {
+        "perMillionInputTokens": 5,
+        "perMillionOutputTokens": 25
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-opus-4.7",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:52:55",
+      "price": {
+        "perMillionInputTokens": 5,
+        "perMillionOutputTokens": 25
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-opus-4.8",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-28 17:14:04",
+      "price": {
+        "perMillionInputTokens": 5,
+        "perMillionOutputTokens": 25
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-opus-5",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-24 19:36:01",
+      "price": {
+        "perMillionInputTokens": 5,
+        "perMillionOutputTokens": 25
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-opus-5.5",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-23 20:51:41",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 20
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-sonnet-4.5",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:52:57",
+      "price": {
+        "perMillionInputTokens": 3,
+        "perMillionOutputTokens": 15
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-sonnet-4.6",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:52:57",
+      "price": {
+        "perMillionInputTokens": 3,
+        "perMillionOutputTokens": 15
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-sonnet-5",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-07 16:15:48",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 10
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "anthropic/claude-sonnet-5.5",
+      "provider": "anthropic",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-06 18:42:20",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 10
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/decisions",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-26 15:29:08",
+      "price": {
+        "perMillionInputTokens": 0.1,
+        "perMillionOutputTokens": 0
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "deepseek/deepseek-v4-pro",
+      "provider": "deepseek",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-06-08 18:17:18",
+      "price": {
+        "perMillionInputTokens": 1.74,
+        "perMillionOutputTokens": 3.48
+      },
+      "contextTokens": 131072
+    },
+    {
+      "id": "deepseek-ai/deepseek-v4.1-flash-1017",
+      "provider": "deepseek",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-10 19:22:24",
+      "price": {
+        "perMillionInputTokens": 0.3,
+        "perMillionOutputTokens": 1.2
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "elevenlabs/eleven-flash-v2-5",
+      "provider": "elevenlabs",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-07-09 02:31:08",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "elevenlabs/eleven-multilingual-v2",
+      "provider": "elevenlabs",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-07-24 20:04:40",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "elevenlabs/eleven-text-to-sound-v3",
+      "provider": "elevenlabs",
+      "input": "other",
+      "output": "Music Generation",
+      "createdAt": "2026-11-16 14:03:18",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "elevenlabs/eleven-turbo-v2-5",
+      "provider": "elevenlabs",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-07-09 02:32:45",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "elevenlabs/eleven-v3",
+      "provider": "elevenlabs",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-07-24 20:20:34",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "elevenlabs/music-v2",
+      "provider": "elevenlabs",
+      "input": "other",
+      "output": "Music Generation",
+      "createdAt": "2026-07-24 20:04:42",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "fireworks/ember-1",
+      "provider": "fireworks",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-15 23:29:53",
+      "price": {
+        "perMillionInputTokens": 3,
+        "perMillionOutputTokens": 15
+      },
+      "contextTokens": 1040000
+    },
+    {
+      "id": "black-forest-labs/flux-3-image-klein",
+      "provider": "black-forest-labs",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-10-16 11:57:43",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "black-forest-labs/flux-3-video",
+      "provider": "black-forest-labs",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-08-04 19:40:03",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "black-forest-labs/flux-video-upscale",
+      "provider": "black-forest-labs",
+      "input": "other",
+      "output": "video-to-video",
+      "createdAt": "2026-08-24 14:41:58",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "black-forest-labs/flux-fill-pro",
+      "provider": "black-forest-labs",
+      "input": "other",
+      "output": "Image-to-Image",
+      "createdAt": "2026-11-25 16:30:41",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "black-forest-labs/flux-1-kontext-max",
+      "provider": "black-forest-labs",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-08-19 20:45:47",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "black-forest-labs/flux-1-kontext-pro",
+      "provider": "black-forest-labs",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-08-19 20:42:08",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "black-forest-labs/flux-2-flex",
+      "provider": "black-forest-labs",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-27 23:12:22",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "black-forest-labs/flux-2-max",
+      "provider": "black-forest-labs",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-27 23:12:31",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "black-forest-labs/flux-2-pro-preview",
+      "provider": "black-forest-labs",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-27 23:12:41",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "black-forest-labs/flux-1.1-pro",
+      "provider": "black-forest-labs",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-11-18 21:01:01",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "z-ai/glm-5.3",
+      "provider": "z-ai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-10 19:23:00",
+      "price": {
+        "perMillionInputTokens": 1.4,
+        "perMillionOutputTokens": 4.4
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-image-1.5",
+      "provider": "openai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:38",
+      "price": {
+        "perMillionInputTokens": 5,
+        "perMillionOutputTokens": 10
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-image-2",
+      "provider": "openai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:39",
+      "price": {
+        "perMillionInputTokens": 5,
+        "perMillionOutputTokens": 10
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-image-2.5-flare",
+      "provider": "openai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-09-10 23:35:14",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-image-2.5-sunburst",
+      "provider": "openai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-09-10 23:35:47",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-image-2.6-flare",
+      "provider": "openai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-11-13 23:28:01",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-image-2.6-sunburst",
+      "provider": "openai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-11-13 23:28:03",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-4.1",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:24",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 8
+      },
+      "contextTokens": 1047576
+    },
+    {
+      "id": "openai/gpt-4.1-mini",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:25",
+      "price": {
+        "perMillionInputTokens": 0.4,
+        "perMillionOutputTokens": 1.6
+      },
+      "contextTokens": 1047576
+    },
+    {
+      "id": "openai/gpt-4.1-nano",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:25",
+      "price": {
+        "perMillionInputTokens": 0.1,
+        "perMillionOutputTokens": 0.4
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "openai/gpt-4o",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:26",
+      "price": {
+        "perMillionInputTokens": 1.25,
+        "perMillionOutputTokens": 5
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "openai/gpt-4o-transcribe",
+      "provider": "openai",
+      "input": "other",
+      "output": "Automatic Speech Recognition",
+      "createdAt": "2026-05-22 17:53:28",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-4o-mini",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:27",
+      "price": {
+        "perMillionInputTokens": 0.075,
+        "perMillionOutputTokens": 0.3
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "openai/gpt-5",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:29",
+      "price": {
+        "perMillionInputTokens": 1.25,
+        "perMillionOutputTokens": 10
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "openai/gpt-5-mini",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:30",
+      "price": {
+        "perMillionInputTokens": 0.25,
+        "perMillionOutputTokens": 2
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "openai/gpt-5-nano",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:31",
+      "price": {
+        "perMillionInputTokens": 0.05,
+        "perMillionOutputTokens": 0.4
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "openai/gpt-5.1",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:32",
+      "price": {
+        "perMillionInputTokens": 1.25,
+        "perMillionOutputTokens": 10
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "openai/gpt-5.4",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:35",
+      "price": {
+        "perMillionInputTokens": 2.5,
+        "perMillionOutputTokens": 15
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "openai/gpt-5.4-mini",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:35",
+      "price": {
+        "perMillionInputTokens": 0.75,
+        "perMillionOutputTokens": 4.5
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "openai/gpt-5.4-nano",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:36",
+      "price": {
+        "perMillionInputTokens": 0.2,
+        "perMillionOutputTokens": 1.25
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "openai/gpt-5.4-pro",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:36",
+      "price": {
+        "perMillionInputTokens": 30,
+        "perMillionOutputTokens": 180
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-5.5",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:37",
+      "price": {
+        "perMillionInputTokens": 5,
+        "perMillionOutputTokens": 30
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "openai/gpt-5.5-pro",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:38",
+      "price": {
+        "perMillionInputTokens": 30,
+        "perMillionOutputTokens": 180
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-5.6-luna",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-10 02:51:21",
+      "price": {
+        "perMillionInputTokens": 0.4,
+        "perMillionOutputTokens": 1.7999999999999998
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-5.6-sol",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-10 02:48:18",
+      "price": {
+        "perMillionInputTokens": 8,
+        "perMillionOutputTokens": 30
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-5.6-terra",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-10 02:49:52",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 18
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/gpt-6-astra",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-10 20:01:11",
+      "price": {
+        "perMillionInputTokens": 20,
+        "perMillionOutputTokens": 75
+      },
+      "contextTokens": 1050000
+    },
+    {
+      "id": "openai/gpt-6-luna",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-23 21:02:44",
+      "price": {
+        "perMillionInputTokens": 0.2,
+        "perMillionOutputTokens": 0.75
+      },
+      "contextTokens": 1050000
+    },
+    {
+      "id": "openai/gpt-6-sol",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-23 21:05:13",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 15
+      },
+      "contextTokens": 1050000
+    },
+    {
+      "id": "openai/gpt-6.1-sol",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-06 18:43:51",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 15
+      },
+      "contextTokens": 1050000
+    },
+    {
+      "id": "openai/gpt-6.1-terra",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-27 19:52:54",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 7.5
+      },
+      "contextTokens": 1050000
+    },
+    {
+      "id": "openai/gpt-6.2-astra",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-18 15:54:28",
+      "price": {
+        "perMillionInputTokens": 12,
+        "perMillionOutputTokens": 60
+      },
+      "contextTokens": 1050000
+    },
+    {
+      "id": "openai/gpt-6.2-sol",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-18 15:54:47",
+      "price": {
+        "perMillionInputTokens": 3,
+        "perMillionOutputTokens": 15
+      },
+      "contextTokens": 1050000
+    },
+    {
+      "id": "google/gemini-2.5-flash",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:07",
+      "price": {
+        "perMillionInputTokens": 0.3,
+        "perMillionOutputTokens": 2.5
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "google/gemini-2.5-flash-lite",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:08",
+      "price": {
+        "perMillionInputTokens": 0.1,
+        "perMillionOutputTokens": 0.4
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "google/gemini-2.5-pro",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:08",
+      "price": {
+        "perMillionInputTokens": 1.25,
+        "perMillionOutputTokens": 10
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "google/gemini-3-flash",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:09",
+      "price": {
+        "perMillionInputTokens": 0.5,
+        "perMillionOutputTokens": 3
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "google/gemini-3.1-flash-lite",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:09",
+      "price": {
+        "perMillionInputTokens": 0.25,
+        "perMillionOutputTokens": 1.5
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "google/gemini-3.1-flash-tts",
+      "provider": "google",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-05-22 17:53:10",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/gemini-3.1-pro",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:11",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 18
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "google/gemini-3.5-flash",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-06-17 23:03:54",
+      "price": {
+        "perMillionInputTokens": 1.5,
+        "perMillionOutputTokens": 9
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "google/gemini-3.5-flash-lite",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-21 21:43:11",
+      "price": {
+        "perMillionInputTokens": 0.3,
+        "perMillionOutputTokens": 2.5
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "google/gemini-3.6-flash",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-21 21:44:40",
+      "price": {
+        "perMillionInputTokens": 1.5,
+        "perMillionOutputTokens": 7.5
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "google/gemini-3.7-flash",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-08-14 22:33:12",
+      "price": {
+        "perMillionInputTokens": 0.75,
+        "perMillionOutputTokens": 3.75
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "google/gemini-3.8-flash",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-04 15:18:57",
+      "price": {
+        "perMillionInputTokens": 0.75,
+        "perMillionOutputTokens": 3.75
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "google/gemini-3.8-flash-tts",
+      "provider": "google",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-10-06 18:41:47",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/gemini-3.8-flash-lite-tts",
+      "provider": "google",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-10-06 18:40:01",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/gemini-4-argon",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-14 03:14:34",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 10
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "google/gemini-4-carbon",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-11 15:07:52",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 10
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "google/gemini-4-hydrogen",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-13 23:26:40",
+      "price": {
+        "perMillionInputTokens": 1.5,
+        "perMillionOutputTokens": 7.5
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "google/gemini-4-neon",
+      "provider": "google",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-25 18:52:56",
+      "price": {
+        "perMillionInputTokens": 3,
+        "perMillionOutputTokens": 15
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "google/gemini-decision-1",
+      "provider": "google-ai-studio",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-13 20:19:58",
+      "price": {
+        "perMillionInputTokens": 0.1,
+        "perMillionOutputTokens": 0
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/gemini-omni-1.2-flash",
+      "provider": "google",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-11-13 16:27:28",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/gemini-omni-flash",
+      "provider": "google",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-09-09 18:36:40",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/gemini-omni-1.1-flash",
+      "provider": "google",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-09-11 15:09:32",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "topaz/gigapixel-high-fidelity-3",
+      "provider": "topaz",
+      "input": "other",
+      "output": "Image-to-Image",
+      "createdAt": "2026-10-30 16:53:52",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "topaz/gigapixel-standard-2",
+      "provider": "topaz",
+      "input": "other",
+      "output": "Image-to-Image",
+      "createdAt": "2026-10-30 16:53:54",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "xai/grok-4.20-multi-agent-0309",
+      "provider": "xai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:54:02",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 6
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "xai/grok-4.20-0309-non-reasoning",
+      "provider": "xai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:54:01",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 6
+      },
+      "contextTokens": 2000000
+    },
+    {
+      "id": "xai/grok-4.20-0309-reasoning",
+      "provider": "xai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:54:01",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 6
+      },
+      "contextTokens": 2000000
+    },
+    {
+      "id": "xai/grok-4.3",
+      "provider": "xai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:54:03",
+      "price": {
+        "perMillionInputTokens": 1.25,
+        "perMillionOutputTokens": 2.5
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "xai/grok-4.5",
+      "provider": "xai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-21 21:32:03",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 12
+      },
+      "contextTokens": 500000
+    },
+    {
+      "id": "xai/grok-4.6",
+      "provider": "xai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-08-12 17:59:07",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 12
+      },
+      "contextTokens": 500000
+    },
+    {
+      "id": "xai/grok-4.7",
+      "provider": "xai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-22 17:41:44",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 12
+      },
+      "contextTokens": 500000
+    },
+    {
+      "id": "xai/grok-imagine-image",
+      "provider": "xai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:54:03",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "xai/grok-imagine-image-2.0",
+      "provider": "xai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-08-14 22:17:39",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "xai/grok-imagine-image-quality",
+      "provider": "xai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:54:08",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "xai/grok-imagine-video",
+      "provider": "xai",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:54:13",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "xai/grok-imagine-video-1.5-preview",
+      "provider": "xai",
+      "input": "other",
+      "output": "Image-to-Video",
+      "createdAt": "2026-06-03 20:26:48",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "xai/grok-stt",
+      "provider": "xai",
+      "input": "other",
+      "output": "Automatic Speech Recognition",
+      "createdAt": "2026-06-03 20:26:49",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "xai/grok-tts",
+      "provider": "xai",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-06-03 20:26:50",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "xai/grok-voice",
+      "provider": "xai",
+      "input": "other",
+      "output": "websocket",
+      "createdAt": "2026-06-08 18:08:26",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/hh1-i2v",
+      "provider": "alibaba",
+      "input": "other",
+      "output": "Image-to-Video",
+      "createdAt": "2026-05-22 17:52:49",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/hh1-t2v",
+      "provider": "alibaba",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:52:50",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/hh1.1-i2v",
+      "provider": "alibaba",
+      "input": "other",
+      "output": "Image-to-Video",
+      "createdAt": "2026-06-24 01:06:13",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/hh1.1-r2v",
+      "provider": "alibaba",
+      "input": "other",
+      "output": "Image-to-Video",
+      "createdAt": "2026-06-24 01:07:11",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/hh1.1-t2v",
+      "provider": "alibaba",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-06-24 01:03:23",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "thinkingmachines/inkling",
+      "provider": "thinkingmachines",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-22 15:35:05",
+      "price": {
+        "perMillionInputTokens": 1.87,
+        "perMillionOutputTokens": 4.68
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "thinkingmachines/inkling-256k",
+      "provider": "thinkingmachines",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-21 22:12:27",
+      "price": {
+        "perMillionInputTokens": 3.74,
+        "perMillionOutputTokens": 9.36
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "inworld/tts-1.5-max",
+      "provider": "inworld",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-05-22 17:53:16",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "inworld/tts-1.5-mini",
+      "provider": "inworld",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-05-22 17:53:16",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "inworld/tts-2",
+      "provider": "inworld",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-05-22 17:53:17",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "typesafe/jev",
+      "provider": "typesafe",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-17 19:34:28",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "typesafe/jev-1.14.0",
+      "provider": "typesafe",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-16 16:45:16",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "moonshotai/kimi-k3",
+      "provider": "moonshotai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-07-16 19:53:45",
+      "price": {
+        "perMillionInputTokens": 3,
+        "perMillionOutputTokens": 15
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "moonshotai/kimi-k3.1-pro",
+      "provider": "moonshotai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-12 22:20:37",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 10
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "moonshotai/kimi-k3.1-pro-highspeed",
+      "provider": "moonshotai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-13 23:27:53",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 20
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "klingai/kling-v4",
+      "provider": "klingai",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-10-26 13:56:19",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "klingai/kling-v4-flash",
+      "provider": "klingai",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-11-09 04:11:07",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "klingai/kling-v4-image",
+      "provider": "klingai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-11-17 15:51:31",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "kwaivgi/kling-v2.6",
+      "provider": "klingai",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-11-13 23:27:26",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "klingai/kling-v2-6-motion-control",
+      "provider": "klingai",
+      "input": "other",
+      "output": "video-to-video",
+      "createdAt": "2026-11-18 15:49:53",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "klingai/kling-v3",
+      "provider": "klingai",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-10-30 16:52:41",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "klingai/kling-v3-image",
+      "provider": "klingai",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-10-26 15:29:19",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "klingai/kling-v3-motion-control",
+      "provider": "klingai",
+      "input": "other",
+      "output": "video-to-video",
+      "createdAt": "2026-11-18 15:50:14",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "klingai/kling-v3-omni",
+      "provider": "klingai",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-10-30 16:52:43",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "krea/krea-2-large",
+      "provider": "krea",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-06-17 14:18:34",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "krea/krea-2-medium",
+      "provider": "krea",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-06-17 14:18:21",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "krea/krea-2-medium-turbo",
+      "provider": "krea",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-06-17 14:17:23",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "krea/krea-3",
+      "provider": "krea",
+      "input": "other",
+      "output": "Image-to-Image",
+      "createdAt": "2026-10-16 11:55:20",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "lightricks/ltx-2-3-fast",
+      "provider": "lightricks",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-11-16 14:02:33",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "lightricks/ltx-2-3-pro",
+      "provider": "lightricks",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-11-16 14:03:03",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "lightricks/ltx-2-5-fast",
+      "provider": "lightricks",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-08-11 22:03:47",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/lyria-3",
+      "provider": "google",
+      "input": "other",
+      "output": "Music Generation",
+      "createdAt": "2026-11-18 15:39:53",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/lyria-3-pro",
+      "provider": "google",
+      "input": "other",
+      "output": "Music Generation",
+      "createdAt": "2026-11-18 15:40:06",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/lyria-3.5",
+      "provider": "google",
+      "input": "other",
+      "output": "Music Generation",
+      "createdAt": "2026-11-17 20:12:10",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "xiaomi/mimo-v2.6-pro",
+      "provider": "primalabs",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-13 23:29:12",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 8
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "minimax/h3",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-09-16 19:44:34",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/h3-highspeed",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-10-30 14:12:54",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/h3-image",
+      "provider": "minimax",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-11-18 15:08:09",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/h3-image-highspeed",
+      "provider": "minimax",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-11-18 15:08:39",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/h3-lite",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-10-30 14:13:10",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/h3-max",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-09-16 19:46:57",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/hailuo-2.3",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:53:17",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/hailuo-2.3-fast",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:53:18",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/m2.7",
+      "provider": "minimax",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:19",
+      "price": {
+        "perMillionInputTokens": 0.3,
+        "perMillionOutputTokens": 1.2
+      },
+      "contextTokens": 128000
+    },
+    {
+      "id": "minimax/m3",
+      "provider": "minimax",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-06-01 20:11:36",
+      "price": {
+        "perMillionInputTokens": 0.6,
+        "perMillionOutputTokens": 2.4
+      },
+      "contextTokens": 1000000
+    },
+    {
+      "id": "minimax/m3.1-flash",
+      "provider": "minimax",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-22 14:09:08",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/music-2.6",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Music Generation",
+      "createdAt": "2026-05-22 17:53:20",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/speech-02-hd",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-11-16 14:02:45",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/speech-02-turbo",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-11-16 14:02:53",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/speech-2.6-hd",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-11-16 14:03:11",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/speech-2.6-turbo",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-11-16 14:09:37",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/speech-2.8-hd",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-05-22 17:53:20",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "minimax/speech-2.8-turbo",
+      "provider": "minimax",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-05-22 17:53:21",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "meta/muse-ember-1.0",
+      "provider": "meta",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-11-09 19:21:59",
+      "price": {
+        "perMillionInputTokens": 0.1,
+        "perMillionOutputTokens": 0.5
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "meta/muse-spark-1.1",
+      "provider": "meta",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-12 01:26:21",
+      "price": {
+        "perMillionInputTokens": 1.25,
+        "perMillionOutputTokens": 4.25
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "meta/muse-spark-1.2",
+      "provider": "meta",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-12 01:28:03",
+      "price": {
+        "perMillionInputTokens": 1.25,
+        "perMillionOutputTokens": 4.25
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "meta/muse-spark-1.3",
+      "provider": "meta",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-12 01:28:15",
+      "price": {
+        "perMillionInputTokens": 1.25,
+        "perMillionOutputTokens": 4.25
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "meta/muse-spark-open",
+      "provider": "meta",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-17 00:35:40",
+      "price": {
+        "perMillionInputTokens": 1.25,
+        "perMillionOutputTokens": 4.25
+      },
+      "contextTokens": 1040000
+    },
+    {
+      "id": "meta/muse-wonder-1.0",
+      "provider": "meta",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-12 22:52:50",
+      "price": {
+        "perMillionInputTokens": 4,
+        "perMillionOutputTokens": 20
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/nano-banana",
+      "provider": "google",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:12",
+      "price": {
+        "perMillionInputTokens": 0.3,
+        "perMillionOutputTokens": 30
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/nano-banana-2",
+      "provider": "google",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:12",
+      "price": {
+        "perMillionInputTokens": 0.5,
+        "perMillionOutputTokens": 60
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/nano-banana-2-lite",
+      "provider": "google",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-07-01 20:21:36",
+      "price": {
+        "perMillionInputTokens": 0.25,
+        "perMillionOutputTokens": 30
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/nano-banana-2.1",
+      "provider": "google",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-10-07 22:12:13",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/nano-banana-pro",
+      "provider": "google",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:13",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 120
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "pruna/p-image",
+      "provider": "pruna",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-06-18 15:45:31",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "pruna/p-image-try-on",
+      "provider": "pruna",
+      "input": "other",
+      "output": "Image-to-Image",
+      "createdAt": "2026-06-18 15:52:42",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "pruna/p-image-edit",
+      "provider": "pruna",
+      "input": "other",
+      "output": "Image-to-Image",
+      "createdAt": "2026-06-18 15:48:19",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "pruna/p-image-upscale",
+      "provider": "pruna",
+      "input": "other",
+      "output": "Image-to-Image",
+      "createdAt": "2026-06-18 15:52:26",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "pruna/p-video",
+      "provider": "pruna",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-06-18 16:10:42",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "pruna/p-video-animate",
+      "provider": "pruna",
+      "input": "other",
+      "output": "Image-to-Video",
+      "createdAt": "2026-06-18 15:53:19",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "pruna/p-video-avatar",
+      "provider": "pruna",
+      "input": "other",
+      "output": "Image-to-Video",
+      "createdAt": "2026-06-18 15:52:58",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "pruna/p-video-replace",
+      "provider": "pruna",
+      "input": "other",
+      "output": "Image-to-Video",
+      "createdAt": "2026-06-18 15:53:11",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "unbiased/pareto",
+      "provider": "unbiased",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-09-17 23:10:39",
+      "price": {
+        "perMillionInputTokens": 2.5,
+        "perMillionOutputTokens": 7.5
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "particle/particle-1",
+      "provider": "particle",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-10-30 17:20:28",
+      "price": {
+        "perMillionInputTokens": 0.25,
+        "perMillionOutputTokens": 1
+      },
+      "contextTokens": 1048576
+    },
+    {
+      "id": "pixverse/v5.6",
+      "provider": "pixverse",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:53:45",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "pixverse/v6",
+      "provider": "pixverse",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:53:46",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "topaz/proteus-4",
+      "provider": "topaz",
+      "input": "other",
+      "output": "video-to-video",
+      "createdAt": "2026-11-20 17:11:33",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/qwen3-max",
+      "provider": "alibaba",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:52:51",
+      "price": {
+        "perMillionInputTokens": 1.2,
+        "perMillionOutputTokens": 6
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/qwen3.5-397b-a17b",
+      "provider": "alibaba",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:52:51",
+      "price": {
+        "perMillionInputTokens": 0.6,
+        "perMillionOutputTokens": 3.6
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/qwen3.7-max",
+      "provider": "alibaba",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-08-11 22:16:32",
+      "price": {
+        "perMillionInputTokens": 1.25,
+        "perMillionOutputTokens": 3.75
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/qwen3.7-plus",
+      "provider": "alibaba",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-08-11 22:15:19",
+      "price": {
+        "perMillionInputTokens": 0.32,
+        "perMillionOutputTokens": 1.28
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/qwen3.8-max",
+      "provider": "alibaba",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-08-11 22:17:19",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 6
+      },
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/qwen-image-3.0-pro",
+      "provider": "alibaba",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-08-11 22:17:49",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bria/rmbg-3.0",
+      "provider": "bria",
+      "input": "other",
+      "output": "Image-to-Image",
+      "createdAt": "2026-11-20 17:10:54",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv3",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:46",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:50",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-pro",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:55",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-pro-vector",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:55",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-vector",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:56",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-1",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:51",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-1-flash",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-10-14 17:59:10",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-1-pro",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:51",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-1-pro-vector",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:52",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-1-vector",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:54",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-1-utility",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:52",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-1-utility-pro",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:53",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-1-utility-pro-vector",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:53",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/recraftv4-1-utility-vector",
+      "provider": "recraft",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:54",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "recraft/vectorize",
+      "provider": "recraft",
+      "input": "other",
+      "output": "Image-to-Image",
+      "createdAt": "2026-11-20 17:11:29",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "runwayml/aleph-2",
+      "provider": "runwayml",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-06-15 19:47:34",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "runwayml/gen-4.5",
+      "provider": "runwayml",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:53:58",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "elevenlabs/scribe-v3",
+      "provider": "elevenlabs",
+      "input": "other",
+      "output": "Automatic Speech Recognition",
+      "createdAt": "2026-11-18 21:01:37",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedance-1-pro",
+      "provider": "bytedance",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-11-18 00:40:50",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedance-1-pro-fast",
+      "provider": "bytedance",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-11-18 00:41:17",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedance-1.5-pro",
+      "provider": "bytedance",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-11-18 00:41:04",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedance-2.0",
+      "provider": "bytedance",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:52:58",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedance-2.0-fast",
+      "provider": "bytedance",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:53:04",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedance-2.0-mini",
+      "provider": "bytedance",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-06-26 18:21:59",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedance-2.5",
+      "provider": "bytedance",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-08-07 19:10:41",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedream-4.0",
+      "provider": "bytedance",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:05",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedream-4.5",
+      "provider": "bytedance",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:06",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedream-5-lite",
+      "provider": "bytedance",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:53:06",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedream-5-pro",
+      "provider": "bytedance",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-07-23 19:24:33",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "bytedance/seedream-5.5",
+      "provider": "bytedance",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-11-18 21:01:25",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "topaz/starlight-fast-2",
+      "provider": "topaz",
+      "input": "other",
+      "output": "video-to-video",
+      "createdAt": "2026-10-12 15:21:38",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "topaz/starlight-precise-2-6",
+      "provider": "topaz",
+      "input": "other",
+      "output": "video-to-video",
+      "createdAt": "2026-10-12 15:38:25",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/tts-1",
+      "provider": "openai",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-05-22 17:53:43",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/tts-1-hd",
+      "provider": "openai",
+      "input": "other",
+      "output": "Text-to-Speech",
+      "createdAt": "2026-05-22 17:53:44",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "veed/fabric-1.0",
+      "provider": "veed",
+      "input": "other",
+      "output": "Image-to-Video",
+      "createdAt": "2026-05-22 17:53:59",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "veed/fabric-1.0-fast",
+      "provider": "veed",
+      "input": "other",
+      "output": "Image-to-Video",
+      "createdAt": "2026-05-22 17:53:59",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/veo-3.1",
+      "provider": "google",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:53:14",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "google/veo-3.1-fast",
+      "provider": "google",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:53:15",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "vidu/q3-pro",
+      "provider": "vidu",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:54:00",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "vidu/q3-turbo",
+      "provider": "vidu",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-05-22 17:54:00",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/wan-2.6-image",
+      "provider": "alibaba",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-05-22 17:52:52",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/wan-2.7-i2v",
+      "provider": "alibaba",
+      "input": "other",
+      "output": "Image-to-Video",
+      "createdAt": "2026-05-29 20:29:17",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/wan-3.0-prime",
+      "provider": "alibaba",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-09-01 22:50:21",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "alibaba/wan-3.0",
+      "provider": "alibaba",
+      "input": "other",
+      "output": "Text-to-Video",
+      "createdAt": "2026-08-25 16:36:31",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "pruna/z-image-turbo",
+      "provider": "pruna",
+      "input": "text",
+      "output": "image",
+      "createdAt": "2026-11-20 17:11:27",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/o3",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:40",
+      "price": {
+        "perMillionInputTokens": 2,
+        "perMillionOutputTokens": 8
+      },
+      "contextTokens": 200000
+    },
+    {
+      "id": "openai/o3-mini",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:41",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
+    },
+    {
+      "id": "openai/o4-mini",
+      "provider": "openai",
+      "input": "text",
+      "output": "text",
+      "createdAt": "2026-05-22 17:53:42",
+      "price": {},
+      "budgetRestriction": "Formato de execução ou teto de custo ainda sem suporte."
     }
   ]
 }

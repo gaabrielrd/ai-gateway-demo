@@ -52,3 +52,13 @@ Requisições podem travar. Use um timeout (por exemplo, com `AbortController`) 
 ## Dados fake em desenvolvimento e testes
 
 Para desenvolver ou testar sem depender de uma API real, use um adaptador com dados fake que respeite a mesma interface do serviço. Assim a tela funciona igual, e os testes ficam rápidos e previsíveis.
+
+## Catálogo de modelos
+
+O comparador e as Functions leem o mesmo instantâneo em `functions/catalog.json`. Para atualizar antes da publicação, execute na raiz:
+
+```bash
+node --env-file=functions/.env.local --env-file=functions/.secret.local scripts/sync-model-catalog.mjs
+```
+
+O script consulta todas as páginas de `ai/models/search` (Workers AI) e `ai/catalog/models` (AI Gateway) da conta configurada. O arquivo público contém apenas metadados da seleção e do orçamento. O seletor agrupa pelo provedor informado pela API e ordena por data de inclusão ou nome. A execução aceita modelos com formato e teto de custo suportados. As configurações verificadas de Workers AI, inclusive limites de imagem, ficam em `functions/workers-models.json`.

@@ -1,8 +1,18 @@
-import { RefreshCw } from 'lucide-react';
+import {
+  Network,
+  RefreshCw,
+  Cloud,
+  Cpu,
+  Image,
+  Layers,
+  Sparkles,
+  Workflow,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
 import {
   Spinner,
   Button,
-  Checkbox,
   Disclosure,
   ErrorMessage,
   Label,
@@ -12,8 +22,19 @@ import {
 import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 import { loadCatalog, type Catalog } from '../services/catalog';
+import { CatalogPicker } from './CatalogPicker';
 import { QuotePreview } from './QuotePreview';
 import styles from './CatalogPage.module.css';
+
+const modelIcon = (output: string) => (output === 'image' ? Image : Cpu);
+const icons: Record<string, LucideIcon> = {
+  'workers-ai': Cloud,
+  openai: Workflow,
+  anthropic: Layers,
+  google: Sparkles,
+  'google-ai-studio': Sparkles,
+};
+const providerIcon = (provider: string) => icons[provider] ?? Network;
 
 const tasks = [
   { id: 'summary', label: 'Resumo de texto', output: 'text' },
@@ -32,6 +53,7 @@ function tariff({ price }: Model) {
   if (price.perMillionInputTokens !== undefined) {
     return `${usd.format(price.perMillionInputTokens)} por milhão de tokens de entrada · ${usd.format(price.perMillionOutputTokens)} por milhão de saída`;
   }
+  if (price.per512x512Tile === undefined) return 'Tarifa por execução indisponível';
   return `${usd.format(price.per512x512Tile)} por bloco de 512 × 512 px · ${usd.format(price.perStep)} por passo`;
 }
 
@@ -61,78 +83,172 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
       .slice(0, required)
       .map((m) => m.id),
   );
+  const providers = [...new Set(catalog.models.map((m) => m.provider))].sort();
+  const [provider, setProvider] = useState(
+    () =>
+      catalog.models.find((m) => selected.includes(m.id))?.provider ??
+      (providers.includes('workers-ai') ? 'workers-ai' : (providers[0] ?? '')),
+  );
+  const ModelIcon = modelIcon(task.output);
+  const [sort, setSort] = useState('recent');
+  const byOrder = (a: Model, b: Model) =>
+    (sort === 'recent' ? (b.createdAt ?? '').localeCompare(a.createdAt ?? '') : 0) ||
+    a.id.localeCompare(b.id);
+  const visible = compatible.filter((m) => m.provider === provider).sort(byOrder);
+  const other = catalog.models
+    .filter((m) => m.provider === provider && !compatible.includes(m))
+    .sort(byOrder);
   return (
-    <section className={styles.page}>
-      {draft?.prompt && (
+    <div className={styles.selector}>
+      {draft?.prompt && draft.task === task.id && (
         <Disclosure defaultOpen title="Prompt do benchmark">
           <p>{draft.prompt}</p>
         </Disclosure>
       )}
-      <Label className={styles.task}>
-        Tarefa
-        <NativeSelect
-          value={task.label}
-          onChange={(event) => {
-            setTask(tasks.find((item) => item.label === event.target.value)!);
-            setSelected([]);
-          }}
-        >
-          {tasks.map((item) => (
-            <option key={item.label}>{item.label}</option>
-          ))}
-        </NativeSelect>
-      </Label>
-      <fieldset className={styles.choices}>
-        <legend>Versões para comparar</legend>
-        {required === 0 ? (
-          <p>
-            Nenhum modelo habilitado tem modalidade compatível e teto de custo verificável para esta
-            tarefa.
-          </p>
-        ) : required === 1 ? (
-          <p>Apenas uma versão é compatível. Você pode testar esse modelo individualmente.</p>
-        ) : required === 2 ? (
-          <p>Apenas duas versões são compatíveis. Selecione ambas para comparar.</p>
-        ) : (
-          <p>Selecione três versões compatíveis.</p>
-        )}
-        {compatible.map((model) => (
-          <Label className={styles.row} key={model.id} htmlFor={model.id} aria-label={model.id}>
-            <Checkbox
-              id={model.id}
-              checked={selected.includes(model.id)}
-              disabled={
-                Boolean(model.budgetRestriction) ||
-                (selected.length === required && !selected.includes(model.id))
-              }
-              onCheckedChange={(checked) =>
-                setSelected(
-                  checked === true
-                    ? [...selected, model.id]
-                    : selected.filter((id) => id !== model.id),
+      <div className={styles.catalogBody}>
+        <fieldset className={styles.choices}>
+          <legend>Versões para comparar</legend>
+          {required === 0 ? (
+            <p>
+              Nenhum modelo habilitado tem modalidade compatível e teto de custo verificável para
+              esta tarefa.
+            </p>
+          ) : required === 1 ? (
+            <p>Apenas uma versão é compatível. Você pode testar esse modelo individualmente.</p>
+          ) : required === 2 ? (
+            <p>Apenas duas versões são compatíveis. Selecione ambas para comparar.</p>
+          ) : (
+            <p>Selecione três versões compatíveis.</p>
+          )}
+          <div className={styles.filters}>
+            <Label className={styles.task}>
+              Tarefa
+              <NativeSelect
+                value={task.label}
+                onChange={(event) => {
+                  setTask(tasks.find((item) => item.label === event.target.value)!);
+                  setSelected([]);
+                }}
+              >
+                {tasks.map((item) => (
+                  <option key={item.label}>{item.label}</option>
+                ))}
+              </NativeSelect>
+            </Label>
+            <Label className={styles.task}>
+              Ordenar modelos
+              <NativeSelect value={sort} onChange={(e) => setSort(e.target.value)}>
+                <option value="recent">Mais recentes no catálogo</option>
+                <option value="name">Nome (A–Z)</option>
+              </NativeSelect>
+            </Label>
+          </div>
+          {visible.length === 0 && (
+            <p>Este provedor não possui modelos para a tarefa selecionada.</p>
+          )}
+          <div className={styles.pickers}>
+            <CatalogPicker
+              label="Provedor"
+              value={provider === 'workers-ai' ? 'Workers AI' : provider || 'Sem provedores'}
+              icon={providerIcon(provider)}
+              selected={[provider]}
+              onPick={setProvider}
+              choices={providers.map((id) => {
+                const count = compatible.filter(
+                  (m) => m.provider === id && !m.budgetRestriction,
+                ).length;
+                return {
+                  id,
+                  name: id === 'workers-ai' ? 'Workers AI' : id,
+                  icon: providerIcon(id),
+                  detail: count === 1 ? '1 versão elegível' : count + ' versões elegíveis',
+                };
+              })}
+            />
+            <CatalogPicker
+              multiple
+              label="Modelos"
+              value="Escolher versões"
+              icon={modelIcon(task.output)}
+              selected={selected}
+              choices={visible.map((model) => ({
+                id: model.id,
+                name: model.id,
+                icon: modelIcon(model.output),
+                detail: [
+                  tariff(model),
+                  model.budgetRestriction && 'Indisponível. ' + model.budgetRestriction,
+                ]
+                  .filter(Boolean)
+                  .join(' · '),
+                disabled:
+                  Boolean(model.budgetRestriction) ||
+                  (selected.length === required && !selected.includes(model.id)),
+              }))}
+              onPick={(id) =>
+                setSelected((ids) =>
+                  ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id],
                 )
               }
             />
-            <span>
-              <strong>{model.id}</strong>
-              <small>
-                {model.provider} · {tariff(model)}
-                {model.budgetRestriction && <> · Indisponível. {model.budgetRestriction}</>}
-              </small>
-            </span>
-          </Label>
-        ))}
-      </fieldset>
-      {required > 0 && (
-        <output aria-live="polite">
-          {selected.length} de {required} selecionadas
-        </output>
-      )}
-      {required > 0 && selected.length === required && (
-        <QuotePreview key={[task.id, ...selected].join('|')} task={task.id} modelIds={selected} />
-      )}
+          </div>
+          {other.length > 0 && (
+            <Disclosure title={`Modelos para outras tarefas (${other.length})`}>
+              <ul>
+                {other.map((m) => (
+                  <li key={m.id}>
+                    {m.id} · {m.output}
+                  </li>
+                ))}
+              </ul>
+            </Disclosure>
+          )}
+        </fieldset>
+      </div>
+      <aside aria-label="Sua comparação" className={styles.selection}>
+        <h2>
+          <Network className="icon" aria-hidden="true" /> Sua comparação
+        </h2>
+        {required > 0 && (
+          <div className={styles.routing}>
+            <div className={styles.source}>
+              <Workflow aria-hidden="true" className="icon" />
+              <span>Prompt</span>
+            </div>
+            <ul className={styles.targets} aria-label="Modelos selecionados">
+              {Array.from({ length: required }, (_, index) => {
+                const id = selected[index];
+                return (
+                  <li key={id ?? 'slot-' + index} data-filled={Boolean(id)}>
+                    <ModelIcon className="icon icon-sm" aria-hidden="true" />
+                    <span>{id ?? 'Modelo ' + (index + 1)}</span>
+                    {id && (
+                      <Button
+                        size="icon-sm"
+                        variant="ghost"
+                        aria-label={'Remover ' + id}
+                        onClick={() => setSelected((items) => items.filter((item) => item !== id))}
+                      >
+                        <X className="icon icon-sm" aria-hidden="true" />
+                      </Button>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+        {required > 0 && (
+          <output aria-live="polite">
+            {selected.length} de {required} selecionadas
+          </output>
+        )}
+        {required > 0 && selected.length === required && (
+          <QuotePreview key={[task.id, ...selected].join('|')} task={task.id} modelIds={selected} />
+        )}
+      </aside>
       <a href={catalog.priceSource}>Consultar tarifas da Cloudflare</a>
-    </section>
+    </div>
   );
 }
 
@@ -153,7 +269,10 @@ export function CatalogPage({ draft }: { draft?: BenchmarkDraft } = {}) {
   }, [attempt]);
   return (
     <section className={styles.page}>
-      <PageHeader title="Comparar modelos" />
+      <PageHeader
+        title="Comparar modelos"
+        description="Escolha uma tarefa e as versões que receberão o mesmo prompt."
+      />
       {catalog ? (
         <ModelSelector catalog={catalog} draft={draft} />
       ) : error ? (

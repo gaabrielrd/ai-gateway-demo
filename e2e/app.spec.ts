@@ -3,12 +3,15 @@ import { expect, test } from '@playwright/test';
 test('abre o comparador público e seleciona três modelos por teclado', async ({ page }) => {
   await page.goto('/comparar');
   await expect(page.getByRole('heading', { name: 'Comparar modelos' })).toBeVisible();
-  const choices = page.getByRole('checkbox');
+  await page.getByRole('button', { name: /^Modelos:/ }).press('Enter');
+  const choices = page.getByRole('checkbox', { disabled: false });
   await expect(choices.nth(2)).toBeVisible();
   for (const choice of (await choices.all()).slice(0, 3)) {
     await choice.focus();
     await choice.press('Space');
   }
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: /^Modelos:/ })).toBeFocused();
   await expect(page.getByText('3 de 3 selecionadas')).toBeVisible();
   await expect(page.getByText(/Entre com Google para consultar seu saldo/)).toBeVisible();
 });
@@ -22,7 +25,8 @@ test('o catálogo mostra os modelos de imagem compatíveis', async ({ page }) =>
   await page.setViewportSize({ width: 1280, height: 844 });
   await page.goto('/comparar');
   await page.getByLabel('Tarefa').selectOption('Geração de imagem');
-  await expect(page.getByRole('checkbox', { name: /flux/ })).toBeDisabled();
+  await page.getByRole('button', { name: /^Modelos:/ }).click();
+  await expect(page.getByRole('checkbox', { name: /flux-1-schnell/ })).toBeDisabled();
   await page.getByRole('checkbox', { name: /lucid-origin/ }).check();
   await expect(page.getByText('1 de 1 selecionadas')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -49,6 +53,7 @@ test('visitante reabre benchmark parcial e inspeciona modelos e pareceres pelo t
       json: {
         executionId: id,
         title: 'Ensaio de exemplo',
+        task: 'summary',
         prompt: 'Descreva o ensaio.',
         judges: ['juiz A', 'juiz B', 'juiz C'],
         attempts: ['Alpha', 'Beta', 'Gama'].map((modelId, index) => ({
@@ -93,6 +98,9 @@ test('visitante reabre benchmark parcial e inspeciona modelos e pareceres pelo t
   await expect(summary).toHaveAttribute('aria-expanded', 'true');
   await page.getByRole('link', { name: 'Usar este prompt' }).click();
   await expect(page.getByText('Descreva o ensaio.')).toBeVisible();
+  await page.goBack();
+  await page.getByRole('link', { name: 'Experimentar desafio' }).click();
+  await expect(page.getByText(/Calcule a taxa conjunta de acertos/)).toBeVisible();
   await page.goto('/comparar');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Pular para o conteúdo' })).toBeFocused();
