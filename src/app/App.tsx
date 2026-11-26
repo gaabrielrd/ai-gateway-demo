@@ -19,7 +19,11 @@ export function App({ account }: { account?: ReactNode }) {
         <nav className={styles.nav} aria-label="Navegação principal">
           <NavLink to="/galeria">Benchmarks</NavLink>
           <NavLink to="/comparar">Comparar</NavLink>
-          <Disclosure key={'gateway' + pathname} title="Gateway">
+          <Disclosure
+            className={pathname.startsWith('/demos/') ? styles.current : undefined}
+            key={'gateway' + pathname}
+            title="Gateway"
+          >
             <div>
               <Link to="/demos/cache">Cache</Link>
               <Link to="/demos/fallback">Fallback</Link>
@@ -27,7 +31,17 @@ export function App({ account }: { account?: ReactNode }) {
           </Disclosure>
         </nav>
         <div className={styles.account}>
-          <Disclosure key={pathname} title="Conta">
+          <Disclosure
+            className={
+              ['/acesso', '/historico', '/execucoes/', '/admin/'].some((path) =>
+                pathname.startsWith(path),
+              )
+                ? styles.current
+                : undefined
+            }
+            key={pathname}
+            title="Conta"
+          >
             <div>
               <Link to="/historico">Meu histórico</Link>
               <Link to="/acesso">Meu acesso</Link>

@@ -1,7 +1,7 @@
 import { Wallet } from 'lucide-react';
 import { Spinner, Button, ErrorMessage } from '@/shared/ui';
 import { useState } from 'react';
-import { useAuth } from '@/features/auth';
+import { SignInPrompt, useAuth } from '@/features/auth';
 import { ExecutionForm } from '@/features/comparison';
 import { getQuote } from '../services/quote';
 
@@ -69,6 +69,6 @@ export function QuotePreview(props: { task: string; modelIds: string[] }) {
   return state.status === 'autenticada' ? (
     <QuoteForm key={state.session.subject} {...props} />
   ) : (
-    <p>Entre com Google para consultar seu saldo e o custo máximo.</p>
+    <SignInPrompt>Entre com Google para consultar seu saldo e o custo máximo.</SignInPrompt>
   );
 }

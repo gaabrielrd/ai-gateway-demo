@@ -1,8 +1,9 @@
-import { Calculator, Play, RefreshCw } from 'lucide-react';
-import { Spinner, Button, ErrorMessage, PageHeader } from '@/shared/ui';
+import styles from './DemoPage.module.css';
+import { ArrowRight, Calculator, Play, RefreshCw } from 'lucide-react';
+import { Spinner, Button, ErrorMessage, WorkPage } from '@/shared/ui';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
-import { useAuth } from '@/features/auth';
+import { SignInPrompt, useAuth } from '@/features/auth';
 import {
   quoteDemo,
   startDemo,
@@ -84,6 +85,11 @@ function Demo({ kind }: { kind: DemoKind }) {
   }, [active, ensureSession, refresh, kind]);
   return (
     <>
+      {busy && (
+        <p role="status">
+          <Spinner /> {quote && !result ? 'Processando solicitação…' : 'Consultando previsão…'}
+        </p>
+      )}
       {error && (
         <ErrorMessage>
           {error}{' '}
@@ -103,12 +109,12 @@ function Demo({ kind }: { kind: DemoKind }) {
       {(!quote ||
         result?.finished ||
         (!active && quote.availableMicroUsd < quote.ceilingMicroUsd)) && (
-        <Button disabled={busy} onClick={() => void prepare()}>
+        <Button variant="default" disabled={busy} onClick={() => void prepare()}>
           <Calculator className="icon icon-sm" aria-hidden="true" /> Consultar previsão
         </Button>
       )}
       {quote && (
-        <section>
+        <section className={styles.quote}>
           <h2>{fallback ? 'Rota de fallback' : 'Chamada repetida'}</h2>
           <p>{quote.prompt}</p>
           <p>{quote.modelId}</p>
@@ -120,7 +126,7 @@ function Demo({ kind }: { kind: DemoKind }) {
             (quote.availableMicroUsd < quote.ceilingMicroUsd ? (
               <p>Saldo insuficiente.</p>
             ) : (
-              <Button disabled={busy} onClick={() => void start()}>
+              <Button variant="default" disabled={busy} onClick={() => void start()}>
                 <Play className="icon icon-sm" aria-hidden="true" />{' '}
                 {fallback ? 'Confirmar e executar fallback' : 'Confirmar e executar duas chamadas'}
               </Button>
@@ -143,7 +149,7 @@ function Demo({ kind }: { kind: DemoKind }) {
         </>
       )}
       {result && (
-        <ol>
+        <ol className={styles.results}>
           {Object.entries(result.rows).map(([index, row]) => (
             <li key={index}>
               <h3>
@@ -195,20 +201,33 @@ export function DemoPage({ kind = 'cache' }: { kind?: DemoKind }) {
   const fallback = kind === 'fallback';
   const { state } = useAuth();
   return (
-    <section>
-      <PageHeader title={fallback ? 'Demonstração de fallback' : 'Demonstração de cache'} />
-      <p>
-        {fallback
+    <WorkPage
+      title={fallback ? 'Demonstração de fallback' : 'Demonstração de cache'}
+      description={
+        fallback
           ? 'A rota tenta um destino indisponível e encaminha o pedido ao Llama 3.3 pelo gateway.'
-          : 'Compare a origem e o tempo de duas chamadas idênticas ao mesmo modelo.'}
-      </p>
+          : 'Compare a origem e o tempo de duas chamadas idênticas ao mesmo modelo.'
+      }
+    >
+      <ol className={styles.route} aria-label="Etapas da demonstração">
+        <li>{fallback ? 'Pedido' : 'Mesmo prompt'}</li>
+        <li>
+          <ArrowRight aria-hidden="true" className="icon icon-sm" />
+          {fallback ? 'Destino indisponível' : 'Primeira chamada'}
+        </li>
+        <li>
+          <ArrowRight aria-hidden="true" className="icon icon-sm" />
+          {fallback ? 'Llama 3.3' : 'Chamada repetida'}
+        </li>
+      </ol>
       {state.status === 'autenticada' ? (
         <Demo key={kind + state.session.subject} kind={kind} />
       ) : (
-        <p>
-          Entre com Google para executar. <Link to="/acesso">Meu acesso</Link>
-        </p>
+        <div>
+          <SignInPrompt>Entre com Google para executar.</SignInPrompt>
+          <Link to="/acesso">Meu acesso</Link>
+        </div>
       )}
-    </section>
+    </WorkPage>
   );
 }

@@ -252,3 +252,48 @@
     height: auto;
   }
 }
+
+.console thead th:not(:first-child) {
+  text-align: right;
+}
+.console thead th,
+.console footer {
+  color: var(--ink-soft);
+}
+.console th button,
+.branch button {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  height: auto;
+  min-height: 2.25rem;
+}
+.console tbody tr[data-active='true']:hover {
+  background: var(--selected);
+}
+.inspector [role='tab'][aria-selected='true'] {
+  color: var(--accent);
+}
+.inspector pre {
+  max-height: 34rem;
+  overflow: auto;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .branch[data-active='true'] path {
+    animation: route-signal 340ms ease-out;
+  }
+}
+@keyframes route-signal {
+  from {
+    stroke-dasharray: 0 240;
+  }
+  to {
+    stroke-dasharray: 240 0;
+  }
+}

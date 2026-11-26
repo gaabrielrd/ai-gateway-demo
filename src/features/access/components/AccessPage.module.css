@@ -1,0 +1,45 @@
+.body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: var(--space-7);
+  align-items: start;
+}
+.body section {
+  min-width: 0;
+}
+.body section > :first-child {
+  margin-top: 0;
+}
+.form {
+  max-width: 42rem;
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+.links {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.queue {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.queue li {
+  border-top: var(--border-width) solid var(--line);
+  padding-block: var(--space-4);
+  overflow-wrap: anywhere;
+}
+.queue strong {
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.body section > [data-slot='button'] {
+  margin: 0 var(--space-2) var(--space-2) 0;
+}
+.form textarea {
+  width: 100%;
+  min-height: 6rem;
+}

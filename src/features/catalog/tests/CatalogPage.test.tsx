@@ -4,7 +4,9 @@ import { expect, it, vi } from 'vitest';
 import catalog from '../../../../functions/catalog.json';
 import { CatalogPage, ModelSelector } from '../components/CatalogPage';
 
-vi.mock('@/features/auth', () => ({ useAuth: () => ({ state: { status: 'anonima' } }) }));
+vi.mock('@/features/auth/hooks/useAuth', () => ({
+  useAuth: () => ({ state: { status: 'anonima' } }),
+}));
 
 it.each([0, 1, 2, 3, 4])('limita a seleção com %i versões compatíveis', async (count) => {
   const user = userEvent.setup();
@@ -13,6 +15,7 @@ it.each([0, 1, 2, 3, 4])('limita a seleção com %i versões compatíveis', asyn
     id: 'modelo-' + i,
   }));
   render(<ModelSelector catalog={{ ...catalog, models }} />);
+  await user.click(screen.getByRole('button', { name: /^Modelos:/ }));
   const inputs = screen.queryAllByRole('checkbox');
   expect(inputs).toHaveLength(count);
   if (!count) {
@@ -33,9 +36,12 @@ it.each([0, 1, 2, 3, 4])('limita a seleção com %i versões compatíveis', asyn
 it('troca para imagem e remove as versões de texto da seleção', async () => {
   const user = userEvent.setup();
   render(<ModelSelector catalog={catalog} />);
+  await user.click(screen.getByRole('button', { name: /^Modelos:/ }));
   await user.click(screen.getAllByRole('checkbox')[0]!);
+  await user.keyboard('{Escape}');
   await user.selectOptions(screen.getByRole('combobox', { name: 'Tarefa' }), 'Geração de imagem');
 
+  await user.click(screen.getByRole('button', { name: /^Modelos:/ }));
   expect(screen.getByRole('checkbox', { name: /lucid-origin/ })).toBeEnabled();
   expect(screen.getByRole('checkbox', { name: /flux-1-schnell/ })).toBeDisabled();
   expect(screen.getByRole('checkbox', { name: /flux-1-schnell/ })).not.toBeChecked();
@@ -65,14 +71,22 @@ it('ordena por data ou nome e preserva candidatos entre provedores', async () =>
     { ...catalog.models[0]!, provider: 'B', id: 'Outro' },
   ];
   render(<ModelSelector catalog={{ ...catalog, models }} />);
+  await user.click(screen.getByRole('button', { name: /^Modelos:/ }));
   expect(screen.getAllByRole('checkbox')[0]).toHaveAccessibleName('Recente');
+  await user.keyboard('{Escape}');
   await user.selectOptions(screen.getByLabelText('Ordenar modelos'), 'name');
+  await user.click(screen.getByRole('button', { name: /^Modelos:/ }));
   expect(screen.getAllByRole('checkbox')[0]).toHaveAccessibleName('Antigo');
   await user.click(screen.getByRole('checkbox', { name: 'Recente' }));
-  await user.selectOptions(screen.getByLabelText('Provedor'), 'B');
+  await user.keyboard('{Escape}');
+  await user.click(screen.getByRole('button', { name: /^Provedor:/ }));
+  await user.type(screen.getByRole('textbox', { name: 'Buscar em Provedor' }), 'B');
+  await user.click(screen.getByRole('button', { name: /B 1 versão elegível/ }));
+  await user.click(screen.getByRole('button', { name: /^Modelos:/ }));
   expect(screen.queryByRole('checkbox', { name: 'Recente' })).toBeNull();
   await user.click(screen.getByRole('checkbox', { name: 'Outro' }));
   expect(screen.getByRole('status')).toHaveTextContent('2 de 3');
+  await user.keyboard('{Escape}');
   await user.click(screen.getByRole('button', { name: 'Remover Recente' }));
   expect(screen.getByRole('status')).toHaveTextContent('1 de 3');
 });

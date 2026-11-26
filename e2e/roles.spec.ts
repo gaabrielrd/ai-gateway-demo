@@ -111,9 +111,11 @@ test('usuário aprovado confirma a previsão e recebe as saídas dos três model
   await page.route('**/api/admin/access', (r) => r.fulfill({ status: 403, json: {} }));
   await login(page, 'aprovada');
   await page.getByRole('link', { name: 'Comparar', exact: true }).click();
+  await page.getByRole('button', { name: /^Modelos:/ }).click();
   const options = page.getByRole('checkbox', { disabled: false });
   await expect(options.nth(2)).toBeVisible();
   for (const choice of (await options.all()).slice(0, 3)) await choice.check();
+  await page.keyboard.press('Escape');
   let models: string[] = [];
   await page.route('**/api/budget/quote', async (r) => {
     models = (r.request().postDataJSON() as { modelIds: string[] }).modelIds;

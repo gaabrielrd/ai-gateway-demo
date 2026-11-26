@@ -1,3 +1,4 @@
+import { MemoryRouter } from 'react-router';
 import { afterEach, expect, test, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AccessPage } from '../components/AccessPage';
@@ -33,7 +34,11 @@ test('envia justificativa opcional com a sessão e permite atualizar a decisão'
     .mockResolvedValueOnce(Response.json({ status: 'pending' }))
     .mockResolvedValueOnce(Response.json({ status: 'approved' }));
   vi.stubGlobal('fetch', http);
-  render(<AccessPage />);
+  render(
+    <MemoryRouter>
+      <AccessPage />
+    </MemoryRouter>,
+  );
   fireEvent.click(await screen.findByRole('button', { name: 'Solicitar acesso' }));
   expect(await screen.findByText('Pendente')).toBeInTheDocument();
   expect(http.mock.calls[1]?.[1]).toMatchObject({
@@ -43,6 +48,10 @@ test('envia justificativa opcional com a sessão e permite atualizar a decisão'
   });
   fireEvent.click(screen.getByRole('button', { name: 'Atualizar situação' }));
   expect(await screen.findByText('Aprovado')).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Comparar modelos' })).toHaveAttribute(
+    'href',
+    '/comparar',
+  );
 });
 test('permite recuperar de falha de consulta', async () => {
   signedIn();
@@ -53,7 +62,11 @@ test('permite recuperar de falha de consulta', async () => {
       .mockResolvedValueOnce(new Response(null, { status: 503 }))
       .mockResolvedValueOnce(Response.json({ status: 'rejected' })),
   );
-  render(<AccessPage />);
+  render(
+    <MemoryRouter>
+      <AccessPage />
+    </MemoryRouter>,
+  );
   expect(await screen.findByRole('alert')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'Atualizar situação' }));
   expect(await screen.findByText('Rejeitado')).toBeInTheDocument();

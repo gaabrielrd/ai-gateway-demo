@@ -1,0 +1,40 @@
+.panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: var(--space-5);
+  align-items: start;
+}
+.editor {
+  padding: var(--space-4);
+  min-width: 0;
+  margin: 0;
+  border: var(--border-width) solid var(--line);
+  border-radius: var(--radius-md);
+}
+.editor legend {
+  font: 500 var(--text-lg) var(--font-display);
+  padding-inline: var(--space-2);
+}
+.editor p {
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+}
+.editor label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  border-top: var(--border-width) solid var(--line);
+  overflow-wrap: anywhere;
+  font-family: var(--font-mono);
+}
+.editor > button {
+  margin-top: var(--space-3);
+}
+.editor .count {
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+.editor p:empty {
+  margin: 0;
+}

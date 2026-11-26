@@ -5,7 +5,7 @@ import { PublishBenchmark } from './GalleryPage';
 import { readBenchmark } from '../services/gallery';
 import { Fragment, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
-import { useAuth } from '@/features/auth';
+import { SignInPrompt, useAuth } from '@/features/auth';
 import { readExecution, readImage, type Attempt, type Execution } from '../services/executions';
 import { EvaluationResults } from './EvaluationResults';
 import { RetryAttempt } from './RetryAttempt';
@@ -219,7 +219,7 @@ export function ExecutionPage({ published = false }: { published?: boolean }) {
       ) : state.status === 'autenticada' ? (
         <Results key={state.session.subject + ':' + id} id={id} />
       ) : (
-        <p>Entre com Google para ver esta execução privada.</p>
+        <SignInPrompt>Entre com Google para ver esta execução privada.</SignInPrompt>
       )}
       {!published && <Link to="/comparar">Nova comparação</Link>}
     </section>

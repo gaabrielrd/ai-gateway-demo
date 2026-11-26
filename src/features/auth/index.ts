@@ -26,3 +26,4 @@ export {
 
 export { GoogleAccountButton } from './components/GoogleAccountButton';
 export { FirebaseAuthProvider } from './components/FirebaseAuthProvider';
+export { SignInPrompt } from './components/SignInPrompt';
