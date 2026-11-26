@@ -26,3 +26,7 @@ Os componentes estão em `src/features`. O cabeçalho comum fica em `src/shared/
 Os testes de regressão verificam a ausência de uma coluna de campos em resumos, o anúncio do empate e o destino oferecido à conta aprovada. As capturas usam sessões e dados simulados. A pontuação expressa a avaliação dos revisores.
 
 Para conferir a seleção, abra `/comparar`, escolha um modelo e troque de provedor. Para verificar a ligação entre a tabela e o inspetor, abra um benchmark da galeria, selecione outro modelo pelo teclado e consulte “Pareceres”.
+
+## Auditoria de dependências em 26 de novembro de 2026
+
+A auditoria do pacote web reproduziu quatro alertas altos associados ao gRPC transitivo do Firestore. O override em `package.json` fixa `@grpc/grpc-js` em 1.14.7 sob `@firebase/firestore`. O lockfile mantém o Firebase em 13.4.0. Após instalação limpa com `npm ci`, o cliente gRPC e o Firestore inicializaram e encerraram localmente. O comando `npm audit --audit-level=high` passou com nove alertas moderados. A validação completa passou e os seis testes do Chromium passaram novamente.
