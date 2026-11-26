@@ -71,7 +71,7 @@ it('envia o teto e os campos opcionais, exibe primeiro a resposta pronta e acomp
   const user = userEvent.setup();
   await user.click(screen.getByRole('button', { name: 'Usar exemplo' }));
   expect(screen.getByLabelText('Prompt')).toHaveDisplayValue(/Resuma/);
-  expect(screen.getByLabelText(/Referência ou/)).toHaveDisplayValue(/nove acertos/);
+  expect(screen.getByLabelText(/Referência ou/)).toHaveDisplayValue(/45 acertos em 100 chamadas/);
   await user.clear(screen.getByLabelText(/Referência ou/));
   await user.clear(screen.getByLabelText('Prompt'));
   await user.type(screen.getByLabelText('Prompt'), 'Pedido');

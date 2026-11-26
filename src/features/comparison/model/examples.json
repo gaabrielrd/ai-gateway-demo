@@ -1,17 +1,17 @@
 {
   "extraction": {
-    "title": "Fatura fictícia com desconto",
-    "prompt": "Extraia os campos da fatura fictícia abaixo. Responda apenas com um objeto JSON com as chaves numero, emissao, moeda, subtotal, desconto e total. Use data ISO e números JSON para valores monetários. Fatura FAT-012 da Oficina Aurora, emitida em 15/04/2026. Dois sensores a R$ 60,00 cada e frete de R$ 20,00. Subtotal com frete: R$ 140,00. Desconto: R$ 4,10. Total a pagar: R$ 135,90.",
-    "reference": "{\"numero\":\"FAT-012\",\"emissao\":\"2026-04-15\",\"moeda\":\"BRL\",\"subtotal\":140,\"desconto\":4.1,\"total\":135.9}"
+    "title": "Reconciliação da fatura Aurora",
+    "prompt": "Reconcilie a versão vigente da fatura abaixo. Retorne somente JSON com numero, emissao, moeda, subtotal, desconto e total. Use data ISO e valores numéricos. O subtotal inclui mercadoria aceita e frete; o desconto incide apenas sobre a mercadoria.\n\nPedido PO-077 de 03/04/2026: dez sensores a R$ 38,50. Rascunho FAT-310 de 04/04: frete R$ 30,00. Fatura final FAT-310-R2, emitida em 6 de abril de 2026, em reais: oito sensores aceitos pelo preço do pedido e três cabos a R$ 12,00. Um cabo foi devolvido antes do faturamento. Frete final R$ 18,00. Desconto contratual de 7,5%. A cobrança vence em 30/04. Um adiantamento de R$ 40,00 reduz o saldo a receber, mas não o total da fatura.",
+    "reference": "{\"numero\":\"FAT-310-R2\",\"emissao\":\"2026-04-06\",\"moeda\":\"BRL\",\"subtotal\":350,\"desconto\":24.9,\"total\":325.1}"
   },
   "summary": {
-    "title": "Resumo de um ensaio de cache",
-    "prompt": "Resuma o relato técnico fictício em duas frases para um desenvolvedor. Em um ensaio com cache vazio, uma equipe enviou dez pedidos idênticos em sequência a um gateway. O primeiro consultou o provedor e levou 860 ms. Os nove seguintes vieram do cache, com mediana de 94 ms. O ensaio mediu somente esse prompt em uma região e não avaliou a qualidade das respostas.",
-    "reference": "Preservar os dez pedidos idênticos, a primeira chamada ao provedor (860 ms), os nove acertos de cache (mediana de 94 ms) e os limites do ensaio: um prompt, uma região e nenhuma avaliação de qualidade."
+    "title": "Cache sob duas cargas de tráfego",
+    "prompt": "Resuma para a equipe de operação, em até 65 palavras, o que estes dois ensaios permitem concluir. Calcule a taxa conjunta de acertos ponderada pelo número de chamadas. Compare as caudas de latência e qualifique a hipótese de regressão de qualidade.\n\nEnsaio A: uma região, um prompt, dez chamadas, nove acertos de cache, p95 de 820 ms. Ensaio B: três regiões, prompts variados, noventa chamadas, trinta e seis acertos, p95 de 1.240 ms. Oito respostas de B receberam reclamação. A equipe não classificou respostas de A nem fez avaliação cega em B. A ata preliminar cita uma taxa média de 65%; o valor é a média simples das duas porcentagens.",
+    "reference": "Até 65 palavras. A teve 90% de acertos e B, 40%; no conjunto foram 45 acertos em 100 chamadas (45%). O p95 passou de 820 para 1.240 ms entre cargas diferentes; não inferir causalidade nem um p95 agregado. As reclamações não comprovam regressão de qualidade, pois faltam avaliações comparáveis."
   },
   "image": {
-    "title": "Bicicleta vermelha diante de uma parede azul",
-    "prompt": "Crie uma ilustração em formato quadrado de uma bicicleta vermelha de perfil, encostada numa parede azul. À direita da bicicleta, coloque um vaso amarelo com uma planta verde. Mostre as duas rodas inteiras. Não inclua texto.",
-    "reference": "Elementos obrigatórios: bicicleta vermelha, duas rodas inteiras, parede azul, vaso amarelo à direita da bicicleta e planta verde. A imagem deve ser quadrada e sem texto."
+    "title": "Bancada de ótica em dois planos",
+    "prompt": "Crie uma ilustração quadrada de uma bancada de ótica vista de frente, ligeiramente de cima. No primeiro plano, disponha exatamente três sólidos da esquerda para a direita: um cubo azul opaco, uma esfera de vidro incolor e um cone de cobre. Atrás da esfera há uma faixa amarela vertical que aparece distorcida somente através do vidro. A base do cone fica parcialmente encoberta pela esfera, mas a ponta continua visível. Uma única luz lateral à esquerda projeta as sombras dos sólidos opacos para a direita. Preserve margens em todos os lados, sem legendas, letras ou números.",
+    "reference": "Imagem quadrada, com margens, três sólidos em ordem azul/vidro/cobre. Verificar a faixa amarela atrás do vidro e sua refração localizada, a sobreposição parcial da base do cone com ponta visível, sombras à direita e ausência de texto."
   }
 }

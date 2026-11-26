@@ -1,4 +1,5 @@
-import { ArrowRight } from 'lucide-react';
+import examples from '../model/examples.json';
+import { ArrowRight, FlaskConical } from 'lucide-react';
 import {
   Empty,
   Tabs,
@@ -70,6 +71,10 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
     rows.find((r) => r.a.index === index) ??
     rows.find((r) => r.fields?.some((f) => !f.correct)) ??
     rows[0];
+  const challenge =
+    record.task && Object.hasOwn(examples, record.task)
+      ? examples[record.task as keyof typeof examples]
+      : undefined;
   if (!active) return <Empty>Este benchmark ainda não tem resultados.</Empty>;
   const { a } = active;
   const output = a.output?.type === 'text' ? a.output.text : undefined;
@@ -95,21 +100,39 @@ export function BenchmarkConsole({ record }: { record: Execution }) {
           <h1>{record.title ?? 'Benchmark publicado'}</h1>
           <p>{conclusion}</p>
         </div>
-        <Button asChild variant="default">
-          <Link
-            className={styles.action}
-            to="/comparar"
-            state={{
-              task: record.task,
-              prompt: record.prompt,
-              reference: record.reference,
-              criterion: record.criterion,
-              modelIds: attempts.map((item) => item.modelId),
-            }}
-          >
-            <ArrowRight className="icon icon-sm" aria-hidden="true" /> Usar este prompt
-          </Link>
-        </Button>
+        <div className={styles.actions}>
+          <Button asChild variant="default">
+            <Link
+              className={styles.action}
+              to="/comparar"
+              state={{
+                task: record.task,
+                prompt: record.prompt,
+                reference: record.reference,
+                criterion: record.criterion,
+                modelIds: attempts.map((item) => item.modelId),
+              }}
+            >
+              <ArrowRight className="icon icon-sm" aria-hidden="true" /> Usar este prompt
+            </Link>
+          </Button>
+          {challenge && (
+            <Button asChild variant="outline">
+              <Link
+                to="/comparar"
+                state={{
+                  task: record.task,
+                  prompt: challenge.prompt,
+                  reference: challenge.reference,
+                  modelIds: attempts.map((item) => item.modelId),
+                }}
+              >
+                <FlaskConical className="icon icon-sm" aria-hidden="true" />
+                Experimentar desafio
+              </Link>
+            </Button>
+          )}
+        </div>
       </header>
       <div className={styles.workspace}>
         <div className={styles.left}>

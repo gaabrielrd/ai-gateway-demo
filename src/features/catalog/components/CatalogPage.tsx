@@ -1,8 +1,18 @@
-import { RefreshCw } from 'lucide-react';
+import {
+  Network,
+  RefreshCw,
+  Cloud,
+  Cpu,
+  Image,
+  Layers,
+  Sparkles,
+  Workflow,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
 import {
   Spinner,
   Button,
-  Checkbox,
   Disclosure,
   ErrorMessage,
   Label,
@@ -12,8 +22,19 @@ import {
 import { useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 import { loadCatalog, type Catalog } from '../services/catalog';
+import { CatalogPicker } from './CatalogPicker';
 import { QuotePreview } from './QuotePreview';
 import styles from './CatalogPage.module.css';
+
+const modelIcon = (output: string) => (output === 'image' ? Image : Cpu);
+const icons: Record<string, LucideIcon> = {
+  'workers-ai': Cloud,
+  openai: Workflow,
+  anthropic: Layers,
+  google: Sparkles,
+  'google-ai-studio': Sparkles,
+};
+const providerIcon = (provider: string) => icons[provider] ?? Network;
 
 const tasks = [
   { id: 'summary', label: 'Resumo de texto', output: 'text' },
@@ -68,6 +89,7 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
       catalog.models.find((m) => selected.includes(m.id))?.provider ??
       (providers.includes('workers-ai') ? 'workers-ai' : (providers[0] ?? '')),
   );
+  const ModelIcon = modelIcon(task.output);
   const [sort, setSort] = useState('recent');
   const byOrder = (a: Model, b: Model) =>
     (sort === 'recent' ? (b.createdAt ?? '').localeCompare(a.createdAt ?? '') : 0) ||
@@ -78,7 +100,7 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
     .sort(byOrder);
   return (
     <div className={styles.selector}>
-      {draft?.prompt && (
+      {draft?.prompt && draft.task === task.id && (
         <Disclosure defaultOpen title="Prompt do benchmark">
           <p>{draft.prompt}</p>
         </Disclosure>
@@ -114,16 +136,6 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
               </NativeSelect>
             </Label>
             <Label className={styles.task}>
-              Provedor
-              <NativeSelect value={provider} onChange={(e) => setProvider(e.target.value)}>
-                {providers.map((p) => (
-                  <option key={p} value={p}>
-                    {p === 'workers-ai' ? 'Workers AI' : p}
-                  </option>
-                ))}
-              </NativeSelect>
-            </Label>
-            <Label className={styles.task}>
               Ordenar modelos
               <NativeSelect value={sort} onChange={(e) => setSort(e.target.value)}>
                 <option value="recent">Mais recentes no catálogo</option>
@@ -134,38 +146,52 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
           {visible.length === 0 && (
             <p>Este provedor não possui modelos para a tarefa selecionada.</p>
           )}
-          {visible.map((model) => (
-            <Label
-              className={styles.row}
-              data-selected={selected.includes(model.id)}
-              key={model.id}
-              htmlFor={model.id}
-              aria-label={model.id}
-            >
-              <Checkbox
-                id={model.id}
-                checked={selected.includes(model.id)}
-                disabled={
+          <div className={styles.pickers}>
+            <CatalogPicker
+              label="Provedor"
+              value={provider === 'workers-ai' ? 'Workers AI' : provider || 'Sem provedores'}
+              icon={providerIcon(provider)}
+              selected={[provider]}
+              onPick={setProvider}
+              choices={providers.map((id) => {
+                const count = compatible.filter(
+                  (m) => m.provider === id && !m.budgetRestriction,
+                ).length;
+                return {
+                  id,
+                  name: id === 'workers-ai' ? 'Workers AI' : id,
+                  icon: providerIcon(id),
+                  detail: count === 1 ? '1 versão elegível' : count + ' versões elegíveis',
+                };
+              })}
+            />
+            <CatalogPicker
+              multiple
+              label="Modelos"
+              value="Escolher versões"
+              icon={modelIcon(task.output)}
+              selected={selected}
+              choices={visible.map((model) => ({
+                id: model.id,
+                name: model.id,
+                icon: modelIcon(model.output),
+                detail: [
+                  tariff(model),
+                  model.budgetRestriction && 'Indisponível. ' + model.budgetRestriction,
+                ]
+                  .filter(Boolean)
+                  .join(' · '),
+                disabled:
                   Boolean(model.budgetRestriction) ||
-                  (selected.length === required && !selected.includes(model.id))
-                }
-                onCheckedChange={(checked) =>
-                  setSelected(
-                    checked === true
-                      ? [...selected, model.id]
-                      : selected.filter((id) => id !== model.id),
-                  )
-                }
-              />
-              <span>
-                <strong>{model.id}</strong>
-                <small>
-                  {model.provider} · {tariff(model)}
-                  {model.budgetRestriction && <> · Indisponível. {model.budgetRestriction}</>}
-                </small>
-              </span>
-            </Label>
-          ))}
+                  (selected.length === required && !selected.includes(model.id)),
+              }))}
+              onPick={(id) =>
+                setSelected((ids) =>
+                  ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id],
+                )
+              }
+            />
+          </div>
           {other.length > 0 && (
             <Disclosure title={`Modelos para outras tarefas (${other.length})`}>
               <ul>
@@ -180,22 +206,37 @@ export function ModelSelector({ catalog, draft }: { catalog: Catalog; draft?: Be
         </fieldset>
       </div>
       <aside aria-label="Sua comparação" className={styles.selection}>
-        <h2>Sua comparação</h2>
-        {selected.length > 0 && (
-          <ul className={styles.selectedList} aria-label="Modelos selecionados">
-            {selected.map((id) => (
-              <li key={id}>
-                {id}{' '}
-                <Button
-                  variant="ghost"
-                  aria-label={`Remover ${id}`}
-                  onClick={() => setSelected(selected.filter((item) => item !== id))}
-                >
-                  Remover
-                </Button>
-              </li>
-            ))}
-          </ul>
+        <h2>
+          <Network className="icon" aria-hidden="true" /> Sua comparação
+        </h2>
+        {required > 0 && (
+          <div className={styles.routing}>
+            <div className={styles.source}>
+              <Workflow aria-hidden="true" className="icon" />
+              <span>Prompt</span>
+            </div>
+            <ul className={styles.targets} aria-label="Modelos selecionados">
+              {Array.from({ length: required }, (_, index) => {
+                const id = selected[index];
+                return (
+                  <li key={id ?? 'slot-' + index} data-filled={Boolean(id)}>
+                    <ModelIcon className="icon icon-sm" aria-hidden="true" />
+                    <span>{id ?? 'Modelo ' + (index + 1)}</span>
+                    {id && (
+                      <Button
+                        size="icon-sm"
+                        variant="ghost"
+                        aria-label={'Remover ' + id}
+                        onClick={() => setSelected((items) => items.filter((item) => item !== id))}
+                      >
+                        <X className="icon icon-sm" aria-hidden="true" />
+                      </Button>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         )}
         {required > 0 && (
           <output aria-live="polite">
